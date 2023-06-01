@@ -1,15 +1,13 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 
-public class Player extends BaseEntity {
-    private final List<Card> cardsInHand = new ArrayList<>();
-    protected Player(int id) {
-        super(id);
-    }
-
-    public List<Card> getCardsInHand() {
-        return cardsInHand;
-    }
+@Entity
+@Table(name = "players")
+public class Player {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    private String hashedPassword;
 }

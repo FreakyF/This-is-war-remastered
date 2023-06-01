@@ -1,39 +1,29 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import pl.kielce.tu.drylofudala.model.PositionType;
-import pl.kielce.tu.drylofudala.model.Row;
+import jakarta.persistence.*;
 
-public class Round extends BaseEntity {
-    private final Row firstPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row firstPlayerRangedCards = new Row(PositionType.RANGED);
-    private final Row secondPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row secondPlayerRangedCards = new Row(PositionType.RANGED);
+import java.util.List;
 
-    protected Round(int id) {
-        super(id);
-    }
+@Entity
+@Table(name = "rounds")
+public class Round {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public Row getFirstPlayerMeleeCards() {
-        return firstPlayerMeleeCards;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerMeeleRow;
 
-    public Row getFirstPlayerRangedCards() {
-        return firstPlayerRangedCards;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerRangeRow;
 
-    public Row getSecondPlayerMeleeCards() {
-        return secondPlayerMeleeCards;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerMeeleRow;
 
-    public Row getSecondPlayerRangedCards() {
-        return secondPlayerRangedCards;
-    }
-
-    public int calculateFirstPlayerPoints() {
-        return firstPlayerMeleeCards.calculatePoints() + firstPlayerRangedCards.calculatePoints();
-    }
-
-    public int calculateSecondPlayerPoints() {
-        return secondPlayerMeleeCards.calculatePoints() + secondPlayerRangedCards.calculatePoints();
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerRangeRow;
 }
