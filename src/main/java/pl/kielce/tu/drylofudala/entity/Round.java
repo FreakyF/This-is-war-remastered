@@ -6,11 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "rounds")
-public class Round {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
+public class Round extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id")
     private List<Card> firstPlayerMeeleRow;
@@ -26,10 +22,6 @@ public class Round {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id")
     private List<Card> secondPlayerRangeRow;
-
-    public long getId() {
-        return id;
-    }
 
     public List<Card> getFirstPlayerMeeleRow() {
         return firstPlayerMeeleRow;

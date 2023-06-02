@@ -7,11 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "games")
-public class Game {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
+public class Game extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "first_player_id")
     private Player firstPlayer;
@@ -26,10 +22,6 @@ public class Game {
 
     @Enumerated(EnumType.STRING)
     private Result result;
-
-    public long getId() {
-        return id;
-    }
 
     public Player getFirstPlayer() {
         return firstPlayer;

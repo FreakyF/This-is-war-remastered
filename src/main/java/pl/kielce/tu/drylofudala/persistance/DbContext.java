@@ -3,10 +3,11 @@ package pl.kielce.tu.drylofudala.persistance;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
 import java.util.List;
 
-public class DbContext<T> implements IRepository<T> {
+public class DbContext<T extends BaseEntity> implements IRepository<T> {
     protected final EntityManagerFactory entityManagerFactory;
     protected final EntityManager entityManager;
     protected final Class<T> entityClass;

@@ -4,16 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "players")
-public class Player {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Player extends BaseEntity {
     private String name;
     private String hashedPassword;
-
-    public long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

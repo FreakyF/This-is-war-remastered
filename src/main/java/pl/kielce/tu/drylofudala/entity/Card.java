@@ -5,12 +5,8 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 
 @Entity
 @Table(name = "cards")
-public class Card {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Card extends BaseEntity {
     private String name;
-
     @Enumerated(EnumType.STRING)
     private PositionType type;
     private int points;
@@ -24,10 +20,6 @@ public class Card {
         this.type = type;
         this.points = points;
         this.imageFileName = imageFileName;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {
