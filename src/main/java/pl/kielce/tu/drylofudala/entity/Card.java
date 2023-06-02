@@ -25,4 +25,24 @@ public class Card {
         this.points = points;
         this.imageFileName = imageFileName;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PositionType getType() {
+        return type;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
 }

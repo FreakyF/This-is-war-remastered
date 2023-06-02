@@ -10,4 +10,16 @@ public class Player {
     private long id;
     private String name;
     private String hashedPassword;
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
 }

@@ -26,4 +26,24 @@ public class Game {
 
     @Enumerated(EnumType.STRING)
     private Result result;
+
+    public long getId() {
+        return id;
+    }
+
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Player getSecondPlayer() {
+        return secondPlayer;
+    }
+
+    public List<Round> getRounds() {
+        return rounds;
+    }
+
+    public Result getResult() {
+        return result;
+    }
 }

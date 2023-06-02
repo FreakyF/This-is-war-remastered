@@ -26,4 +26,24 @@ public class Round {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id")
     private List<Card> secondPlayerRangeRow;
+
+    public long getId() {
+        return id;
+    }
+
+    public List<Card> getFirstPlayerMeeleRow() {
+        return firstPlayerMeeleRow;
+    }
+
+    public List<Card> getFirstPlayerRangeRow() {
+        return firstPlayerRangeRow;
+    }
+
+    public List<Card> getSecondPlayerMeeleRow() {
+        return secondPlayerMeeleRow;
+    }
+
+    public List<Card> getSecondPlayerRangeRow() {
+        return secondPlayerRangeRow;
+    }
 }
