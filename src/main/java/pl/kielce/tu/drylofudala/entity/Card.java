@@ -7,7 +7,7 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 @Table(name = "cards")
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
 
@@ -15,4 +15,14 @@ public class Card {
     private PositionType type;
     private int points;
     private String imageFileName;
+
+    protected Card(){
+    }
+
+    public Card(String name, PositionType type, int points, String imageFileName) {
+        this.name = name;
+        this.type = type;
+        this.points = points;
+        this.imageFileName = imageFileName;
+    }
 }

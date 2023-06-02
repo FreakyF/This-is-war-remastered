@@ -1,11 +1,12 @@
 package pl.kielce.tu.drylofudala;
 
-import pl.kielce.tu.drylofudala.persistance.DbContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) {
-        try(final DbContext dbContext = new DbContext("ThisIsWarPU")){
-            // Perform your database-related operations using the DbContext
-        }
+        logger.info("Hello World!");
     }
 }

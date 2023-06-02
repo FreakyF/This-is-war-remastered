@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "rounds")
 public class Round {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @OneToMany(cascade = CascadeType.ALL)
