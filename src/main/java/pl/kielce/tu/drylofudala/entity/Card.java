@@ -1,15 +1,21 @@
 package pl.kielce.tu.drylofudala.entity;
 
+import jakarta.persistence.*;
 import pl.kielce.tu.drylofudala.model.PositionType;
 
-public final class Card extends BaseEntity {
-    private final String name;
-    private final PositionType type;
-    private final int points;
-    private final String imageFileName;
+@Entity
+@Table(name = "cards")
+public class Card extends BaseEntity {
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private PositionType type;
+    private int points;
+    private String imageFileName;
 
-    public Card(int id, String name, PositionType type, int points, String imageFileName) {
-        super(id);
+    protected Card(){
+    }
+
+    public Card(String name, PositionType type, int points, String imageFileName) {
         this.name = name;
         this.type = type;
         this.points = points;

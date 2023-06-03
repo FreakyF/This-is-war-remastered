@@ -1,39 +1,41 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import pl.kielce.tu.drylofudala.model.PositionType;
-import pl.kielce.tu.drylofudala.model.Row;
+import jakarta.persistence.*;
 
+import java.util.List;
+
+@Entity
+@Table(name = "rounds")
 public class Round extends BaseEntity {
-    private final Row firstPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row firstPlayerRangedCards = new Row(PositionType.RANGED);
-    private final Row secondPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row secondPlayerRangedCards = new Row(PositionType.RANGED);
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerMeeleRow;
 
-    protected Round(int id) {
-        super(id);
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerRangeRow;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerMeeleRow;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerRangeRow;
+
+    public List<Card> getFirstPlayerMeeleRow() {
+        return firstPlayerMeeleRow;
     }
 
-    public Row getFirstPlayerMeleeCards() {
-        return firstPlayerMeleeCards;
+    public List<Card> getFirstPlayerRangeRow() {
+        return firstPlayerRangeRow;
     }
 
-    public Row getFirstPlayerRangedCards() {
-        return firstPlayerRangedCards;
+    public List<Card> getSecondPlayerMeeleRow() {
+        return secondPlayerMeeleRow;
     }
 
-    public Row getSecondPlayerMeleeCards() {
-        return secondPlayerMeleeCards;
-    }
-
-    public Row getSecondPlayerRangedCards() {
-        return secondPlayerRangedCards;
-    }
-
-    public int calculateFirstPlayerPoints() {
-        return firstPlayerMeleeCards.calculatePoints() + firstPlayerRangedCards.calculatePoints();
-    }
-
-    public int calculateSecondPlayerPoints() {
-        return secondPlayerMeleeCards.calculatePoints() + secondPlayerRangedCards.calculatePoints();
+    public List<Card> getSecondPlayerRangeRow() {
+        return secondPlayerRangeRow;
     }
 }
