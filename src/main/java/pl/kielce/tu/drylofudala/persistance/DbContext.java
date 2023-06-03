@@ -97,4 +97,13 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
             i++;
         }
     }
+
+    @Override
+    public boolean isEmpty() {
+        var criteriaBuilder = entityManager.getCriteriaBuilder();
+        var criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        var root = criteriaQuery.from(entityClass);
+        criteriaQuery.select(root);
+        return entityManager.createQuery(criteriaQuery).getResultList().isEmpty();
+    }
 }

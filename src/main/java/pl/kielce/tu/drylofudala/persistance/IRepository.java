@@ -1,8 +1,10 @@
 package pl.kielce.tu.drylofudala.persistance;
 
+import pl.kielce.tu.drylofudala.entity.BaseEntity;
+
 import java.util.List;
 
-public interface IRepository<T> extends AutoCloseable {
+public interface IRepository<T extends BaseEntity> extends AutoCloseable {
     T find(long id);
 
     List<T> findAll();
@@ -15,4 +17,6 @@ public interface IRepository<T> extends AutoCloseable {
 
     void delete(T entity);
     void deleteRange(List<T> entities);
+
+    boolean isEmpty();
 }
