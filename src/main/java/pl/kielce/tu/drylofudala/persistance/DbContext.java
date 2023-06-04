@@ -13,8 +13,11 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	protected final EntityManager entityManager;
 	protected final Class<T> entityClass;
 
+	public static final String PERSISTENCE_UNIT_NAME = "ThisIsWarPU";
+	public static final int BATCH_SIZE = 25;
+
 	public DbContext(Class<T> entityClass) {
-		entityManagerFactory = Persistence.createEntityManagerFactory(DbConfig.PERSISTENCE_UNIT_NAME);
+		entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		entityManager = entityManagerFactory.createEntityManager();
 		this.entityClass = entityClass;
 	}
@@ -94,7 +97,7 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	private void processEntitiesInBatches(List<T> entities, Consumer<T> action){
 		int i = 0;
 		for (T entity : entities) {
-			if (i > 0 && i % DbConfig.BATCH_SIZE == 0) {
+			if (i > 0 && i % BATCH_SIZE == 0) {
 				entityManager.flush();
 				entityManager.clear();
 			}
