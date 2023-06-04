@@ -2,9 +2,10 @@ package pl.kielce.tu.drylofudala.persistance;
 
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
+import java.io.Closeable;
 import java.util.List;
 
-public interface IRepository<T extends BaseEntity> extends java.io.Closeable {
+public interface IRepository<T extends BaseEntity> extends Closeable {
     T find(long id);
 
     List<T> findAll();
