@@ -6,6 +6,7 @@ import jakarta.persistence.Persistence;
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	protected final EntityManagerFactory entityManagerFactory;
@@ -47,16 +48,7 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	}
 
 	private void persistEntitiesInBatches(List<T> entities) {
-		int i = 0;
-		for (T entity : entities) {
-			if (i > 0 && i % DbConfig.BATCH_SIZE == 0) {
-				entityManager.flush();
-				entityManager.clear();
-			}
-
-			entityManager.persist(entity);
-			i++;
-		}
+		processEntitiesInBatches(entities, entityManager::persist);
 	}
 
 	@Override
@@ -81,15 +73,7 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	}
 
 	private void removeEntitiesInBatches(List<T> entities) {
-		int i = 0;
-		for (T entity : entities) {
-			if (i > 0 && i % DbConfig.BATCH_SIZE == 0) {
-				entityManager.flush();
-				entityManager.clear();
-			}
-			entityManager.remove(entity);
-			i++;
-		}
+		processEntitiesInBatches(entities, entityManager::remove);
 	}
 
 	@Override
@@ -105,5 +89,17 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	public void close() {
 		entityManager.close();
 		entityManagerFactory.close();
+	}
+
+	private void processEntitiesInBatches(List<T> entities, Consumer<T> action){
+		int i = 0;
+		for (T entity : entities) {
+			if (i > 0 && i % DbConfig.BATCH_SIZE == 0) {
+				entityManager.flush();
+				entityManager.clear();
+			}
+			action.accept(entity);
+			i++;
+		}
 	}
 }
