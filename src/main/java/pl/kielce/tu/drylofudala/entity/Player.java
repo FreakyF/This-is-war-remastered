@@ -11,6 +11,14 @@ public class Player extends BaseEntity {
     private String name;
     private String hashedPassword;
 
+    protected Player() {
+    }
+
+    public Player(String name, String hashedPassword) {
+        this.name = name;
+        this.hashedPassword = hashedPassword;
+    }
+
     public String getName() {
         return name;
     }

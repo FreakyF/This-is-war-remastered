@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +28,13 @@ public class Round extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id")
     private List<Card> secondPlayerRangeRow;
+
+    protected Round() {
+        firstPlayerMeeleRow = new ArrayList<>();
+        firstPlayerRangeRow = new ArrayList<>();
+        secondPlayerMeeleRow = new ArrayList<>();
+        secondPlayerRangeRow = new ArrayList<>();
+    }
 
     public List<Card> getFirstPlayerMeeleRow() {
         return firstPlayerMeeleRow;

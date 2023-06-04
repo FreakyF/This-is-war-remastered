@@ -31,6 +31,19 @@ public class Game extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Result result;
 
+    protected Game(){
+    }
+
+    public Game(Player firstPlayer,
+                Player secondPlayer,
+                List<Round> rounds,
+                Result result) {
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
+        this.rounds = rounds;
+        this.result = result;
+    }
+
     public Player getFirstPlayer() {
         return firstPlayer;
     }
