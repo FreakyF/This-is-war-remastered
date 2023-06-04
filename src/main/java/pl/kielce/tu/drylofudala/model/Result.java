@@ -1,7 +1,7 @@
 package pl.kielce.tu.drylofudala.model;
 
 public enum Result {
-    NOT_FINISHED,
+    IN_PROGRESS,
     WIN,
     LOSE,
     DRAW

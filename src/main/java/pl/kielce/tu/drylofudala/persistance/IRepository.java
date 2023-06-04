@@ -1,24 +1,26 @@
 package pl.kielce.tu.drylofudala.persistance;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
 import java.io.Closeable;
 import java.util.List;
 
 public interface IRepository<T extends BaseEntity> extends Closeable {
-    T find(long id);
+    @Nullable T find(long id);
 
-    List<T> findAll();
+    @NotNull List<T> findAll();
 
-    void save(T entity);
+    void save(@NotNull T entity);
 
-    void saveRange(List<T> entities);
+    void saveRange(@NotNull List<T> entities);
 
-    void update(T entity);
+    void update(@NotNull T entity);
 
-    void delete(T entity);
+    void delete(@NotNull T entity);
 
-    void deleteRange(List<T> entities);
+    void deleteRange(@NotNull List<T> entities);
 
     boolean isEmpty();
 }

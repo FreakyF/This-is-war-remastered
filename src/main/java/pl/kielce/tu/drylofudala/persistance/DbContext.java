@@ -3,6 +3,7 @@ package pl.kielce.tu.drylofudala.persistance;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	}
 
 	@Override
-	public List<T> findAll() {
+	public @NotNull List<T> findAll() {
 		var criteriaBuilder = entityManager.getCriteriaBuilder();
 		var criteriaQuery = criteriaBuilder.createQuery(entityClass);
 		var root = criteriaQuery.from(entityClass);
@@ -37,14 +38,14 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	}
 
 	@Override
-	public void save(T entity) {
+	public void save(@NotNull T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void saveRange(List<T> entities) {
+	public void saveRange(@NotNull List<T> entities) {
 		entityManager.getTransaction().begin();
 		persistEntitiesInBatches(entities);
 		entityManager.getTransaction().commit();
@@ -55,21 +56,21 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 	}
 
 	@Override
-	public void update(T entity) {
+	public void update(@NotNull T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.merge(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void delete(T entity) {
+	public void delete(@NotNull T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.remove(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void deleteRange(List<T> entities) {
+	public void deleteRange(@NotNull List<T> entities) {
 		entityManager.getTransaction().begin();
 		removeEntitiesInBatches(entities);
 		entityManager.getTransaction().commit();
