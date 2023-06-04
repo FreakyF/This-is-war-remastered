@@ -4,7 +4,7 @@ import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
 import java.util.List;
 
-public interface IRepository<T extends BaseEntity> extends AutoCloseable {
+public interface IRepository<T extends BaseEntity> extends java.io.Closeable {
     T find(long id);
 
     List<T> findAll();
