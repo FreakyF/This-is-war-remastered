@@ -6,7 +6,8 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 import java.util.List;
 
 public final class CardConfiguration {
-    private CardConfiguration() {}
+    private CardConfiguration() {
+    }
 
     public static final List<CardResource> CARD_RESOURCES = List.of(
             new CardResource("grafika\\card_Andrzej.png", 15, PositionType.MELEE),

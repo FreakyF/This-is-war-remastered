@@ -16,6 +16,7 @@ public interface IRepository<T extends BaseEntity> extends AutoCloseable {
     void update(T entity);
 
     void delete(T entity);
+
     void deleteRange(List<T> entities);
 
     boolean isEmpty();

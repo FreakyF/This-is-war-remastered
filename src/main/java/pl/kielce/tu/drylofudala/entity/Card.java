@@ -17,7 +17,7 @@ public class Card extends BaseEntity {
     private int points;
     private String imageFileName;
 
-    protected Card(){
+    protected Card() {
     }
 
     public Card(String name, PositionType type, int points, String imageFileName) {
