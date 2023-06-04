@@ -1,10 +1,15 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import pl.kielce.tu.drylofudala.model.PositionType;
 
+import java.util.Objects;
+
 @Entity
-@Table(name = "cards")
+@Table(name = "card")
 public class Card extends BaseEntity {
     private String name;
     @Enumerated(EnumType.STRING)
@@ -12,7 +17,7 @@ public class Card extends BaseEntity {
     private int points;
     private String imageFileName;
 
-    protected Card(){
+    protected Card() {
     }
 
     public Card(String name, PositionType type, int points, String imageFileName) {
@@ -36,5 +41,18 @@ public class Card extends BaseEntity {
 
     public String getImageFileName() {
         return imageFileName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return getPoints() == card.getPoints() && Objects.equals(getName(), card.getName()) && getType() == card.getType() && Objects.equals(getImageFileName(), card.getImageFileName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getType(), getPoints(), getImageFileName());
     }
 }
