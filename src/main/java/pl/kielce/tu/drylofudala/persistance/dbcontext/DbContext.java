@@ -1,4 +1,4 @@
-package pl.kielce.tu.drylofudala.persistance;
+package pl.kielce.tu.drylofudala.persistance.dbcontext;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -9,15 +9,15 @@ import pl.kielce.tu.drylofudala.entity.BaseEntity;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DbContext<T extends BaseEntity> implements IRepository<T> {
+public abstract class DbContext<T extends BaseEntity> implements IDbContext<T> {
 	protected final EntityManagerFactory entityManagerFactory;
 	protected final EntityManager entityManager;
 	protected final Class<T> entityClass;
 
-	public static final String PERSISTENCE_UNIT_NAME = "ThisIsWarPU";
-	public static final int BATCH_SIZE = 25;
+	private static final String PERSISTENCE_UNIT_NAME = "ThisIsWarPU";
+	private static final int BATCH_SIZE = 25;
 
-	public DbContext(Class<T> entityClass) {
+	protected DbContext(Class<T> entityClass) {
 		entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		entityManager = entityManagerFactory.createEntityManager();
 		this.entityClass = entityClass;
@@ -95,7 +95,7 @@ public class DbContext<T extends BaseEntity> implements IRepository<T> {
 		entityManagerFactory.close();
 	}
 
-	private void processEntitiesInBatches(List<T> entities, Consumer<T> action){
+	private void processEntitiesInBatches(List<T> entities, Consumer<T> action) {
 		int i = 0;
 		for (T entity : entities) {
 			if (i > 0 && i % BATCH_SIZE == 0) {
