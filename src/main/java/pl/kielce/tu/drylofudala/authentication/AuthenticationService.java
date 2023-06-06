@@ -4,17 +4,38 @@ import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.entity.Player;
+import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class AuthenticationService implements IAuthenticationService {
+    private final IPlayerRepository playerRepository;
+
+    public AuthenticationService(IPlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
+    }
 
     @Override
-    public Player register(@NotNull String nickname, @NotNull String password) {
+    public RegistrationResult register(@NotNull String nickname, @NotNull String password) {
+        if (playerRepository.isNicknameTaken(nickname)) {
+            return new RegistrationResult(
+                    RegistrationResultType.NICKNAME_ALREADY_TAKEN,
+                    RegistrationResultMessage.NICKNAME_ALREADY_TAKEN,
+                    null
+            );
+        }
+
         byte[] salt = generateSalt();
         byte[] hashedPassword = hashPassword(password, salt);
-        // TODO: Implement adding user to the database;
-        return null;
+
+        var newPlayer = new Player(nickname, Arrays.toString(hashedPassword), salt);
+        playerRepository.save(newPlayer);
+        return new RegistrationResult(
+                RegistrationResultType.SUCCESS,
+                null,
+                newPlayer
+        );
     }
 
     private byte[] hashPassword(String password, byte[] salt) {
@@ -43,7 +64,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public AuthenticationResult login(@NotNull String nickname, @NotNull String password) {
-        // TODO: Implement login method.
+        // TODO: Implement
         return null;
     }
 
