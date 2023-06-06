@@ -65,11 +65,24 @@ public class Game extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return Objects.equals(getFirstPlayer(), game.getFirstPlayer()) && Objects.equals(getSecondPlayer(), game.getSecondPlayer()) && Objects.equals(getRounds(), game.getRounds()) && getResult() == game.getResult();
+        return Objects.equals(getFirstPlayer(), game.getFirstPlayer())
+                && Objects.equals(getSecondPlayer(), game.getSecondPlayer())
+                && Objects.equals(getRounds(), game.getRounds())
+                && getResult() == game.getResult();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getFirstPlayer(), getSecondPlayer(), getRounds(), getResult());
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "firstPlayer=" + firstPlayer +
+                ", secondPlayer=" + secondPlayer +
+                ", rounds=" + rounds +
+                ", result=" + result +
+                "} " + super.toString();
     }
 }

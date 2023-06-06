@@ -32,11 +32,20 @@ public class Player extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(getName(), player.getName()) && Objects.equals(getHashedPassword(), player.getHashedPassword());
+        return Objects.equals(getName(), player.getName())
+                && Objects.equals(getHashedPassword(), player.getHashedPassword());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getHashedPassword());
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                "} " + super.toString();
     }
 }

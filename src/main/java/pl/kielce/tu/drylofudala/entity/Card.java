@@ -48,11 +48,24 @@ public class Card extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return getPoints() == card.getPoints() && Objects.equals(getName(), card.getName()) && getType() == card.getType() && Objects.equals(getImageFileName(), card.getImageFileName());
+        return getPoints() == card.getPoints()
+                && Objects.equals(getName(), card.getName())
+                && getType() == card.getType()
+                && Objects.equals(getImageFileName(), card.getImageFileName());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getType(), getPoints(), getImageFileName());
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                ", points=" + points +
+                ", imageFileName='" + imageFileName + '\'' +
+                "} " + super.toString();
     }
 }
