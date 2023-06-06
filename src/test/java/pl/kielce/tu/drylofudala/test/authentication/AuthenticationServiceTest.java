@@ -10,11 +10,13 @@ import pl.kielce.tu.drylofudala.persistance.repository.player.*;
 class AuthenticationServiceTest {
 	private IPlayerRepository playerRepository;
 	private IAuthenticationService authenticationService;
+	private IHasher hasher;
 
 	@BeforeEach
 	public void setUp() {
 		playerRepository = Mockito.mock(IPlayerRepository.class);
-		authenticationService = new AuthenticationService(playerRepository);
+		hasher = Mockito.mock(IHasher.class);
+		authenticationService = new AuthenticationService(playerRepository, hasher);
 	}
 
 	@Test
