@@ -17,11 +17,7 @@ public class DatabaseSeeder {
 		this.cardRepository = cardRepository;
 	}
 
-	public void seed() {
-		seedCards();
-	}
-
-	private void seedCards() {
+	public void seedCards() {
 		if (!cardRepository.isEmpty()) {
 			logger.debug("Cards already seeded");
 			return;
