@@ -6,9 +6,6 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 import java.util.List;
 
 public final class CardConfiguration {
-    private CardConfiguration() {
-    }
-
     public static final List<CardResource> CARD_RESOURCES = List.of(
             new CardResource("grafika\\card_Andrzej.png", 15, PositionType.MELEE),
             new CardResource("grafika\\card_Infantry_1.png", 1, PositionType.MELEE),
@@ -22,4 +19,7 @@ public final class CardConfiguration {
             new CardResource("grafika\\card_Rocket_8.png", 8, PositionType.RANGED),
             new CardResource("grafika\\card_Tank_4.png", 4, PositionType.RANGED),
             new CardResource("grafika\\card_Tank_6.png", 6, PositionType.RANGED));
+
+    private CardConfiguration() {
+    }
 }
