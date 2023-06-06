@@ -9,7 +9,7 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 import java.util.Objects;
 
 @Entity
-@Table(name = "card")
+@Table
 public class Card extends BaseEntity {
     private String name;
     @Enumerated(EnumType.STRING)

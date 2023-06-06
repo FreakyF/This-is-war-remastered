@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "game")
+@Table
 public class Game extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "first_player_id")
