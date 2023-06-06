@@ -27,6 +27,6 @@ public final class ResourceRepository implements IResourceRepository {
 	public Image getImageForPath(@NotNull final String pathToResource) throws IOException {
 		return ImageIO
 				.read(getResourceFromPath(pathToResource))
-				.getScaledInstance(100, -1, Image.SCALE_SMOOTH);
+				.getScaledInstance(-1, -1, Image.SCALE_SMOOTH);
 	}
 }
