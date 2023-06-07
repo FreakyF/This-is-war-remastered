@@ -1,12 +1,11 @@
 package pl.kielce.tu.drylofudala.authentication;
 
-import java.security.*;
-import java.util.*;
-import org.bouncycastle.crypto.generators.*;
-import org.bouncycastle.crypto.params.*;
-import org.jetbrains.annotations.*;
-import pl.kielce.tu.drylofudala.entity.*;
-import pl.kielce.tu.drylofudala.persistance.repository.player.*;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import pl.kielce.tu.drylofudala.entity.Player;
+import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
 public class AuthenticationService implements IAuthenticationService {
 	private final IPlayerRepository playerRepository;
@@ -28,31 +27,15 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 
 		byte[] salt = generateSalt();
-		byte[] hashedPassword = hashPassword(password, salt);
+		String hashedPassword = hasher.hashPassword(password, salt);
 
-		var newPlayer = new Player(nickname, Arrays.toString(hashedPassword), salt);
+		var newPlayer = new Player(nickname, hashedPassword, salt);
 		playerRepository.save(newPlayer);
 		return new RegistrationResult(
 				RegistrationResultType.SUCCESS,
 				null,
 				newPlayer
 		);
-	}
-
-	private byte[] hashPassword(String password, byte[] salt) {
-		Argon2Parameters parameters = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-				.withSalt(salt)
-				.withIterations(AuthenticationConfig.ITERATIONS)
-				.withMemoryAsKB(AuthenticationConfig.MEMORY)
-				.build();
-
-		Argon2BytesGenerator generator = new Argon2BytesGenerator();
-		generator.init(parameters);
-
-		byte[] hashedPassword = new byte[AuthenticationConfig.HASHED_PASSWORD_LENGTH];
-		generator.generateBytes(password.getBytes(), hashedPassword);
-
-		return hashedPassword;
 	}
 
 	private byte[] generateSalt() {
@@ -71,44 +54,42 @@ public class AuthenticationService implements IAuthenticationService {
 
 	@Override
 	public ValidationResult isPasswordValid(@NotNull String password) {
-		StringBuilder validationMessage = new StringBuilder();
+		List<String> validationMessages = new ArrayList<>();
+
 		if (isTooShort(password, AuthenticationConfig.MIN_PASSWORD_LENGTH)) {
-			validationMessage.append(ValidationMessage.PASSWORD_TOO_SHORT);
-			validationMessage.append('\n');
-		}
-		if (isTooLong(password, AuthenticationConfig.MAX_PASSWORD_LENGTH)) {
-			validationMessage.append(ValidationMessage.PASSWORD_TOO_LONG);
-			validationMessage.append('\n');
-		}
-		if (containsLowercase(password)) {
-			validationMessage.append(ValidationMessage.PASSWORD_WITHOUT_LOWERCASE);
-			validationMessage.append('\n');
-		}
-		if (containsUppercase(password)) {
-			validationMessage.append(ValidationMessage.PASSWORD_WITHOUT_UPPERCASE);
-			validationMessage.append('\n');
-		}
-		if (containsSpecialCharacters(password)) {
-			validationMessage.append(ValidationMessage.PASSWORD_WITHOUT_SPECIAL_CHARACTER);
-			validationMessage.append('\n');
-		}
-		if (containsNumber(password)) {
-			validationMessage.append(ValidationMessage.PASSWORD_WITHOUT_NUMBER);
-			validationMessage.append('\n');
+			validationMessages.add(ValidationMessage.PASSWORD_TOO_SHORT);
+		} else if (isTooLong(password, AuthenticationConfig.MAX_PASSWORD_LENGTH)) {
+			validationMessages.add(ValidationMessage.PASSWORD_TOO_LONG);
 		}
 
-		return !validationMessage.isEmpty() ? new ValidationResult(false, validationMessage.toString()) : new ValidationResult(true);
+		if (!containsLowercase(password)) {
+			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_LOWERCASE);
+		}
+
+		if (!containsUppercase(password)) {
+			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_UPPERCASE);
+		}
+		if (!containsSpecialCharacters(password)) {
+			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_SPECIAL_CHARACTER);
+		}
+		if (!containsNumber(password)) {
+			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_NUMBER);
+		}
+
+		return !validationMessages.isEmpty() ? new ValidationResult(false, validationMessages) : new ValidationResult(true);
 	}
 
 	@Override
 	public ValidationResult isNicknameValid(@NotNull String nickname) {
-		StringBuilder validationMessage = new StringBuilder();
+		List<String> validationMessages = new ArrayList<>();
+
 		if (isTooShort(nickname, AuthenticationConfig.MIN_NICKNAME_LENGTH)) {
-			validationMessage.append(ValidationMessage.NICKNAME_TOO_SHORT);
+			validationMessages.add(ValidationMessage.NICKNAME_TOO_SHORT);
 		} else if (isTooLong(nickname, AuthenticationConfig.MAX_NICKNAME_LENGTH)) {
-			validationMessage.append(ValidationMessage.NICKNAME_TOO_LONG);
+			validationMessages.add(ValidationMessage.NICKNAME_TOO_LONG);
 		}
-		return !validationMessage.isEmpty() ? new ValidationResult(false, validationMessage.toString()) : new ValidationResult(true);
+
+		return !validationMessages.isEmpty() ? new ValidationResult(false, validationMessages) : new ValidationResult(true);
 	}
 
 	private boolean isTooShort(final String text, final int minLength) {

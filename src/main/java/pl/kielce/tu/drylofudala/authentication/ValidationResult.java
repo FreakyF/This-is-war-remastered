@@ -1,16 +1,18 @@
 package pl.kielce.tu.drylofudala.authentication;
 
+import java.util.List;
+
 public class ValidationResult {
 	private final boolean valid;
-	private final String message;
+	private final List<String> messages;
 
-	public ValidationResult(boolean valid, String message) {
-		this.message = message;
+	public ValidationResult(boolean valid, List<String> messages) {
+		this.messages = messages;
 		this.valid = valid;
 	}
 
 	public ValidationResult(boolean valid) {
-		this.message = null;
+		this.messages = null;
 		this.valid = valid;
 	}
 
@@ -18,7 +20,7 @@ public class ValidationResult {
 		return valid;
 	}
 
-	public String getMessage() {
-		return message;
+	public List<String> getMessages() {
+		return messages;
 	}
 }
