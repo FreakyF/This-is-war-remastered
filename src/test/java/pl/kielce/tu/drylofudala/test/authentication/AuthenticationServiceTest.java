@@ -11,7 +11,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
-import pl.kielce.tu.drylofudala.authentication.*;
+import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
+import pl.kielce.tu.drylofudala.authentication.result.RegistrationResult;
+import pl.kielce.tu.drylofudala.authentication.result.ValidationResult;
+import pl.kielce.tu.drylofudala.authentication.service.AuthenticationService;
+import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
 class AuthenticationServiceTest {
@@ -36,7 +40,7 @@ class AuthenticationServiceTest {
 		RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
-		assertEquals(RegistrationResultType.NICKNAME_ALREADY_TAKEN, result.type());
+		assertFalse(result.success());
 		assertNull(result.newPlayer());
 		verify(playerRepository, never()).save(any());
 	}
@@ -51,7 +55,7 @@ class AuthenticationServiceTest {
 		RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
-		assertEquals(RegistrationResultType.SUCCESS, result.type());
+		assertTrue(result.success());
 		assertNotNull(result.newPlayer());
 		verify(playerRepository).save(any());
 	}
@@ -60,25 +64,25 @@ class AuthenticationServiceTest {
 		return Stream.of(
 				Arguments.of(
 						"short",
-						List.of(ValidationMessage.PASSWORD_TOO_SHORT,
-								ValidationMessage.PASSWORD_WITHOUT_UPPERCASE,
-								ValidationMessage.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
-								ValidationMessage.PASSWORD_WITHOUT_NUMBER)
+						List.of(ValidationResult.PASSWORD_TOO_SHORT,
+								ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
+								ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
+								ValidationResult.PASSWORD_WITHOUT_NUMBER)
 				),
 				Arguments.of("Password123",
-						List.of(ValidationMessage.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
+						List.of(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
 				),
 				Arguments.of("Password@@@@",
-						List.of(ValidationMessage.PASSWORD_WITHOUT_NUMBER)
+						List.of(ValidationResult.PASSWORD_WITHOUT_NUMBER)
 				),
 				Arguments.of("password123@",
-						List.of(ValidationMessage.PASSWORD_WITHOUT_UPPERCASE)
+						List.of(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
 				),
 				Arguments.of("PASSWORD123@",
-						List.of(ValidationMessage.PASSWORD_WITHOUT_LOWERCASE)
+						List.of(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
 				),
 				Arguments.of(new String(new char[33]).replace("\0", "A")+"a123@",
-						List.of(ValidationMessage.PASSWORD_TOO_LONG)
+						List.of(ValidationResult.PASSWORD_TOO_LONG)
 				)
 		);
 	}
@@ -90,22 +94,23 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
-		assertFalse(result.isValid());
-		assertEquals(expectedMessages.size(), result.getMessages().size());
-		assertEquals(new HashSet<>(expectedMessages), new HashSet<>(result.getMessages()));
+		assertFalse(result.valid());
+		assertNotNull(result.messages());
+		assertEquals(expectedMessages.size(), result.messages().size());
+		assertEquals(new HashSet<>(expectedMessages), new HashSet<>(result.messages()));
 	}
 
 	@Test
 	void isPasswordValid_whenValidPasswordGiven_Returns_ValidationResult_with_emptyMessages(){
 		// given
-		final String passsword = "Password123@";
+		final String password = "Password123@";
 
 		// when
-		ValidationResult result = authenticationService.isPasswordValid(passsword);
+		ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
-		assertTrue(result.isValid());
-		assertNull(result.getMessages());
+		assertTrue(result.valid());
+		assertNull(result.messages());
 	}
 
 	@Test
@@ -117,9 +122,10 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
-		assertFalse(result.isValid());
-		assertEquals(1, result.getMessages().size());
-		assertEquals(ValidationMessage.NICKNAME_TOO_SHORT, result.getMessages().get(0));
+		assertFalse(result.valid());
+		assertNotNull(result.messages());
+		assertEquals(1, result.messages().size());
+		assertEquals(ValidationResult.NICKNAME_TOO_SHORT, result.messages().get(0));
 	}
 
 	@Test
@@ -131,7 +137,7 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
-		assertTrue(result.isValid());
-		assertNull(result.getMessages());
+		assertTrue(result.valid());
+		assertNull(result.messages());
 	}
 }

@@ -6,4 +6,5 @@ import pl.kielce.tu.drylofudala.persistance.dbcontext.IDbContext;
 
 public interface IPlayerRepository extends IDbContext<Player> {
     boolean isNicknameTaken(@NotNull String nickname);
+    Player getPlayerByNickname(@NotNull String nickname);
 }

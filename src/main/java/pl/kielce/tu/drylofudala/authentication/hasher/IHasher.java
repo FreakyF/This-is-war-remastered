@@ -1,4 +1,4 @@
-package pl.kielce.tu.drylofudala.authentication;
+package pl.kielce.tu.drylofudala.authentication.hasher;
 
 import org.jetbrains.annotations.NotNull;
 

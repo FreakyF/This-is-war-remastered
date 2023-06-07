@@ -1,9 +1,14 @@
-package pl.kielce.tu.drylofudala.authentication;
+package pl.kielce.tu.drylofudala.authentication.service;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import pl.kielce.tu.drylofudala.authentication.AuthenticationConfig;
+import pl.kielce.tu.drylofudala.authentication.result.AuthenticationResult;
+import pl.kielce.tu.drylofudala.authentication.result.RegistrationResult;
+import pl.kielce.tu.drylofudala.authentication.result.ValidationResult;
+import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
 import pl.kielce.tu.drylofudala.entity.Player;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
@@ -19,11 +24,7 @@ public class AuthenticationService implements IAuthenticationService {
 	@Override
 	public RegistrationResult register(@NotNull String nickname, @NotNull String password) {
 		if (playerRepository.isNicknameTaken(nickname)) {
-			return new RegistrationResult(
-					RegistrationResultType.NICKNAME_ALREADY_TAKEN,
-					RegistrationResultMessage.NICKNAME_ALREADY_TAKEN,
-					null
-			);
+			return RegistrationResult.NICKNAME_ALREADY_TAKEN;
 		}
 
 		byte[] salt = generateSalt();
@@ -31,25 +32,29 @@ public class AuthenticationService implements IAuthenticationService {
 
 		var newPlayer = new Player(nickname, hashedPassword, salt);
 		playerRepository.save(newPlayer);
-		return new RegistrationResult(
-				RegistrationResultType.SUCCESS,
-				null,
-				newPlayer
-		);
+		return RegistrationResult.getSuccessResult(newPlayer);
 	}
 
 	private byte[] generateSalt() {
 		byte[] salt = new byte[AuthenticationConfig.SALT_LENGTH];
 		SecureRandom secureRandom = new SecureRandom();
 		secureRandom.nextBytes(salt);
-
 		return salt;
 	}
 
 	@Override
 	public AuthenticationResult login(@NotNull String nickname, @NotNull String password) {
-		// TODO: Implement
-		return null;
+		Player existingPlayer = playerRepository.getPlayerByNickname(nickname);
+		if (existingPlayer == null) {
+			return AuthenticationResult.PLAYER_DOES_NOT_EXISTS;
+		}
+
+		String hashedPassword = hasher.hashPassword(password, existingPlayer.getPasswordSalt());
+		if (!hashedPassword.equals(existingPlayer.getHashedPassword())) {
+			return AuthenticationResult.INVALID_PASSWORD;
+		}
+
+		return AuthenticationResult.SUCCESS;
 	}
 
 	@Override
@@ -57,26 +62,28 @@ public class AuthenticationService implements IAuthenticationService {
 		List<String> validationMessages = new ArrayList<>();
 
 		if (isTooShort(password, AuthenticationConfig.MIN_PASSWORD_LENGTH)) {
-			validationMessages.add(ValidationMessage.PASSWORD_TOO_SHORT);
+			validationMessages.add(ValidationResult.PASSWORD_TOO_SHORT);
 		} else if (isTooLong(password, AuthenticationConfig.MAX_PASSWORD_LENGTH)) {
-			validationMessages.add(ValidationMessage.PASSWORD_TOO_LONG);
+			validationMessages.add(ValidationResult.PASSWORD_TOO_LONG);
 		}
 
 		if (!containsLowercase(password)) {
-			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_LOWERCASE);
+			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_LOWERCASE);
 		}
 
 		if (!containsUppercase(password)) {
-			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_UPPERCASE);
+			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_UPPERCASE);
 		}
 		if (!containsSpecialCharacters(password)) {
-			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_SPECIAL_CHARACTER);
+			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER);
 		}
 		if (!containsNumber(password)) {
-			validationMessages.add(ValidationMessage.PASSWORD_WITHOUT_NUMBER);
+			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_NUMBER);
 		}
 
-		return !validationMessages.isEmpty() ? new ValidationResult(false, validationMessages) : new ValidationResult(true);
+		return !validationMessages.isEmpty()
+				? new ValidationResult(false, validationMessages)
+				: new ValidationResult(true, null);
 	}
 
 	@Override
@@ -84,12 +91,14 @@ public class AuthenticationService implements IAuthenticationService {
 		List<String> validationMessages = new ArrayList<>();
 
 		if (isTooShort(nickname, AuthenticationConfig.MIN_NICKNAME_LENGTH)) {
-			validationMessages.add(ValidationMessage.NICKNAME_TOO_SHORT);
+			validationMessages.add(ValidationResult.NICKNAME_TOO_SHORT);
 		} else if (isTooLong(nickname, AuthenticationConfig.MAX_NICKNAME_LENGTH)) {
-			validationMessages.add(ValidationMessage.NICKNAME_TOO_LONG);
+			validationMessages.add(ValidationResult.NICKNAME_TOO_LONG);
 		}
 
-		return !validationMessages.isEmpty() ? new ValidationResult(false, validationMessages) : new ValidationResult(true);
+		return !validationMessages.isEmpty()
+				? new ValidationResult(false, validationMessages)
+				: new ValidationResult(true, null);
 	}
 
 	private boolean isTooShort(final String text, final int minLength) {

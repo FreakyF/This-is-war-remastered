@@ -4,7 +4,6 @@ import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -14,7 +13,6 @@ import java.util.Objects;
 public class Player extends BaseEntity {
 	private String name;
 	private String hashedPassword;
-
 	private byte[] passwordSalt;
 
 	protected Player() {
@@ -32,6 +30,10 @@ public class Player extends BaseEntity {
 
 	public String getHashedPassword() {
 		return hashedPassword;
+	}
+
+	public byte[] getPasswordSalt() {
+		return passwordSalt;
 	}
 
 	@Override
