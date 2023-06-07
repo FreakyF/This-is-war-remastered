@@ -1,14 +1,13 @@
 package pl.kielce.tu.drylofudala.authentication.service;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.authentication.AuthenticationConfig;
+import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
 import pl.kielce.tu.drylofudala.authentication.result.AuthenticationResult;
 import pl.kielce.tu.drylofudala.authentication.result.RegistrationResult;
 import pl.kielce.tu.drylofudala.authentication.result.ValidationResult;
-import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
 import pl.kielce.tu.drylofudala.entity.Player;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
@@ -27,19 +26,12 @@ public class AuthenticationService implements IAuthenticationService {
 			return RegistrationResult.NICKNAME_ALREADY_TAKEN;
 		}
 
-		byte[] salt = generateSalt();
+		byte[] salt = hasher.generateSalt();
 		String hashedPassword = hasher.hashPassword(password, salt);
 
 		var newPlayer = new Player(nickname, hashedPassword, salt);
 		playerRepository.save(newPlayer);
 		return RegistrationResult.getSuccessResult(newPlayer);
-	}
-
-	private byte[] generateSalt() {
-		byte[] salt = new byte[AuthenticationConfig.SALT_LENGTH];
-		SecureRandom secureRandom = new SecureRandom();
-		secureRandom.nextBytes(salt);
-		return salt;
 	}
 
 	@Override
@@ -49,8 +41,7 @@ public class AuthenticationService implements IAuthenticationService {
 			return AuthenticationResult.PLAYER_DOES_NOT_EXISTS;
 		}
 
-		String hashedPassword = hasher.hashPassword(password, existingPlayer.getPasswordSalt());
-		if (!hashedPassword.equals(existingPlayer.getHashedPassword())) {
+		if (!hasher.verifyPassword(password, existingPlayer.getHashedPassword(), existingPlayer.getPasswordSalt())) {
 			return AuthenticationResult.INVALID_PASSWORD;
 		}
 
