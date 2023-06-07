@@ -3,19 +3,17 @@ package pl.kielce.tu.drylofudala.persistance.dbcontext;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import java.util.List;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public abstract class DbContext<T extends BaseEntity> implements IDbContext<T> {
+	private static final String PERSISTENCE_UNIT_NAME = "ThisIsWarPU";
+	private static final int BATCH_SIZE = 25;
 	protected final EntityManagerFactory entityManagerFactory;
 	protected final EntityManager entityManager;
 	protected final Class<T> entityClass;
-
-	private static final String PERSISTENCE_UNIT_NAME = "ThisIsWarPU";
-	private static final int BATCH_SIZE = 25;
 
 	protected DbContext(Class<T> entityClass) {
 		entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);

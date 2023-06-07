@@ -1,11 +1,10 @@
 package pl.kielce.tu.drylofudala.authentication.hasher;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.jetbrains.annotations.NotNull;
-
-import java.security.SecureRandom;
-import java.util.Base64;
 import pl.kielce.tu.drylofudala.authentication.AuthenticationConfig;
 
 public class Hasher implements IHasher {

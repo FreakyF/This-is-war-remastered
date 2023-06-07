@@ -3,14 +3,21 @@ package pl.kielce.tu.drylofudala.test.authentication;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
 import pl.kielce.tu.drylofudala.authentication.result.RegistrationResult;
 import pl.kielce.tu.drylofudala.authentication.result.ValidationResult;
@@ -22,6 +29,33 @@ class AuthenticationServiceTest {
 	private IPlayerRepository playerRepository;
 	private IAuthenticationService authenticationService;
 	private IHasher hasher;
+
+	static Stream<Arguments> providePasswordsAndExpectedMessages() {
+		return Stream.of(
+				Arguments.of(
+						"short",
+						List.of(ValidationResult.PASSWORD_TOO_SHORT,
+								ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
+								ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
+								ValidationResult.PASSWORD_WITHOUT_NUMBER)
+				),
+				Arguments.of("Password123",
+						List.of(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
+				),
+				Arguments.of("Password@@@@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_NUMBER)
+				),
+				Arguments.of("password123@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
+				),
+				Arguments.of("PASSWORD123@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
+				),
+				Arguments.of(new String(new char[33]).replace("\0", "A") + "a123@",
+						List.of(ValidationResult.PASSWORD_TOO_LONG)
+				)
+		);
+	}
 
 	@BeforeEach
 	public void setUp() {
@@ -60,33 +94,6 @@ class AuthenticationServiceTest {
 		verify(playerRepository).save(any());
 	}
 
-	static Stream<Arguments> providePasswordsAndExpectedMessages() {
-		return Stream.of(
-				Arguments.of(
-						"short",
-						List.of(ValidationResult.PASSWORD_TOO_SHORT,
-								ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
-								ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
-								ValidationResult.PASSWORD_WITHOUT_NUMBER)
-				),
-				Arguments.of("Password123",
-						List.of(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
-				),
-				Arguments.of("Password@@@@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_NUMBER)
-				),
-				Arguments.of("password123@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
-				),
-				Arguments.of("PASSWORD123@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
-				),
-				Arguments.of(new String(new char[33]).replace("\0", "A")+"a123@",
-						List.of(ValidationResult.PASSWORD_TOO_LONG)
-				)
-		);
-	}
-
 	@ParameterizedTest
 	@MethodSource("providePasswordsAndExpectedMessages")
 	void isPasswordValid_when_InvalidPasswordGiven_Returns_validValidationResult(String password, List<String> expectedMessages) {
@@ -101,7 +108,7 @@ class AuthenticationServiceTest {
 	}
 
 	@Test
-	void isPasswordValid_whenValidPasswordGiven_Returns_ValidationResult_with_emptyMessages(){
+	void isPasswordValid_whenValidPasswordGiven_Returns_ValidationResult_with_emptyMessages() {
 		// given
 		final String password = "Password123@";
 
