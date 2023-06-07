@@ -1,39 +1,72 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import pl.kielce.tu.drylofudala.model.PositionType;
-import pl.kielce.tu.drylofudala.model.Row;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table
 public class Round extends BaseEntity {
-    private final Row firstPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row firstPlayerRangedCards = new Row(PositionType.RANGED);
-    private final Row secondPlayerMeleeCards = new Row(PositionType.MELEE);
-    private final Row secondPlayerRangedCards = new Row(PositionType.RANGED);
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerMeleeRow = new ArrayList<>();
 
-    protected Round(int id) {
-        super(id);
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> firstPlayerRangeRow = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerMeleeRow = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
+    private List<Card> secondPlayerRangeRow = new ArrayList<>();
+
+    protected Round() {
     }
 
-    public Row getFirstPlayerMeleeCards() {
-        return firstPlayerMeleeCards;
+    public List<Card> getFirstPlayerMeleeRow() {
+        return firstPlayerMeleeRow;
     }
 
-    public Row getFirstPlayerRangedCards() {
-        return firstPlayerRangedCards;
+    public List<Card> getFirstPlayerRangeRow() {
+        return firstPlayerRangeRow;
     }
 
-    public Row getSecondPlayerMeleeCards() {
-        return secondPlayerMeleeCards;
+    public List<Card> getSecondPlayerMeleeRow() {
+        return secondPlayerMeleeRow;
     }
 
-    public Row getSecondPlayerRangedCards() {
-        return secondPlayerRangedCards;
+    public List<Card> getSecondPlayerRangeRow() {
+        return secondPlayerRangeRow;
     }
 
-    public int calculateFirstPlayerPoints() {
-        return firstPlayerMeleeCards.calculatePoints() + firstPlayerRangedCards.calculatePoints();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Round round = (Round) o;
+        return Objects.equals(getFirstPlayerMeleeRow(), round.getFirstPlayerMeleeRow())
+                && Objects.equals(getFirstPlayerRangeRow(), round.getFirstPlayerRangeRow())
+                && Objects.equals(getSecondPlayerMeleeRow(), round.getSecondPlayerMeleeRow())
+                && Objects.equals(getSecondPlayerRangeRow(), round.getSecondPlayerRangeRow());
     }
 
-    public int calculateSecondPlayerPoints() {
-        return secondPlayerMeleeCards.calculatePoints() + secondPlayerRangedCards.calculatePoints();
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFirstPlayerMeleeRow(), getFirstPlayerRangeRow(), getSecondPlayerMeleeRow(), getSecondPlayerRangeRow());
+    }
+
+    @Override
+    public String toString() {
+        return "Round{" +
+                "firstPlayerMeeleRow=" + firstPlayerMeleeRow +
+                ", firstPlayerRangeRow=" + firstPlayerRangeRow +
+                ", secondPlayerMeeleRow=" + secondPlayerMeleeRow +
+                ", secondPlayerRangeRow=" + secondPlayerRangeRow +
+                "} " + super.toString();
     }
 }

@@ -1,15 +1,51 @@
 package pl.kielce.tu.drylofudala.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+import java.util.Objects;
+
+@Entity
+@Table
 public class Player extends BaseEntity {
-    private final List<Card> cardsInHand = new ArrayList<>();
-    protected Player(int id) {
-        super(id);
+    private String name;
+    private String hashedPassword;
+
+    protected Player() {
     }
 
-    public List<Card> getCardsInHand() {
-        return cardsInHand;
+    public Player(String name, String hashedPassword) {
+        this.name = name;
+        this.hashedPassword = hashedPassword;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(getName(), player.getName())
+                && Objects.equals(getHashedPassword(), player.getHashedPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getHashedPassword());
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                "} " + super.toString();
     }
 }

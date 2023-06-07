@@ -1,15 +1,19 @@
 package pl.kielce.tu.drylofudala.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
 import java.util.Objects;
 
+@MappedSuperclass
 public abstract class BaseEntity {
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    protected BaseEntity(final int id) {
-        this.id = id;
-    }
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 

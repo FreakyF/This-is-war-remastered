@@ -1,15 +1,26 @@
 package pl.kielce.tu.drylofudala.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import pl.kielce.tu.drylofudala.model.PositionType;
 
-public final class Card extends BaseEntity {
-    private final String name;
-    private final PositionType type;
-    private final int points;
-    private final String imageFileName;
+import java.util.Objects;
 
-    public Card(int id, String name, PositionType type, int points, String imageFileName) {
-        super(id);
+@Entity
+@Table
+public class Card extends BaseEntity {
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private PositionType type;
+    private int points;
+    private String imageFileName;
+
+    protected Card() {
+    }
+
+    public Card(String name, PositionType type, int points, String imageFileName) {
         this.name = name;
         this.type = type;
         this.points = points;
@@ -30,5 +41,31 @@ public final class Card extends BaseEntity {
 
     public String getImageFileName() {
         return imageFileName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return getPoints() == card.getPoints()
+                && Objects.equals(getName(), card.getName())
+                && getType() == card.getType()
+                && Objects.equals(getImageFileName(), card.getImageFileName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getType(), getPoints(), getImageFileName());
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                ", points=" + points +
+                ", imageFileName='" + imageFileName + '\'' +
+                "} " + super.toString();
     }
 }
