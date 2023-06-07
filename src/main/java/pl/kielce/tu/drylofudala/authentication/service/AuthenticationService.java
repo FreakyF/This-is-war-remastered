@@ -1,7 +1,8 @@
 package pl.kielce.tu.drylofudala.authentication.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.authentication.AuthenticationConfig;
 import pl.kielce.tu.drylofudala.authentication.hasher.IHasher;
@@ -48,71 +49,41 @@ public class AuthenticationService implements IAuthenticationService {
 		return AuthenticationResult.SUCCESS;
 	}
 
+	private static final Map<Predicate<String>, String> PASSWORD_RULES = Map.of(
+			s -> s.length() >= AuthenticationConfig.MIN_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_SHORT,
+			s -> s.length() <= AuthenticationConfig.MAX_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_LONG,
+			s -> s.matches(".*[a-z].*"), ValidationResult.PASSWORD_WITHOUT_LOWERCASE,
+			s -> s.matches(".*[A-Z].*"), ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
+			s -> s.matches(".*[^a-zA-Z0-9].*"), ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
+			s -> s.matches(".*\\d.*"), ValidationResult.PASSWORD_WITHOUT_NUMBER
+	);
+
 	@Override
 	public ValidationResult isPasswordValid(@NotNull String password) {
-		List<String> validationMessages = new ArrayList<>();
+		List<String> validationMessages = PASSWORD_RULES.entrySet().stream()
+				.filter(entry -> !entry.getKey().test(password))
+				.map(Map.Entry::getValue)
+				.toList();
 
-		if (isTooShort(password, AuthenticationConfig.MIN_PASSWORD_LENGTH)) {
-			validationMessages.add(ValidationResult.PASSWORD_TOO_SHORT);
-		} else if (isTooLong(password, AuthenticationConfig.MAX_PASSWORD_LENGTH)) {
-			validationMessages.add(ValidationResult.PASSWORD_TOO_LONG);
-		}
-
-		if (!containsLowercase(password)) {
-			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_LOWERCASE);
-		}
-
-		if (!containsUppercase(password)) {
-			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_UPPERCASE);
-		}
-		if (!containsSpecialCharacters(password)) {
-			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER);
-		}
-		if (!containsNumber(password)) {
-			validationMessages.add(ValidationResult.PASSWORD_WITHOUT_NUMBER);
-		}
-
-		return !validationMessages.isEmpty()
-				? new ValidationResult(false, validationMessages)
-				: new ValidationResult(true, null);
+		return validationMessages.isEmpty()
+				? new ValidationResult(true, null)
+				: new ValidationResult(false, validationMessages);
 	}
+
+	private static final Map<Predicate<String>, String> NICKNAME_RULES = Map.of(
+			s -> s.length() >= AuthenticationConfig.MIN_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_SHORT,
+			s -> s.length() <= AuthenticationConfig.MAX_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_LONG
+	);
 
 	@Override
 	public ValidationResult isNicknameValid(@NotNull String nickname) {
-		List<String> validationMessages = new ArrayList<>();
+		List<String> validationMessages = NICKNAME_RULES.entrySet().stream()
+				.filter(entry -> !entry.getKey().test(nickname))
+				.map(Map.Entry::getValue)
+				.toList();
 
-		if (isTooShort(nickname, AuthenticationConfig.MIN_NICKNAME_LENGTH)) {
-			validationMessages.add(ValidationResult.NICKNAME_TOO_SHORT);
-		} else if (isTooLong(nickname, AuthenticationConfig.MAX_NICKNAME_LENGTH)) {
-			validationMessages.add(ValidationResult.NICKNAME_TOO_LONG);
-		}
-
-		return !validationMessages.isEmpty()
-				? new ValidationResult(false, validationMessages)
-				: new ValidationResult(true, null);
-	}
-
-	private boolean isTooShort(final String text, final int minLength) {
-		return text.length() < minLength;
-	}
-
-	private boolean isTooLong(final String text, final int maxLength) {
-		return text.length() > maxLength;
-	}
-
-	private boolean containsLowercase(final String password) {
-		return password.matches(".*[a-z].*");
-	}
-
-	private boolean containsUppercase(final String password) {
-		return password.matches(".*[A-Z].*");
-	}
-
-	private boolean containsSpecialCharacters(final String password) {
-		return password.matches(".*[^a-zA-Z0-9].*");
-	}
-
-	private boolean containsNumber(final String password) {
-		return password.matches(".*\\d.*");
+		return validationMessages.isEmpty()
+				? new ValidationResult(true, null)
+				: new ValidationResult(false, validationMessages);
 	}
 }
