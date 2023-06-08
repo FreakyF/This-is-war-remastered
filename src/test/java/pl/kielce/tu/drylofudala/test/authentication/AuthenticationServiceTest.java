@@ -3,11 +3,8 @@ package pl.kielce.tu.drylofudala.test.authentication;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,8 +44,8 @@ class AuthenticationServiceTest {
 		RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
-		assertFalse(result.success());
-		assertNull(result.newPlayer());
+		assertThat(result.success()).isFalse();
+		assertThat(result.newPlayer()).isNull();
 		verify(playerRepository, never()).save(any());
 	}
 
@@ -62,8 +59,8 @@ class AuthenticationServiceTest {
 		RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
-		assertTrue(result.success());
-		assertNotNull(result.newPlayer());
+		assertThat(result.success()).isTrue();
+		assertThat(result.newPlayer()).isNotNull();
 		verify(playerRepository).save(any());
 	}
 
@@ -74,10 +71,10 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
-		assertFalse(result.valid());
-		assertNotNull(result.messages());
-		assertEquals(expectedMessages.size(), result.messages().size());
-		assertEquals(new HashSet<>(expectedMessages), new HashSet<>(result.messages()));
+		assertThat(result.valid()).isFalse();
+		assertThat(result.messages()).isNotNull();
+		assertThat(result.messages()).hasSize(expectedMessages.size());
+		assertThat(new HashSet<>(result.messages())).isEqualTo(new HashSet<>(expectedMessages));
 	}
 
 	@Test
@@ -89,8 +86,8 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
-		assertTrue(result.valid());
-		assertNull(result.messages());
+		assertThat(result.valid()).isTrue();
+		assertThat(result.messages()).isNull();
 	}
 
 	@Test
@@ -102,10 +99,11 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
-		assertFalse(result.valid());
+		assertThat(result.valid()).isFalse();
+		assertThat(result.messages()).isNotNull();
 		assertNotNull(result.messages());
-		assertEquals(1, result.messages().size());
-		assertEquals(ValidationResult.NICKNAME_TOO_SHORT, result.messages().get(0));
+		assertThat(result.messages()).hasSize(1);
+		assertThat(result.messages().get(0)).isEqualTo(ValidationResult.NICKNAME_TOO_SHORT);
 	}
 
 	@Test
@@ -117,8 +115,8 @@ class AuthenticationServiceTest {
 		ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
-		assertTrue(result.valid());
-		assertNull(result.messages());
+		assertThat(result.valid()).isTrue();
+		assertThat(result.messages()).isNull();
 	}
 
 	static Stream<Arguments> providePasswordsAndExpectedMessages() {
