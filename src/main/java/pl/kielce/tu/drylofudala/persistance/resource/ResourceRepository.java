@@ -1,32 +1,49 @@
 package pl.kielce.tu.drylofudala.persistance.resource;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 
-public final class ResourceRepository implements IResourceRepository {
-	@NotNull
-	public URL getResourceFromPath(@NotNull final String pathToResource) {
-		final URL resource = ResourceRepository.class.getClassLoader().getResource(pathToResource);
-		if (resource == null) {
-			throw new IllegalArgumentException(String.format("File %s is null!", pathToResource));
+public final class ResourceRepository {
+	private static ResourceRepository instance;
+
+	public static ResourceRepository getInstance() {
+		if (instance == null) {
+			instance = new ResourceRepository();
 		}
-		return resource;
+		return instance;
 	}
 
-	@NotNull
-	public ImageIcon getImageIconForPath(@NotNull final String pathToResource) {
-		return new ImageIcon(getResourceFromPath(pathToResource));
+	private ResourceRepository(){
 	}
 
-	@NotNull
-	public Image getImageForPath(@NotNull final String pathToResource) throws IOException {
-		return ImageIO
-				.read(getResourceFromPath(pathToResource))
-				.getScaledInstance(-1, -1, Image.SCALE_SMOOTH);
+	public URL getResourceFromPath(final String pathToResource) {
+		return ResourceRepository.class.getClassLoader().getResource(pathToResource);
+	}
+
+	public ImageIcon getImageIconForPath(final String pathToResource) {
+		URL resource = getResourceFromPath(pathToResource);
+		if(resource == null){
+			return null;
+		}
+		return new ImageIcon(resource);
+	}
+
+	public Image getImageForPath(final String pathToResource) {
+		try {
+			URL resource = getResourceFromPath(pathToResource);
+			if(resource == null) {
+				return null;
+			}
+
+			return ImageIO
+					.read(resource)
+					.getScaledInstance(-1, -1, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
