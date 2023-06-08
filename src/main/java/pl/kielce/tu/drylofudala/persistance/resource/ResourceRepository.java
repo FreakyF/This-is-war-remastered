@@ -1,12 +1,11 @@
 package pl.kielce.tu.drylofudala.persistance.resource;
 
-import org.jetbrains.annotations.NotNull;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import org.jetbrains.annotations.NotNull;
 
 public final class ResourceRepository implements IResourceRepository {
 	@NotNull

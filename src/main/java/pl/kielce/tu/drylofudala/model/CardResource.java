@@ -3,7 +3,7 @@ package pl.kielce.tu.drylofudala.model;
 import pl.kielce.tu.drylofudala.entity.Card;
 
 public record CardResource(String imageFilePath, int points, PositionType positionType) {
-	public Card toCard(){
+	public Card toCard() {
 		return new Card(getCardName(imageFilePath), positionType, points, imageFilePath);
 	}
 
