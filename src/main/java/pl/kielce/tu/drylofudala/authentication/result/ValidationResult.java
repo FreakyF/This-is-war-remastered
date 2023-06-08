@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.kielce.tu.drylofudala.authentication.AuthenticationConfig;
 
-public record ValidationResult(@NotNull boolean valid, @Nullable List<String> messages) {
+public record ValidationResult(boolean valid, @Nullable List<String> messages) {
 	public static final String PASSWORD_TOO_SHORT;
 	public static final String PASSWORD_TOO_LONG;
 	public static final String PASSWORD_WITHOUT_LOWERCASE;

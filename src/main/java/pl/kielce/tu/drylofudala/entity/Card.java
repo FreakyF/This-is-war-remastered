@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-import java.util.Objects;
 import pl.kielce.tu.drylofudala.model.PositionType;
 
 @Entity
@@ -46,16 +45,24 @@ public class Card extends BaseEntity {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+
 		Card card = (Card) o;
-		return getPoints() == card.getPoints()
-				&& Objects.equals(getName(), card.getName())
-				&& getType() == card.getType()
-				&& Objects.equals(getImageFileName(), card.getImageFileName());
+
+		if (getPoints() != card.getPoints()) return false;
+		if (getName() != null ? !getName().equals(card.getName()) : card.getName() != null) return false;
+		if (getType() != card.getType()) return false;
+		return getImageFileName() != null ? getImageFileName().equals(card.getImageFileName()) : card.getImageFileName() == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getName(), getType(), getPoints(), getImageFileName());
+		int result = super.hashCode();
+		result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+		result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+		result = 31 * result + getPoints();
+		result = 31 * result + (getImageFileName() != null ? getImageFileName().hashCode() : 0);
+		return result;
 	}
 
 	@Override
