@@ -1,11 +1,10 @@
 package pl.kielce.tu.drylofudala.persistance.dbcontext;
 
+import java.io.Closeable;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.kielce.tu.drylofudala.entity.BaseEntity;
-
-import java.io.Closeable;
-import java.util.List;
 
 public interface IDbContext<T extends BaseEntity> extends Closeable {
 	@Nullable T find(long id);

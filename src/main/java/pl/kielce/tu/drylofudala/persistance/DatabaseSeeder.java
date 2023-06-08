@@ -1,13 +1,12 @@
 package pl.kielce.tu.drylofudala.persistance;
 
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kielce.tu.drylofudala.config.CardConfiguration;
 import pl.kielce.tu.drylofudala.entity.Card;
 import pl.kielce.tu.drylofudala.model.CardResource;
 import pl.kielce.tu.drylofudala.persistance.dbcontext.IDbContext;
-
-import java.util.List;
 
 public class DatabaseSeeder {
 	private static final Logger logger = LogManager.getLogger(DatabaseSeeder.class);
