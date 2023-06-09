@@ -44,7 +44,7 @@ public class GuestView implements IView {
 	}
 
 	private ImagePanel createBackgroundPanel() {
-		Image backgroundImage = ResourceRepository.getInstance().getImageForPath("graphics\\UI\\tlostart.png");
+		Image backgroundImage = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\background.png");
 		return new ImagePanel(backgroundImage);
 	}
 

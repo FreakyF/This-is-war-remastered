@@ -51,4 +51,32 @@ public class ViewNavigationHandler {
 			}
 		};
 	}
+
+	public ActionListener navigateToUserView() {
+		return e -> {
+			JPanel registerView = viewFactory.getUserViewFactory().createView();
+
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			if (frame != null) {
+				frame.setTitle("This is war - Menu");
+				frame.setContentPane(registerView);
+				frame.revalidate();
+				frame.repaint();
+			}
+		};
+	}
+
+	public ActionListener navigateToGameView() {
+		return e -> {
+			JPanel registerView = viewFactory.getGameViewFactory().createView();
+
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			if (frame != null) {
+				frame.setTitle("This is war - Game");
+				frame.setContentPane(registerView);
+				frame.revalidate();
+				frame.repaint();
+			}
+		};
+	}
 }

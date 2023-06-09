@@ -31,7 +31,7 @@ public final class ResourceRepository {
 		return new ImageIcon(resource);
 	}
 
-	public Image getImageForPath(final String pathToResource) {
+	public Image getImageFromPath(final String pathToResource) {
 		try {
 			URL resource = getResourceFromPath(pathToResource);
 			if(resource == null) {
