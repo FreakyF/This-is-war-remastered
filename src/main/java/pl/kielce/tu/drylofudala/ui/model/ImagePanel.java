@@ -1,4 +1,4 @@
-package pl.kielce.tu.drylofudala.ui;
+package pl.kielce.tu.drylofudala.ui.model;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

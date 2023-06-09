@@ -1,4 +1,4 @@
-package pl.kielce.tu.drylofudala.ui.factory.view;
+package pl.kielce.tu.drylofudala.ui.view.factory;
 
 import javax.swing.JPanel;
 

@@ -1,8 +1,11 @@
-package pl.kielce.tu.drylofudala.ui;
+package pl.kielce.tu.drylofudala.ui.view;
 
 import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
-import pl.kielce.tu.drylofudala.ui.factory.view.IView;
+import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
+import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.service.ViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,33 +34,33 @@ public class GuestView implements IView {
 		final JPanel view = new JPanel();
 		view.setLayout(new BorderLayout());
 
-		ImagePanel bgPanel = createBackgroundPanel();
+		ImagePanel backgroundPanel = createBackgroundPanel();
 		JPanel contentPanel = createContentPanel();
-		bgPanel.add(contentPanel, BorderLayout.CENTER);
-		view.add(bgPanel);
+		backgroundPanel.add(contentPanel, BorderLayout.CENTER);
+		view.add(backgroundPanel);
 
 		view.setVisible(true);
 		return view;
 	}
 
 	private ImagePanel createBackgroundPanel() {
-		Image bgImage = ResourceRepository.getInstance().getImageForPath("graphics\\UI\\tlostart.png");
-		return new ImagePanel(bgImage);
+		Image backgroundImage = ResourceRepository.getInstance().getImageForPath("graphics\\UI\\tlostart.png");
+		return new ImagePanel(backgroundImage);
 	}
 
 	private JPanel createContentPanel() {
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel contentPanel = new JPanel(new BorderLayout());
 
-		mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-		mainPanel.setOpaque(false);
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+		contentPanel.setOpaque(false);
 
 		JLabel label = createLabel();
-		mainPanel.add(label, BorderLayout.NORTH);
+		contentPanel.add(label, BorderLayout.NORTH);
 
 		JPanel buttonPanel = createButtonPanel();
-		mainPanel.add(buttonPanel, BorderLayout.CENTER);
+		contentPanel.add(buttonPanel, BorderLayout.CENTER);
 
-		return mainPanel;
+		return contentPanel;
 	}
 
 	private JPanel createButtonPanel() {

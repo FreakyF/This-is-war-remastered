@@ -1,5 +1,7 @@
 package pl.kielce.tu.drylofudala.ui;
 
+import pl.kielce.tu.drylofudala.ui.view.GuestView;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 

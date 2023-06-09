@@ -1,6 +1,6 @@
-package pl.kielce.tu.drylofudala.ui;
+package pl.kielce.tu.drylofudala.ui.service;
 
-import pl.kielce.tu.drylofudala.ui.factory.view.ViewFactory;
+import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
