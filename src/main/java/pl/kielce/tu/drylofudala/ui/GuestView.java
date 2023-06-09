@@ -1,5 +1,6 @@
 package pl.kielce.tu.drylofudala.ui;
 
+import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
 import pl.kielce.tu.drylofudala.ui.factory.view.IView;
 
@@ -18,12 +19,15 @@ import java.awt.Insets;
 import java.net.URL;
 
 public class GuestView implements IView {
+	private final ViewNavigationHandler navigationHandler = ViewNavigationHandler.getInstance();
+
 	@Override
 	public JPanel createView() {
 		return initializeView();
 	}
 
 	JPanel initializeView() {
+
 		final JPanel view = new JPanel();
 		view.setLayout(new BorderLayout());
 
@@ -36,7 +40,7 @@ public class GuestView implements IView {
 		return view;
 	}
 
-	private ImagePanel createBackgroundPanel(){
+	private ImagePanel createBackgroundPanel() {
 		Image bgImage = ResourceRepository.getInstance().getImageForPath("graphics\\UI\\tlostart.png");
 		return new ImagePanel(bgImage);
 	}
@@ -64,32 +68,31 @@ public class GuestView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = createButton("Login");
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		buttonPanel.add(loginButton, gbc);
+		JButton loginButton = createLoginButton(buttonPanel, gbc);
+		loginButton.addActionListener(navigationHandler.navigateToLoginView());
 
+		JButton registerButton = createRegisterButton(buttonPanel, gbc);
+		registerButton.addActionListener(navigationHandler.navigateToRegisterView());
 
-		loginButton.addActionListener();
+		return buttonPanel;
+	}
 
+	@NotNull
+	private JButton createRegisterButton(JPanel buttonPanel, GridBagConstraints gbc) {
 		JButton registerButton = createButton("Register");
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		buttonPanel.add(registerButton, gbc);
+		return registerButton;
+	}
 
-//		registerButton.addActionListener(e -> {
-//			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GuestView.this);
-//			if (frame != null) {
-//				frame.getContentPane().removeAll();
-//				frame.getContentPane().add(new RegisterView(iResourceRepository));
-//				frame.revalidate();
-//				frame.repaint();
-//
-//				frame.setTitle("This is war - Register");
-//			}
-//		});
-
-		return buttonPanel;
+	@NotNull
+	private JButton createLoginButton(JPanel buttonPanel, GridBagConstraints gbc) {
+		JButton loginButton = createButton("Login");
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		buttonPanel.add(loginButton, gbc);
+		return loginButton;
 	}
 
 	private JButton createButton(String buttonName) {

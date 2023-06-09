@@ -3,26 +3,52 @@ package pl.kielce.tu.drylofudala.ui;
 import pl.kielce.tu.drylofudala.ui.factory.view.ViewFactory;
 
 import javax.swing.JFrame;
-import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 
 public class ViewNavigationHandler {
+	private static ViewNavigationHandler instance;
+
+	public static ViewNavigationHandler getInstance() {
+		if (instance == null) {
+			instance = new ViewNavigationHandler();
+		}
+		return instance;
+	}
+
 	private final ViewFactory viewFactory;
 
-	public ViewNavigationHandler(){
+	private ViewNavigationHandler() {
 		viewFactory = ViewFactory.getInstance();
 	}
 
-	public ActionListener navigateToLoginView(final JFrame window) {
-		return (ActionEvent e) -> {
-			var loginView = viewFactory.getLoginViewFactory().createView();
+	public ActionListener navigateToLoginView() {
+		return e -> {
+			JPanel loginView = viewFactory.getLoginViewFactory().createView();
 
-			window.getContentPane().removeAll();
-			window.getContentPane().add(loginView);
-			window.revalidate();
-			window.repaint();
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			if (frame != null) {
+				frame.setTitle("This is war - Login");
+				frame.setContentPane(loginView);
+				frame.revalidate();
+				frame.repaint();
+			}
+		};
+	}
 
-			window.setTitle("This is war - Login");
+	public ActionListener navigateToRegisterView() {
+		return e -> {
+			JPanel registerView = viewFactory.getRegisterViewFactory().createView();
+
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			if (frame != null) {
+				frame.setTitle("This is war - Register");
+				frame.setContentPane(registerView);
+				frame.revalidate();
+				frame.repaint();
+			}
 		};
 	}
 }
