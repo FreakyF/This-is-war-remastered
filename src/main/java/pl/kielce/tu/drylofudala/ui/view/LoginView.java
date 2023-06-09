@@ -76,6 +76,7 @@ public class LoginView implements IView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		JButton loginButton = UiComponentCreator.createButton("LOGIN");
+		loginButton.addActionListener(navigationHandler.navigateToUserView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		buttonPanel.add(loginButton, gbc);
