@@ -1,6 +1,9 @@
 package pl.kielce.tu.drylofudala.ui;
 
+import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
+
 import java.awt.Font;
+import java.net.URL;
 
 public class UiConfig {
 	public static final String FONT_FAMILY = "JetBrains Mono";
