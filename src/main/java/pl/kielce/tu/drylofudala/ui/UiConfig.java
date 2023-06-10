@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.Insets;
 
 public class UiConfig {
-	public static final String FONT_FAMILY = "JetBrains Mono";
+	public static final String FONT_FAMILY = "Comic Sans MS";
 	public static final Font COPYRIGHT_FONT = new Font(FONT_FAMILY, Font.PLAIN, 24);
 
 	public static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 72);
