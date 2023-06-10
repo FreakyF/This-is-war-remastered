@@ -14,6 +14,7 @@ import java.net.URL;
 
 public class UiConfig {
 	Font customFont;
+	// TODO: Change font type that suppports foreign symbols.
 	public static final String FONT_FAMILY = "Call Of Ops Duty";
 	public static final Font COPYRIGHT_FONT = new Font(FONT_FAMILY, Font.PLAIN, 24);
 
