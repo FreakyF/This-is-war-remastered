@@ -1,6 +1,5 @@
 package pl.kielce.tu.drylofudala.ui.service;
 
-import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
@@ -12,8 +11,9 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.Image;
-import java.net.URL;
+import java.awt.Insets;
 
 public class UiComponentCreator {
 	private UiComponentCreator() {
@@ -47,5 +47,23 @@ public class UiComponentCreator {
 		label.setFont(fontStyle);
 
 		return label;
+	}
+
+	public static GridBagConstraints createGridBagConstrains(Insets insets) {
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = insets;
+
+		return gbc;
+	}
+
+	public static GridBagConstraints createGridBagConstrains(Insets insets, int fill) {
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.fill = fill;
+		gbc.insets = insets;
+
+		return gbc;
 	}
 }

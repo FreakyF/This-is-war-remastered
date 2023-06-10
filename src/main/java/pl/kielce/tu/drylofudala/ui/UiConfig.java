@@ -12,6 +12,7 @@ public class UiConfig {
 	public static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 144);
 
 	public static final Font BUTTON_FONT = new Font(FONT_FAMILY, Font.PLAIN, 56);
+	public static final Insets GBC_INSETS = new Insets(10, 10, 10, 10);
 
 	private UiConfig() {
 	}
