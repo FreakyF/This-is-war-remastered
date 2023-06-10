@@ -1,12 +1,12 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
 import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.ViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,8 +28,7 @@ public class LoginView implements IView {
 	}
 
 	private JPanel initializeView() {
-		final JPanel view = new JPanel();
-		view.setLayout(new BorderLayout());
+		final JPanel view = new JPanel(new BorderLayout());
 
 		ImagePanel backgroundPanel = UiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
@@ -75,7 +74,7 @@ public class LoginView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = UiComponentCreator.createButton("LOGIN");
+		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
 		loginButton.addActionListener(navigationHandler.navigateToUserView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -92,7 +91,7 @@ public class LoginView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel passwordLabel = UiComponentCreator.createLabel("Password", UiConfig.COPYRIGHT_FONT);
+		JLabel passwordLabel = UiComponentCreator.createLabel(UiResource.INPUT_LABEL_PASSWORD, UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		passwordPanel.add(passwordLabel, gbc);
@@ -124,7 +123,7 @@ public class LoginView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel nicknameLabel = UiComponentCreator.createLabel("Nickname", UiConfig.COPYRIGHT_FONT);
+		JLabel nicknameLabel = UiComponentCreator.createLabel(UiResource.INPUT_LABEL_NICKNAME, UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		nicknamePanel.add(nicknameLabel, gbc);
@@ -156,12 +155,12 @@ public class LoginView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel titleLabel = UiComponentCreator.createLabel("This is war", UiConfig.TITLE_FONT);
+		JLabel titleLabel = UiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		headerPanel.add(titleLabel, gbc);
 
-		JLabel subtitleLabel = UiComponentCreator.createLabel("Login", UiConfig.BUTTON_FONT);
+		JLabel subtitleLabel = UiComponentCreator.createLabel(UiResource.SUBTITLE_LOGIN, UiConfig.BUTTON_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		headerPanel.add(subtitleLabel, gbc);
@@ -171,21 +170,21 @@ public class LoginView implements IView {
 
 	private JPanel createContentPanel() {
 		JPanel contentPanel = new JPanel(new GridBagLayout());
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 		contentPanel.setOpaque(false);
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
+
+		JPanel headerPanel = createHeaderPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		JPanel headerPanel = createHeaderPanel();
 		contentPanel.add(headerPanel, gbc);
 
+		JPanel inputPanel = createInputPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		JPanel inputPanel = createInputPanel();
 		contentPanel.add(inputPanel, gbc);
 
 		return contentPanel;
