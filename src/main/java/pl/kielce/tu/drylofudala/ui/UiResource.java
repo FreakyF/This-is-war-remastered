@@ -13,6 +13,9 @@ public class UiResource {
 	public static final String SUBTITLE_REGISTER = "Register";
 	public static final String BUTTON_LOGIN_TEXT = "Login";
 	public static final String BUTTON_REGISTER_TEXT = "Register";
+	public static final String BUTTON_PASS_TURN_TEXT = "Pass turn";
+	public static final String BUTTON_SURRENDER_TEXT = "Surrender";
+	public static final String BUTTON_EXIT_TEXT = "Exit";
 	public static final String INPUT_LABEL_NICKNAME = "Nickname";
 	public static final String INPUT_LABEL_PASSWORD = "Password";
 
