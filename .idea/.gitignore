@@ -1,8 +1,10 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Datasource local storage ignored files
 /dataSources/
-/dataSources.local.xml
+/shelf/
+/sonarlint/
+
+/compiler.xml
+/discord.xml
+/git_toolbox_prj.xml
+/jarRepositories.xml
+/modules.xml
+/workspace.xml
