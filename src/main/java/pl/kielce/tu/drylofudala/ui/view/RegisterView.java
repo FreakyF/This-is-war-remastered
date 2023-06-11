@@ -101,8 +101,8 @@ public class RegisterView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton registerButton = UiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT);
-		registerButton.addActionListener(navigationHandler.navigateToGameView());
+		JButton registerButton = UiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
+		registerButton.addActionListener(navigationHandler.navigateToLoginView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		buttonPanel.add(registerButton, gbc);

@@ -24,10 +24,15 @@ public class UiComponentCreator {
 		final Image backgroundImage = UiResource.VIEW_BACKGROUND_IMAGE_RESOURCE;
 		return new ImagePanel(backgroundImage);
 	}
-	public static JButton createButton(String text) {
+
+	public static ImagePanel createBoardBackgroundPanel() {
+		final Image backgroundImage = UiResource.BOARD_BACKGROUND_IMAGE_RESOURCE;
+		return new ImagePanel(backgroundImage);
+	}
+	public static JButton createButton(String text, int width, int height) {
 		final JButton button = new JButton(text);
 
-		button.setPreferredSize(new Dimension(300, 100));
+		button.setPreferredSize(new Dimension(width, height));
 		button.setFont(UiConfig.BUTTON_FONT);
 
 		ImageIcon buttonBackground = new ImageIcon(UiResource.BUTTON_BACKGROUND_IMAGE_RESOURCE);

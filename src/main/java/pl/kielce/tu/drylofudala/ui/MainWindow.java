@@ -1,5 +1,6 @@
 package pl.kielce.tu.drylofudala.ui;
 
+import pl.kielce.tu.drylofudala.ui.model.DialogBox;
 import pl.kielce.tu.drylofudala.ui.view.GuestView;
 
 import javax.swing.JFrame;
@@ -21,7 +22,8 @@ public class MainWindow extends JFrame {
 		GuestView guestView = new GuestView();
 		JPanel viewPanel = guestView.createView();
 		add(viewPanel);
-
 		setVisible(true);
+
+		new DialogBox(this, "This button is work in progress");
 	}
 }

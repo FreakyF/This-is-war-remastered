@@ -64,13 +64,13 @@ public class GuestView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
+		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
 		loginButton.addActionListener(navigationHandler.navigateToLoginView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(loginButton, gbc);
 
-		JButton registerButton = UiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT);
+		JButton registerButton = UiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
 		registerButton.addActionListener(navigationHandler.navigateToRegisterView());
 		gbc.gridx = 0;
 		gbc.gridy = 1;

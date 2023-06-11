@@ -74,7 +74,7 @@ public class LoginView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
+		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
 		loginButton.addActionListener(navigationHandler.navigateToUserView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
