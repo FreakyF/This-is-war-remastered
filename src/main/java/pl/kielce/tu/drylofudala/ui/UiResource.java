@@ -1,9 +1,13 @@
 package pl.kielce.tu.drylofudala.ui;
 
+import java.nio.file.Path;
+
 public class UiResource {
-	public static final String VIEW_BACKGROUND_IMAGE_PATH = "graphics\\UI\\background.png";
-	public static final String BOARD_BACKGROUND_IMAGE_PATH = "graphics\\UI\\HandPanel.png";
-	public static final String BUTTON_BACKGROUND_IMAGE_PATH = "graphics\\UI\\HandPanel.png";
+	private static final String GRAPHICS_FOLDER = "graphics";
+	private static final String UI_FOLDER = "UI";
+	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();
+	public static final String BOARD_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
+	public static final String BUTTON_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
 	public static final String GAME_TITLE = "This Is War";
 	public static final String IP_ADDRESS_TEXT = "IP address";
 	public static final String PORT_NUMBER_TEXT = "Port number";

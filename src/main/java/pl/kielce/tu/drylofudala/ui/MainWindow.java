@@ -2,19 +2,21 @@ package pl.kielce.tu.drylofudala.ui;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.model.DialogBox;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.view.GuestView;
+import pl.kielce.tu.drylofudala.ui.service.navigation_handler.ViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 
 public class MainWindow extends JFrame {
 	private final transient IResourceRepository resourceRepository;
+	private final transient IViewFactory viewFactory;
 	private final transient IViewNavigationHandler viewNavigationHandler;
 
-	public MainWindow(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+	public MainWindow(IViewFactory viewFactory, IResourceRepository resourceRepository) {
 		this.resourceRepository = resourceRepository;
-		this.viewNavigationHandler = viewNavigationHandler;
+		this.viewFactory = viewFactory;
+		this.viewNavigationHandler = new ViewNavigationHandler(viewFactory, resourceRepository);
 		initializeWindow();
 	}
 
@@ -27,9 +29,8 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
 		setDefaultLookAndFeelDecorated(true);
 
-		GuestView guestView = new GuestView();
-		JPanel viewPanel = guestView.createView(viewNavigationHandler, resourceRepository);
-		add(viewPanel);
+		var guestView = viewFactory.getGuestViewFactory().createView(viewNavigationHandler, resourceRepository);
+		add(guestView);
 
 		setVisible(true);
 
