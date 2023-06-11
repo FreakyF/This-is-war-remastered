@@ -1,55 +1,47 @@
 package pl.kielce.tu.drylofudala.ui;
 
-import java.awt.Dimension;
-import javax.swing.JFrame;
-import pl.kielce.tu.drylofudala.authentication.result.ValidationResult;
+import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
-import pl.kielce.tu.drylofudala.ui.model.DialogBox;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.ViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class MainWindow extends JFrame {
-	private final transient IResourceRepository resourceRepository;
-	private final transient IViewFactory viewFactory;
-	private final transient IViewNavigationHandler viewNavigationHandler;
+    private final transient IResourceRepository resourceRepository;
+    private final transient IViewFactory viewFactory;
+    private final transient IViewNavigationHandler viewNavigationHandler;
+    private long loggedInUserId;
 
-	public MainWindow(IViewFactory viewFactory, IResourceRepository resourceRepository) {
-		this.resourceRepository = resourceRepository;
-		this.viewFactory = viewFactory;
-		this.viewNavigationHandler = new ViewNavigationHandler(viewFactory, resourceRepository);
-		initializeWindow();
-	}
+    public MainWindow(IAuthenticationService authenticationService, IViewFactory viewFactory, IResourceRepository resourceRepository) {
+        this.resourceRepository = resourceRepository;
+        this.viewFactory = viewFactory;
+        this.viewNavigationHandler = new ViewNavigationHandler(authenticationService, viewFactory, resourceRepository);
+        initializeWindow();
+    }
 
-	private void initializeWindow() {
-		setTitle("This is war - Guest"); // First view is always guest.
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setExtendedState(MAXIMIZED_BOTH);
-		setMinimumSize(new Dimension(UiConfig.WINDOW_MIN_WIDTH, UiConfig.WINDOW_MIN_HEIGHT));
+    private void initializeWindow() {
+        setTitle("This is war - Guest"); // First view is always guest.
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(UiConfig.WINDOW_MIN_WIDTH, UiConfig.WINDOW_MIN_HEIGHT));
 
-		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
-		setDefaultLookAndFeelDecorated(true);
+        setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
+        setDefaultLookAndFeelDecorated(true);
 
-		var guestView = viewFactory.getGuestViewFactory().createView(viewNavigationHandler, resourceRepository);
-		add(guestView);
+        var guestView = viewFactory.getGuestViewFactory().createView(this, viewNavigationHandler, resourceRepository);
+        add(guestView);
 
-		setVisible(true);
+        setVisible(true);
+    }
 
-		StringBuilder message = new StringBuilder()
-				.append(ValidationResult.PASSWORD_TOO_SHORT)
-				.append('\n')
-				.append(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
-				.append('\n')
-				.append(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
-				.append('\n')
-				.append(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
-				.append('\n')
-				.append(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
-				.append('\n')
-				.append(ValidationResult.PASSWORD_WITHOUT_NUMBER)
-				.append('\n')
-				.append(ValidationResult.NICKNAME_TOO_LONG);
+    public void setLoggedInUserId(Long playerId) {
+        this.loggedInUserId = playerId;
+    }
 
-		new DialogBox(this, message.toString(), resourceRepository);
-	}
+    public long getLoggedInUserId() {
+        return loggedInUserId;
+    }
 }

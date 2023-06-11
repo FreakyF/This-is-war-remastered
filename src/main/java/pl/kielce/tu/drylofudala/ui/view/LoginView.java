@@ -1,195 +1,216 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
+import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
 
-public class LoginView implements IView {
-	private IViewNavigationHandler navigationHandler;
-	private UiComponentCreator uiComponentCreator;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
-	@Override
-	public JPanel createView(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
-		this.navigationHandler = viewNavigationHandler;
-		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
-		return initializeView();
-	}
+public class LoginView implements IAuthView {
+    private IViewNavigationHandler navigationHandler;
+    private UiComponentCreator uiComponentCreator;
+    private IAuthenticationService authenticationService;
 
-	private JPanel initializeView() {
-		final JPanel view = new JPanel(new BorderLayout());
+    private JPanel view;
+    private MainWindow parentWindow;
+    private JTextField nicknameTextField;
+    private JPasswordField passwordTextField;
 
-		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
-		view.add(backgroundPanel);
+    @Override
+    public JPanel createView(MainWindow parentWindow, IAuthenticationService authenticationService, IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+        this.parentWindow = parentWindow;
+        this.authenticationService = authenticationService;
+        this.navigationHandler = viewNavigationHandler;
+        this.uiComponentCreator = new UiComponentCreator(resourceRepository);
+        return initializeView();
+    }
 
-		JPanel contentPanel = createContentPanel();
-		backgroundPanel.add(contentPanel);
+    private JPanel initializeView() {
+        view = new JPanel(new BorderLayout());
 
-		view.setVisible(true);
-		return view;
-	}
+        ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+        view.add(backgroundPanel);
 
-	private JPanel createInputPanel() {
-		JPanel inputPanel = new JPanel(new GridBagLayout());
-		inputPanel.setOpaque(false);
+        JPanel contentPanel = createContentPanel();
+        backgroundPanel.add(contentPanel);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        view.setVisible(true);
+        return view;
+    }
 
-		JPanel nicknamePanel = createNicknamePanel();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		inputPanel.add(nicknamePanel, gbc);
+    private JPanel createInputPanel() {
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        inputPanel.setOpaque(false);
 
-		JPanel passwordPanel = createPasswordPanel();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		inputPanel.add(passwordPanel, gbc);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-		JPanel buttonPanel = createButtonPanel();
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		inputPanel.add(buttonPanel, gbc);
+        JPanel nicknamePanel = createNicknamePanel();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        inputPanel.add(nicknamePanel, gbc);
 
-		return inputPanel;
-	}
+        JPanel passwordPanel = createPasswordPanel();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        inputPanel.add(passwordPanel, gbc);
 
-	private JPanel createButtonPanel() {
-		JPanel buttonPanel = new JPanel(new GridBagLayout());
-		buttonPanel.setOpaque(false);
+        JPanel buttonPanel = createButtonPanel();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        inputPanel.add(buttonPanel, gbc);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        return inputPanel;
+    }
 
-		JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
-		loginButton.addActionListener(navigationHandler.navigateToUserView());
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		buttonPanel.add(loginButton, gbc);
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel.setOpaque(false);
 
-		return buttonPanel;
-	}
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-	private JPanel createPasswordPanel() {
-		JPanel passwordPanel = new JPanel(new GridBagLayout());
-		passwordPanel.setOpaque(false);
+        JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
+        loginButton.addActionListener(onLoginButtonClicked());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        buttonPanel.add(loginButton, gbc);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        return buttonPanel;
+    }
 
-		JLabel passwordLabel = uiComponentCreator.createLabel(UiResource.INPUT_LABEL_PASSWORD, UiConfig.COPYRIGHT_FONT);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		passwordPanel.add(passwordLabel, gbc);
+    private JPanel createPasswordPanel() {
+        JPanel passwordPanel = new JPanel(new GridBagLayout());
+        passwordPanel.setOpaque(false);
 
-		JPasswordField passwordField = createPasswordField();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		passwordPanel.add(passwordField, gbc);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-		return passwordPanel;
-	}
+        JLabel passwordLabel = uiComponentCreator.createLabel(UiResource.INPUT_LABEL_PASSWORD, UiConfig.COPYRIGHT_FONT);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        passwordPanel.add(passwordLabel, gbc);
 
-	private JPasswordField createPasswordField() {
-		JPasswordField passwordField = new JPasswordField();
+        JPasswordField passwordField = createPasswordField();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        passwordPanel.add(passwordField, gbc);
 
-		passwordField.setHorizontalAlignment(SwingConstants.CENTER);
-		passwordField.setPreferredSize(new Dimension(300, 100));
-		passwordField.setFont(UiConfig.COPYRIGHT_FONT);
-		passwordField.setBorder(null);
+        return passwordPanel;
+    }
 
-		return passwordField;
-	}
+    private JPasswordField createPasswordField() {
+        JPasswordField passwordField = new JPasswordField();
 
-	private JPanel createNicknamePanel() {
-		JPanel nicknamePanel = new JPanel(new GridBagLayout());
-		nicknamePanel.setOpaque(false);
+        passwordField.setHorizontalAlignment(SwingConstants.CENTER);
+        passwordField.setPreferredSize(new Dimension(300, 100));
+        passwordField.setFont(UiConfig.COPYRIGHT_FONT);
+        passwordField.setBorder(null);
+        passwordTextField = passwordField;
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        return passwordField;
+    }
 
-		JLabel nicknameLabel = uiComponentCreator.createLabel(UiResource.INPUT_LABEL_NICKNAME, UiConfig.COPYRIGHT_FONT);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		nicknamePanel.add(nicknameLabel, gbc);
+    private JPanel createNicknamePanel() {
+        JPanel nicknamePanel = new JPanel(new GridBagLayout());
+        nicknamePanel.setOpaque(false);
 
-		JTextField nicknameField = createNicknameField();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		nicknamePanel.add(nicknameField, gbc);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-		return nicknamePanel;
-	}
+        JLabel nicknameLabel = uiComponentCreator.createLabel(UiResource.INPUT_LABEL_NICKNAME, UiConfig.COPYRIGHT_FONT);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        nicknamePanel.add(nicknameLabel, gbc);
 
-	private JTextField createNicknameField() {
-		JTextField textField = new JTextField();
+        JTextField nicknameField = createNicknameField();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        nicknamePanel.add(nicknameField, gbc);
 
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setPreferredSize(new Dimension(300, 100));
-		textField.setFont(UiConfig.COPYRIGHT_FONT);
-		textField.setBorder(null);
+        return nicknamePanel;
+    }
 
-		return textField;
-	}
+    private JTextField createNicknameField() {
+        JTextField textField = new JTextField();
 
-	private JPanel createHeaderPanel() {
-		JPanel headerPanel = new JPanel(new GridBagLayout());
-		headerPanel.setOpaque(false);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setPreferredSize(new Dimension(300, 100));
+        textField.setFont(UiConfig.COPYRIGHT_FONT);
+        textField.setBorder(null);
+        nicknameTextField = textField;
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        return textField;
+    }
 
-		JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		headerPanel.add(titleLabel, gbc);
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new GridBagLayout());
+        headerPanel.setOpaque(false);
 
-		JLabel subtitleLabel = uiComponentCreator.createLabel(UiResource.SUBTITLE_LOGIN, UiConfig.BUTTON_FONT);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		headerPanel.add(subtitleLabel, gbc);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-		return headerPanel;
-	}
+        JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        headerPanel.add(titleLabel, gbc);
 
-	private JPanel createContentPanel() {
-		JPanel contentPanel = new JPanel(new GridBagLayout());
-		contentPanel.setOpaque(false);
+        JLabel subtitleLabel = uiComponentCreator.createLabel(UiResource.SUBTITLE_LOGIN, UiConfig.BUTTON_FONT);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        headerPanel.add(subtitleLabel, gbc);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 10, 10, 10);
+        return headerPanel;
+    }
+
+    private JPanel createContentPanel() {
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setOpaque(false);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
 
 
-		JPanel headerPanel = createHeaderPanel();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		contentPanel.add(headerPanel, gbc);
+        JPanel headerPanel = createHeaderPanel();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        contentPanel.add(headerPanel, gbc);
 
-		JPanel inputPanel = createInputPanel();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		contentPanel.add(inputPanel, gbc);
+        JPanel inputPanel = createInputPanel();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        contentPanel.add(inputPanel, gbc);
 
-		return contentPanel;
-	}
+        return contentPanel;
+    }
+
+    private ActionListener onLoginButtonClicked() {
+        return e -> {
+            var nickname = nicknameTextField.getText();
+            var password = Arrays.toString(passwordTextField.getPassword());
+            var authResult = authenticationService.login(nickname, password);
+            if (authResult.authorized()) {
+                parentWindow.setLoggedInUserId(authResult.playerId());
+                navigationHandler.navigateToUserView(parentWindow).actionPerformed(e);
+                return;
+            }
+
+            JOptionPane.showMessageDialog(view, authResult.message());
+        };
+    }
 }

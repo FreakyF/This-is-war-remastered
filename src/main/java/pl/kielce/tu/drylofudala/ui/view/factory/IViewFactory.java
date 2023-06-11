@@ -1,13 +1,13 @@
 package pl.kielce.tu.drylofudala.ui.view.factory;
 
 public interface IViewFactory {
-	IView getGuestViewFactory();
+    IView getGuestViewFactory();
 
-	IView getLoginViewFactory();
+    IAuthView getLoginViewFactory();
 
-	IView getRegisterViewFactory();
+    IAuthView getRegisterViewFactory();
 
-	IView getUserViewFactory();
+    IView getUserViewFactory();
 
-	IView getGameViewFactory();
+    IView getGameViewFactory();
 }
