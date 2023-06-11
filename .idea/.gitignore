@@ -1,0 +1,10 @@
+/dataSources/
+/shelf/
+/sonarlint/
+
+/compiler.xml
+/discord.xml
+/git_toolbox_prj.xml
+/jarRepositories.xml
+/modules.xml
+/workspace.xml
