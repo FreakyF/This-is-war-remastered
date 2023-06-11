@@ -5,63 +5,81 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
-@Table(name = "round")
+@Table
 public class Round extends BaseEntity {
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
-    private List<Card> firstPlayerMeeleRow;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "round_id")
+	private List<Card> firstPlayerMeleeRow = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
-    private List<Card> firstPlayerRangeRow;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "round_id")
+	private List<Card> firstPlayerRangeRow = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
-    private List<Card> secondPlayerMeeleRow;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "round_id")
+	private List<Card> secondPlayerMeleeRow = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
-    private List<Card> secondPlayerRangeRow;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "round_id")
+	private List<Card> secondPlayerRangeRow = new ArrayList<>();
 
-    protected Round() {
-        firstPlayerMeeleRow = new ArrayList<>();
-        firstPlayerRangeRow = new ArrayList<>();
-        secondPlayerMeeleRow = new ArrayList<>();
-        secondPlayerRangeRow = new ArrayList<>();
-    }
+	protected Round() {
+	}
 
-    public List<Card> getFirstPlayerMeeleRow() {
-        return firstPlayerMeeleRow;
-    }
+	public List<Card> getFirstPlayerMeleeRow() {
+		return firstPlayerMeleeRow;
+	}
 
-    public List<Card> getFirstPlayerRangeRow() {
-        return firstPlayerRangeRow;
-    }
+	public List<Card> getFirstPlayerRangeRow() {
+		return firstPlayerRangeRow;
+	}
 
-    public List<Card> getSecondPlayerMeeleRow() {
-        return secondPlayerMeeleRow;
-    }
+	public List<Card> getSecondPlayerMeleeRow() {
+		return secondPlayerMeleeRow;
+	}
 
-    public List<Card> getSecondPlayerRangeRow() {
-        return secondPlayerRangeRow;
-    }
+	public List<Card> getSecondPlayerRangeRow() {
+		return secondPlayerRangeRow;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Round round = (Round) o;
-        return Objects.equals(getFirstPlayerMeeleRow(), round.getFirstPlayerMeeleRow()) && Objects.equals(getFirstPlayerRangeRow(), round.getFirstPlayerRangeRow()) && Objects.equals(getSecondPlayerMeeleRow(), round.getSecondPlayerMeeleRow()) && Objects.equals(getSecondPlayerRangeRow(), round.getSecondPlayerRangeRow());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getFirstPlayerMeeleRow(), getFirstPlayerRangeRow(), getSecondPlayerMeeleRow(), getSecondPlayerRangeRow());
-    }
+		Round round = (Round) o;
+
+		if (getFirstPlayerMeleeRow() != null ? !getFirstPlayerMeleeRow().equals(round.getFirstPlayerMeleeRow()) : round.getFirstPlayerMeleeRow() != null)
+			return false;
+		if (getFirstPlayerRangeRow() != null ? !getFirstPlayerRangeRow().equals(round.getFirstPlayerRangeRow()) : round.getFirstPlayerRangeRow() != null)
+			return false;
+		if (getSecondPlayerMeleeRow() != null ? !getSecondPlayerMeleeRow().equals(round.getSecondPlayerMeleeRow()) : round.getSecondPlayerMeleeRow() != null)
+			return false;
+		return getSecondPlayerRangeRow() != null ? getSecondPlayerRangeRow().equals(round.getSecondPlayerRangeRow()) : round.getSecondPlayerRangeRow() == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (getFirstPlayerMeleeRow() != null ? getFirstPlayerMeleeRow().hashCode() : 0);
+		result = 31 * result + (getFirstPlayerRangeRow() != null ? getFirstPlayerRangeRow().hashCode() : 0);
+		result = 31 * result + (getSecondPlayerMeleeRow() != null ? getSecondPlayerMeleeRow().hashCode() : 0);
+		result = 31 * result + (getSecondPlayerRangeRow() != null ? getSecondPlayerRangeRow().hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "Round{" +
+				"firstPlayerMeeleRow=" + firstPlayerMeleeRow +
+				", firstPlayerRangeRow=" + firstPlayerRangeRow +
+				", secondPlayerMeeleRow=" + secondPlayerMeleeRow +
+				", secondPlayerRangeRow=" + secondPlayerRangeRow +
+				"} " + super.toString();
+	}
 }
