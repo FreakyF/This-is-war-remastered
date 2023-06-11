@@ -104,14 +104,14 @@ public class DialogBox extends JDialog {
 
 		ToolManager.addBorderToJPanel(messagePanel); // TODO: Remove
 
-		final String message = String.format("<html><body style='padding: 10px;'>%s</body></html>", text);
-		JLabel infoLabel = uiComponentCreator.createLabel(message, UiConfig.COPYRIGHT_FONT);
+		JLabel infoLabel = uiComponentCreator.createLabel(text, UiConfig.COPYRIGHT_FONT);
 		infoLabel.setVerticalAlignment(SwingConstants.TOP);
-		gbc.insets = new Insets(0, 0, 0, 0);
+		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
+		gbc.anchor = GridBagConstraints.NORTH;
 		messagePanel.add(infoLabel, gbc);
 
 		return messagePanel;
@@ -125,11 +125,13 @@ public class DialogBox extends JDialog {
 
 		ToolManager.addBorderToJPanel(buttonPanel); // TODO: Remove
 
-		JButton okButton = new JButton("Ok");
+		JButton okButton = uiComponentCreator.createButton("Ok", 60, 30);
+		gbc.insets = new Insets(10, 10, 10, 10);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 0.5;
 		gbc.weighty = 0.5;
+		gbc.anchor = GridBagConstraints.SOUTH;
 		okButton.addActionListener(e -> dispose()); // Close the dialog when the OK button is clicked
 		buttonPanel.add(okButton, gbc);
 		return buttonPanel;

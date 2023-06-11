@@ -34,6 +34,17 @@ public class MainWindow extends JFrame {
 
 		setVisible(true);
 
-		new DialogBox(this, "", resourceRepository);
+		StringBuilder validationMessages = new StringBuilder();
+		validationMessages.append("PASSWORD_TOO_SHORT=Password is too short. Minimum length is: %d\n");
+		validationMessages.append("PASSWORD_TOO_LONG=Password is too long. Maximum length is: %d\n");
+		validationMessages.append("PASSWORD_WITHOUT_LOWERCASE=Password does not contain at least one lowercase character\n");
+		validationMessages.append("PASSWORD_WITHOUT_UPPERCASE=Password does not contain at least one uppercase character\n");
+		validationMessages.append("PASSWORD_WITHOUT_SPECIAL_CHARACTER=Password does not contain at least one special character\n");
+		validationMessages.append("PASSWORD_WITHOUT_NUMBER=Password does not contain at least one numeric character\n");
+		validationMessages.append("NICKNAME_TOO_SHORT=Nickname is too short. Minimum length is: %d\n");
+		validationMessages.append("NICKNAME_TOO_LONG=Nickname is too long. Maximum length is: %d\n");
+
+		String validationMessagesString = validationMessages.toString();
+		new DialogBox(this, validationMessagesString, resourceRepository);
 	}
 }
