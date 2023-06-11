@@ -1,12 +1,10 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
-import pl.kielce.tu.drylofudala.ui.UiConfig;
-import pl.kielce.tu.drylofudala.ui.UiResource;
-import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.service.ViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,25 +14,30 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
+import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 
 public class UserView implements IView {
-	private final ViewNavigationHandler navigationHandler = ViewNavigationHandler.getInstance();
+	private IViewNavigationHandler navigationHandler;
+	private UiComponentCreator uiComponentCreator;
 
 	@Override
-	public JPanel createView() {
+	public JPanel createView(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+		this.navigationHandler = viewNavigationHandler;
+		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		ImagePanel backgroundPanel = UiComponentCreator.createBackgroundPanel();
+		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		JPanel contentPanel = createContentPanel();
@@ -74,7 +77,7 @@ public class UserView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel titleLabel = UiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
+		JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		headerPanel.add(titleLabel, gbc);
@@ -91,7 +94,7 @@ public class UserView implements IView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		// IP
-		JLabel ipLabel = UiComponentCreator.createLabel(UiResource.IP_ADDRESS_TEXT, UiConfig.COPYRIGHT_FONT);
+		JLabel ipLabel = uiComponentCreator.createLabel(UiResource.IP_ADDRESS_TEXT, UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(ipLabel, gbc);
@@ -103,7 +106,7 @@ public class UserView implements IView {
 		inputPanel.add(ipField, gbc);
 
 		// port
-		JLabel portLabel = UiComponentCreator.createLabel(UiResource.PORT_NUMBER_TEXT, UiConfig.COPYRIGHT_FONT);
+		JLabel portLabel = uiComponentCreator.createLabel(UiResource.PORT_NUMBER_TEXT, UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		inputPanel.add(portLabel, gbc);
@@ -114,7 +117,7 @@ public class UserView implements IView {
 		gbc.gridy = 3;
 		inputPanel.add(portField, gbc);
 
-		JButton connectButton = UiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT, 300, 100);
+		JButton connectButton = uiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT, 300, 100);
 		connectButton.addActionListener(navigationHandler.navigateToGameView());
 		gbc.gridx = 0;
 		gbc.gridy = 4;

@@ -1,32 +1,36 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
-import pl.kielce.tu.drylofudala.ui.UiConfig;
-import pl.kielce.tu.drylofudala.ui.UiResource;
-import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
+import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 
 public class GameView implements IView {
+	private UiComponentCreator uiComponentCreator;
+
 	@Override
-	public JPanel createView() {
+	public JPanel createView(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		ImagePanel backgroundPanel = UiComponentCreator.createBackgroundPanel();
+		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		JPanel contentPanel = createContentPanel();
@@ -133,7 +137,7 @@ public class GameView implements IView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		// playerTurnLabel
-		JLabel playerTurnLabel = UiComponentCreator.createLabel("Player Turn: ", UiConfig.COPYRIGHT_FONT);
+		JLabel playerTurnLabel = uiComponentCreator.createLabel("Player Turn: ", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -153,7 +157,7 @@ public class GameView implements IView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		// enemyNickLabel
-		JLabel enemyNicknameLabel = UiComponentCreator.createLabel("enemy nickname", UiConfig.COPYRIGHT_FONT);
+		JLabel enemyNicknameLabel = uiComponentCreator.createLabel("enemy nickname", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -161,7 +165,7 @@ public class GameView implements IView {
 		enemyStatsPanel.add(enemyNicknameLabel, gbc);
 
 		// enemyPointsLabel
-		JLabel enemyPointsLabel = UiComponentCreator.createLabel("enemy points", UiConfig.COPYRIGHT_FONT);
+		JLabel enemyPointsLabel = uiComponentCreator.createLabel("enemy points", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -169,7 +173,7 @@ public class GameView implements IView {
 		enemyStatsPanel.add(enemyPointsLabel, gbc);
 
 		// enemyLivesLeftLabel
-		JLabel enemyLivesLeftLabel = UiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
+		JLabel enemyLivesLeftLabel = uiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -190,7 +194,7 @@ public class GameView implements IView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		// playerNickLabel
-		JLabel playerNicknameLabel = UiComponentCreator.createLabel("player nickname", UiConfig.COPYRIGHT_FONT);
+		JLabel playerNicknameLabel = uiComponentCreator.createLabel("player nickname", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -198,7 +202,7 @@ public class GameView implements IView {
 		playerStatsPanel.add(playerNicknameLabel, gbc);
 
 		// playerPointsLabel
-		JLabel playerPointsLabel = UiComponentCreator.createLabel("player points", UiConfig.COPYRIGHT_FONT);
+		JLabel playerPointsLabel = uiComponentCreator.createLabel("player points", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -206,7 +210,7 @@ public class GameView implements IView {
 		playerStatsPanel.add(playerPointsLabel, gbc);
 
 		// playerLivesLeftLabel
-		JLabel playerLivesLeftLabel = UiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
+		JLabel playerLivesLeftLabel = uiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
@@ -227,19 +231,19 @@ public class GameView implements IView {
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.insets = new Insets(10, 0, 10, 0);
 
-		JButton passTurnButton = UiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT, 300, 100);
+		JButton passTurnButton = uiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weighty = 0; // Set weighty to 0 to prevent vertical centering
 		menuPanel.add(passTurnButton, gbc);
 
-		JButton surrenderButton = UiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT, 300, 100);
+		JButton surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weighty = 0; // Set weighty to 0 to prevent vertical centering
 		menuPanel.add(surrenderButton, gbc);
 
-		JButton exitButton = UiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT, 300, 100);
+		JButton exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weighty = 1; // Set weighty to 1 to push the buttons to the top
@@ -312,7 +316,7 @@ public class GameView implements IView {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		// TODO: Change the cardPanels background for the correct one.
-		ImagePanel background = UiComponentCreator.createBoardBackgroundPanel();
+		ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		enemyMeleePanel.add(background, gbc);
@@ -329,7 +333,7 @@ public class GameView implements IView {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		ImagePanel background = UiComponentCreator.createBoardBackgroundPanel();
+		ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		enemyRangedPanel.add(background, gbc);
@@ -383,7 +387,7 @@ public class GameView implements IView {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		ImagePanel background = UiComponentCreator.createBoardBackgroundPanel();
+		ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerDeckPanel.add(background, gbc);
@@ -400,7 +404,7 @@ public class GameView implements IView {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		ImagePanel background = UiComponentCreator.createBoardBackgroundPanel();
+		ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerRangedPanel.add(background, gbc);
@@ -417,7 +421,7 @@ public class GameView implements IView {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		ImagePanel background = UiComponentCreator.createBoardBackgroundPanel();
+		ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerMeleePanel.add(background, gbc);

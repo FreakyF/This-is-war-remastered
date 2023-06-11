@@ -1,32 +1,35 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
-import pl.kielce.tu.drylofudala.ui.UiConfig;
-import pl.kielce.tu.drylofudala.ui.UiResource;
-import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.service.ViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
+import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class GuestView implements IView {
-	private final ViewNavigationHandler navigationHandler = ViewNavigationHandler.getInstance();
+	private IViewNavigationHandler navigationHandler;
+	private UiComponentCreator uiComponentCreator;
 
 	@Override
-	public JPanel createView() {
+	public JPanel createView(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+		this.navigationHandler = viewNavigationHandler;
+		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		ImagePanel backgroundPanel = UiComponentCreator.createBackgroundPanel();
+		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		JPanel contentPanel = createContentPanel();
@@ -64,13 +67,13 @@ public class GuestView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = UiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
+		JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
 		loginButton.addActionListener(navigationHandler.navigateToLoginView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(loginButton, gbc);
 
-		JButton registerButton = UiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
+		JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
 		registerButton.addActionListener(navigationHandler.navigateToRegisterView());
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -87,7 +90,7 @@ public class GuestView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel titleLabel = UiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
+		JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		headerPanel.add(titleLabel, gbc);

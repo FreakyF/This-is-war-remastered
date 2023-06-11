@@ -1,28 +1,30 @@
 package pl.kielce.tu.drylofudala.ui.model;
 
-import pl.kielce.tu.drylofudala.ui.UiConfig;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.tool.ToolManager;
-
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.UiConfig;
+import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.tool.ToolManager;
 
 public class DialogBox extends JDialog {
 	private final String text;
+	private final transient UiComponentCreator uiComponentCreator;
 
-	public DialogBox(JFrame parent, String text) {
+	public DialogBox(JFrame parent, String text, IResourceRepository resourceRepository) {
 		super(parent, "This is war - Dialog", true);
+		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
+
 		this.text = text;
 
 		int minWidth = (int) (UiConfig.WINDOW_MIN_WIDTH * 0.25);
@@ -55,7 +57,7 @@ public class DialogBox extends JDialog {
 		setLocationRelativeTo(super.getParent());
 
 		gbc.fill = GridBagConstraints.BOTH;
-		ImagePanel backgroundPanel = UiComponentCreator.createBackgroundPanel();
+		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		backgroundPanel.setLayout(new GridBagLayout());
 		add(backgroundPanel);
 
@@ -103,7 +105,7 @@ public class DialogBox extends JDialog {
 		ToolManager.addBorderToJPanel(messagePanel); // TODO: Remove
 
 		final String message = String.format("<html><body style='padding: 10px;'>%s</body></html>", text);
-		JLabel infoLabel = UiComponentCreator.createLabel(message, UiConfig.COPYRIGHT_FONT);
+		JLabel infoLabel = uiComponentCreator.createLabel(message, UiConfig.COPYRIGHT_FONT);
 		infoLabel.setVerticalAlignment(SwingConstants.TOP);
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.gridx = 0;
@@ -113,28 +115,6 @@ public class DialogBox extends JDialog {
 		messagePanel.add(infoLabel, gbc);
 
 		return messagePanel;
-	}
-
-	private void adjustLabelFontSize(JLabel label) {
-		int labelWidth = label.getWidth();
-		int labelHeight = label.getHeight();
-		String labelText = label.getText();
-
-		if (labelWidth == 0 || labelHeight == 0 || labelText.isEmpty()) {
-			return;
-		}
-
-		Font labelFont = label.getFont();
-		float fontSize = labelFont.getSize();
-		int stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
-
-		while (stringWidth > labelWidth) {
-			fontSize--;
-			labelFont = labelFont.deriveFont(fontSize);
-			stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
-		}
-
-		label.setFont(labelFont);
 	}
 
 	private JPanel createButtonPanel() {

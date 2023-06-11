@@ -1,15 +1,20 @@
 package pl.kielce.tu.drylofudala.ui;
 
-import pl.kielce.tu.drylofudala.ui.model.DialogBox;
-import pl.kielce.tu.drylofudala.ui.view.GuestView;
-
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Dimension;
+import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.model.DialogBox;
+import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.view.GuestView;
 
 public class MainWindow extends JFrame {
+	private final transient IResourceRepository resourceRepository;
+	private final transient IViewNavigationHandler viewNavigationHandler;
 
-	public MainWindow() {
+	public MainWindow(IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+		this.resourceRepository = resourceRepository;
+		this.viewNavigationHandler = viewNavigationHandler;
 		initializeWindow();
 	}
 
@@ -23,11 +28,11 @@ public class MainWindow extends JFrame {
 		setDefaultLookAndFeelDecorated(true);
 
 		GuestView guestView = new GuestView();
-		JPanel viewPanel = guestView.createView();
+		JPanel viewPanel = guestView.createView(viewNavigationHandler, resourceRepository);
 		add(viewPanel);
 
 		setVisible(true);
 
-		new DialogBox(this, "");
+		new DialogBox(this, "", resourceRepository);
 	}
 }

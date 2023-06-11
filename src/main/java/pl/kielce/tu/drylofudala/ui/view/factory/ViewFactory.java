@@ -6,19 +6,7 @@ import pl.kielce.tu.drylofudala.ui.view.LoginView;
 import pl.kielce.tu.drylofudala.ui.view.RegisterView;
 import pl.kielce.tu.drylofudala.ui.view.UserView;
 
-public class ViewFactory {
-	private static ViewFactory instance;
-
-	public static ViewFactory getInstance() {
-		if (instance == null) {
-			instance = new ViewFactory();
-		}
-		return instance;
-	}
-
-	private ViewFactory() {
-	}
-
+public class ViewFactory implements IViewFactory {
 	public IView getGuestViewFactory() {
 		return new GuestView();
 	}
