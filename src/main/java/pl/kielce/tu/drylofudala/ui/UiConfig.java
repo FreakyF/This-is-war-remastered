@@ -21,7 +21,8 @@ public class UiConfig {
 	public static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 72);
 
 	public static final Font BUTTON_FONT = new Font(FONT_FAMILY, Font.PLAIN, 56);
-	public static final Insets GBC_INSETS = new Insets(10, 10, 10, 10);
+	public static final int WINDOW_MIN_WIDTH = 1920;
+	public static final int WINDOW_MIN_HEIGHT = 1080;
 
 	private UiConfig() {
 	}

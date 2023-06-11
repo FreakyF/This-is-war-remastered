@@ -11,9 +11,7 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.Image;
-import java.awt.Insets;
 
 public class UiComponentCreator {
 	private UiComponentCreator() {
@@ -21,12 +19,12 @@ public class UiComponentCreator {
 	}
 
 	public static ImagePanel createBackgroundPanel() {
-		final Image backgroundImage = UiResource.VIEW_BACKGROUND_IMAGE_RESOURCE;
+		final Image backgroundImage = UiResource.VIEW_BACKGROUND_IMAGE;
 		return new ImagePanel(backgroundImage);
 	}
 
 	public static ImagePanel createBoardBackgroundPanel() {
-		final Image backgroundImage = UiResource.BOARD_BACKGROUND_IMAGE_RESOURCE;
+		final Image backgroundImage = UiResource.BOARD_BACKGROUND_IMAGE;
 		return new ImagePanel(backgroundImage);
 	}
 	public static JButton createButton(String text, int width, int height) {
@@ -35,7 +33,7 @@ public class UiComponentCreator {
 		button.setPreferredSize(new Dimension(width, height));
 		button.setFont(UiConfig.BUTTON_FONT);
 
-		ImageIcon buttonBackground = new ImageIcon(UiResource.BUTTON_BACKGROUND_IMAGE_RESOURCE);
+		ImageIcon buttonBackground = new ImageIcon(UiResource.BUTTON_BACKGROUND_IMAGE);
 		button.setIcon(buttonBackground);
 
 		button.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -52,23 +50,5 @@ public class UiComponentCreator {
 		label.setFont(fontStyle);
 
 		return label;
-	}
-
-	public static GridBagConstraints createGridBagConstrains(Insets insets) {
-		GridBagConstraints gbc = new GridBagConstraints();
-
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = insets;
-
-		return gbc;
-	}
-
-	public static GridBagConstraints createGridBagConstrains(Insets insets, int fill) {
-		GridBagConstraints gbc = new GridBagConstraints();
-
-		gbc.fill = fill;
-		gbc.insets = insets;
-
-		return gbc;
 	}
 }

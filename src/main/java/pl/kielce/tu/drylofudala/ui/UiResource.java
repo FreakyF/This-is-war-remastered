@@ -3,12 +3,11 @@ package pl.kielce.tu.drylofudala.ui;
 import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
 
 import java.awt.Image;
-import java.net.URL;
 
 public class UiResource {
-	public static final Image VIEW_BACKGROUND_IMAGE_RESOURCE = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\background.png");
-	public static final Image BOARD_BACKGROUND_IMAGE_RESOURCE = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\HandPanel.png");
-	public static final URL BUTTON_BACKGROUND_IMAGE_RESOURCE = ResourceRepository.getInstance().getResourceFromPath("graphics\\UI\\HandPanel.png");
+	public static final Image VIEW_BACKGROUND_IMAGE = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\background.png");
+	public static final Image BOARD_BACKGROUND_IMAGE = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\HandPanel.png");
+	public static final Image BUTTON_BACKGROUND_IMAGE = ResourceRepository.getInstance().getImageFromPath("graphics\\UI\\HandPanel.png");
 	public static final String GAME_TITLE = "This Is War";
 	public static final String IP_ADDRESS_TEXT = "IP address";
 	public static final String PORT_NUMBER_TEXT = "Port number";
