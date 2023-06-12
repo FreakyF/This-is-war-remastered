@@ -1,14 +1,5 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -17,6 +8,16 @@ import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 public class GameView implements IView {
 	private UiComponentCreator uiComponentCreator;
@@ -63,7 +64,6 @@ public class GameView implements IView {
 
 		contentPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 
-		// menuPanel
 		final JPanel menuPanel = createMenuPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -72,7 +72,6 @@ public class GameView implements IView {
 
 		contentPanel.add(menuPanel, gbc);
 
-		// boardPanel
 		final JPanel boardPanel = createBoardPanel();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -80,7 +79,6 @@ public class GameView implements IView {
 		gbc.weighty = 0;
 		contentPanel.add(boardPanel, gbc);
 
-		// statsPanel
 		final JPanel statsPanel = createStatsPanel();
 		gbc.gridx = 2;
 		gbc.gridy = 0;
@@ -101,7 +99,6 @@ public class GameView implements IView {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// enemyStatsPanel
 		final JPanel enemyStatsPanel = createEnemyStatsPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -109,7 +106,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.5;
 		statsPanel.add(enemyStatsPanel, gbc);
 
-		// whichTurnPanel
 		final JPanel whichTurnPanel = createWhichTurnPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -117,7 +113,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.01;
 		statsPanel.add(whichTurnPanel, gbc);
 
-		// playerStatsPanel
 		final JPanel playerStatsPanel = createPlayerStatsPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -138,11 +133,10 @@ public class GameView implements IView {
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// playerTurnLabel
 		final JLabel playerTurnLabel = uiComponentCreator.createLabel("Player Turn: ", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
+		gbc.weightx = 1;
 		whichTurnPanel.add(playerTurnLabel, gbc);
 
 		return whichTurnPanel;
@@ -158,28 +152,25 @@ public class GameView implements IView {
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// enemyNickLabel
 		final JLabel enemyNicknameLabel = uiComponentCreator.createLabel("enemy nickname", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 1; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		enemyStatsPanel.add(enemyNicknameLabel, gbc);
 
-		// enemyPointsLabel
 		final JLabel enemyPointsLabel = uiComponentCreator.createLabel("enemy points", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 1; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		enemyStatsPanel.add(enemyPointsLabel, gbc);
 
-		// enemyLivesLeftLabel
 		final JLabel enemyLivesLeftLabel = uiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 0; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 0;
 		enemyStatsPanel.add(enemyLivesLeftLabel, gbc);
 
 		return enemyStatsPanel;
@@ -195,28 +186,25 @@ public class GameView implements IView {
 		gbc.anchor = GridBagConstraints.SOUTHWEST;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// playerNickLabel
 		final JLabel playerNicknameLabel = uiComponentCreator.createLabel("player nickname", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 1; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		playerStatsPanel.add(playerNicknameLabel, gbc);
 
-		// playerPointsLabel
 		final JLabel playerPointsLabel = uiComponentCreator.createLabel("player points", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 1; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		playerStatsPanel.add(playerPointsLabel, gbc);
 
-		// playerLivesLeftLabel
 		final JLabel playerLivesLeftLabel = uiComponentCreator.createLabel("enemy lives left", UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 1; // Set weightx to 1 to prevent horizontal centering
-		gbc.weighty = 0; // Set weighty to 1 to prevent vertical centering
+		gbc.weightx = 1;
+		gbc.weighty = 0;
 		playerStatsPanel.add(playerLivesLeftLabel, gbc);
 
 		return playerStatsPanel;
@@ -236,19 +224,19 @@ public class GameView implements IView {
 		final JButton passTurnButton = uiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weighty = 0; // Set weighty to 0 to prevent vertical centering
+		gbc.weighty = 0;
 		menuPanel.add(passTurnButton, gbc);
 
 		final JButton surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.weighty = 0; // Set weighty to 0 to prevent vertical centering
+		gbc.weighty = 0;
 		menuPanel.add(surrenderButton, gbc);
 
 		final JButton exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.weighty = 1; // Set weighty to 1 to push the buttons to the top
+		gbc.weighty = 1;
 		menuPanel.add(exitButton, gbc);
 
 		return menuPanel;
@@ -264,7 +252,6 @@ public class GameView implements IView {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// enemyBoardPanel
 		final JPanel enemyBoardPanel = createEnemyBoardPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -272,7 +259,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.4;
 		boardPanel.add(enemyBoardPanel, gbc);
 
-		// playerBoardPanel
 		final JPanel playerBoardPanel = createPlayerBoardPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -293,7 +279,6 @@ public class GameView implements IView {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// enemyRangedPanel
 		final JPanel enemyRangedPanel = createEnemyRangedPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -301,7 +286,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.5;
 		enemyBoardPanel.add(enemyRangedPanel, gbc);
 
-		// enemyMeleePanel
 		final JPanel enemyMeleePanel = createEnemyMeleePanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -356,7 +340,6 @@ public class GameView implements IView {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// playerMeleePanel
 		final JPanel playerMeleePanel = createPlayerMeleePanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -364,7 +347,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.3;
 		playerBoardPanel.add(playerMeleePanel, gbc);
 
-		// playerRangedPanel
 		final JPanel playerRangedPanel = createPlayerRangedPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -372,7 +354,6 @@ public class GameView implements IView {
 		gbc.weighty = 0.3;
 		playerBoardPanel.add(playerRangedPanel, gbc);
 
-		// playerDeckPanel
 		final JPanel playerDeckPanel = createPlayerDeckPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
