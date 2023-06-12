@@ -35,7 +35,6 @@ public class RegisterView implements IAuthView {
 	private JPasswordField repeatedPasswordTextField;
 	private MainWindow parentWindow;
 
-
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
@@ -65,7 +64,6 @@ public class RegisterView implements IAuthView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
-
 
 		final JPanel headerPanel = createHeaderPanel();
 		gbc.gridx = 0;

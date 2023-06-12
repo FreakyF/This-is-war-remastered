@@ -194,7 +194,6 @@ public class LoginView implements IAuthView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-
 		final JPanel headerPanel = createHeaderPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;

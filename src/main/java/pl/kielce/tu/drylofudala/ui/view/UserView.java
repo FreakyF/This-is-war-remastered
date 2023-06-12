@@ -23,7 +23,6 @@ import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-
 public class UserView implements IView {
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
@@ -53,7 +52,6 @@ public class UserView implements IView {
 		final JPanel contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setOpaque(false);
 
-
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
@@ -67,7 +65,6 @@ public class UserView implements IView {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		contentPanel.add(inputPanel, gbc);
-
 
 		return contentPanel;
 	}
