@@ -21,7 +21,6 @@ public final class UiResource {
 	public static final String BUTTON_EXIT_TEXT = "Exit";
 	public static final String INPUT_LABEL_NICKNAME = "Nickname";
 	public static final String INPUT_LABEL_PASSWORD = "Password";
-	public static final String BUTTON_OK_TEXT = "Ok";
 
 	private UiResource() {
 	}
