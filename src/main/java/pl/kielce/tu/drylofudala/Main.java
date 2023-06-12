@@ -15,15 +15,15 @@ import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
 
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class);
-    private static final IResourceRepository resourceRepository = new ResourceRepository();
-    private static final IViewFactory viewFactory = new ViewFactory();
-    private static final IPlayerRepository playerRepository = new PlayerRepository();
-    private static final IHasher hasher = new Hasher();
-    private static final IAuthenticationService authenticationService = new AuthenticationService(playerRepository, hasher);
+	private static final Logger logger = LogManager.getLogger(Main.class);
+	private static final IResourceRepository resourceRepository = new ResourceRepository();
+	private static final IViewFactory viewFactory = new ViewFactory();
+	private static final IPlayerRepository playerRepository = new PlayerRepository();
+	private static final IHasher hasher = new Hasher();
+	private static final IAuthenticationService authenticationService = new AuthenticationService(playerRepository, hasher);
 
-    public static void main(String[] args) {
-        logger.info("Application started");
-        new MainWindow(authenticationService, viewFactory, resourceRepository);
-    }
+	public static void main(String[] args) {
+		logger.info("Application started");
+		new MainWindow(authenticationService, viewFactory, resourceRepository);
+	}
 }

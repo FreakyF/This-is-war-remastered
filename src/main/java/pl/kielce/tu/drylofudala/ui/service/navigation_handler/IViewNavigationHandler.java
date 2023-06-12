@@ -1,15 +1,14 @@
 package pl.kielce.tu.drylofudala.ui.service.navigation_handler;
 
+import java.awt.event.ActionListener;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 
-import java.awt.event.ActionListener;
-
 public interface IViewNavigationHandler {
-    ActionListener navigateToLoginView(MainWindow parentWindow);
+	ActionListener navigateToLoginView(MainWindow parentWindow);
 
-    ActionListener navigateToRegisterView(MainWindow parentWindow);
+	ActionListener navigateToRegisterView(MainWindow parentWindow);
 
-    ActionListener navigateToUserView(MainWindow parentWindow);
+	ActionListener navigateToUserView(MainWindow parentWindow);
 
-    ActionListener navigateToGameView(MainWindow parentWindow);
+	ActionListener navigateToGameView(MainWindow parentWindow);
 }

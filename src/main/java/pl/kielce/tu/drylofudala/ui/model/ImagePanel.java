@@ -1,8 +1,8 @@
 package pl.kielce.tu.drylofudala.ui.model;
 
-import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
 	protected final transient Image backgroundImage;
