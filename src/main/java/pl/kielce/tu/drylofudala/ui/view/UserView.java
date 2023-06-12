@@ -23,7 +23,6 @@ import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-
 public class UserView implements IView {
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
@@ -159,10 +158,9 @@ public class UserView implements IView {
 		private static final int MAX_LENGTH = 15;
 
 		@Override
-		public void insertString(final FilterBypass fb, final int offset, final String string, final AttributeSet attr) throws BadLocationException {
-			final StringBuilder builder = new StringBuilder(string.length());
-			for (int i = 0; i < string.length(); i++) {
-				final char c = string.charAt(i);
+		public void insertString(final FilterBypass fb, final int offset, final String text, final AttributeSet attr) throws BadLocationException {
+			final StringBuilder builder = new StringBuilder(text.length());
+			for (final char c : text.toCharArray()) {
 				if (Character.isDigit(c) && fb.getDocument().getLength() < MAX_LENGTH) {
 					builder.append(c);
 				}
