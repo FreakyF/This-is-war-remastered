@@ -17,31 +17,31 @@ public class AuthenticationService implements IAuthenticationService {
 	private final IPlayerRepository playerRepository;
 	private final IHasher hasher;
 
-	public AuthenticationService(IPlayerRepository playerRepository, IHasher hasher) {
+	public AuthenticationService(final IPlayerRepository playerRepository, final IHasher hasher) {
 		this.playerRepository = playerRepository;
 		this.hasher = hasher;
 	}
 
 	@Override
-	public RegistrationResult register(@NotNull String nickname, @NotNull String password) {
+	public RegistrationResult register(@NotNull final String nickname, @NotNull final String password) {
 		if (playerRepository.isNicknameTaken(nickname)) {
 			return RegistrationResult.NICKNAME_ALREADY_TAKEN;
 		}
 
-		byte[] salt = hasher.generateSalt();
-		String hashedPassword = hasher.hashPassword(password, salt);
+		final byte[] salt = hasher.generateSalt();
+		final String hashedPassword = hasher.hashPassword(password, salt);
 
-		var newPlayer = new Player(nickname, hashedPassword, salt);
+		final var newPlayer = new Player(nickname, hashedPassword, salt);
 		playerRepository.save(newPlayer);
 		return RegistrationResult.getSuccessResult(newPlayer);
 	}
 
 	@Override
-	public AuthenticationResult login(@NotNull String nickname, @NotNull String password) {
-		Player existingPlayer;
+	public AuthenticationResult login(@NotNull final String nickname, @NotNull final String password) {
+		final Player existingPlayer;
 		try {
 			existingPlayer = playerRepository.getPlayerByNickname(nickname);
-		} catch (NoResultException e) {
+		} catch (final NoResultException e) {
 			return AuthenticationResult.PLAYER_DOES_NOT_EXISTS;
 		}
 
@@ -62,8 +62,8 @@ public class AuthenticationService implements IAuthenticationService {
 	);
 
 	@Override
-	public ValidationResult isPasswordValid(@NotNull String password) {
-		List<String> validationMessages = PASSWORD_RULES.entrySet().stream()
+	public ValidationResult isPasswordValid(@NotNull final String password) {
+		final List<String> validationMessages = PASSWORD_RULES.entrySet().stream()
 				.filter(entry -> !entry.getKey().test(password))
 				.map(Map.Entry::getValue)
 				.toList();
@@ -79,8 +79,8 @@ public class AuthenticationService implements IAuthenticationService {
 	);
 
 	@Override
-	public ValidationResult isNicknameValid(@NotNull String nickname) {
-		List<String> validationMessages = NICKNAME_RULES.entrySet().stream()
+	public ValidationResult isNicknameValid(@NotNull final String nickname) {
+		final List<String> validationMessages = NICKNAME_RULES.entrySet().stream()
 				.filter(entry -> !entry.getKey().test(nickname))
 				.map(Map.Entry::getValue)
 				.toList();

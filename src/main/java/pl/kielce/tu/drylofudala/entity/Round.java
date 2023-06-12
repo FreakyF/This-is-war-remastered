@@ -47,19 +47,28 @@ public class Round extends BaseEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 
-		Round round = (Round) o;
+		final Round round = (Round) o;
 
-		if (getFirstPlayerMeleeRow() != null ? !getFirstPlayerMeleeRow().equals(round.getFirstPlayerMeleeRow()) : round.getFirstPlayerMeleeRow() != null)
+		if (getFirstPlayerMeleeRow() != null ? !getFirstPlayerMeleeRow().equals(round.getFirstPlayerMeleeRow()) : round.getFirstPlayerMeleeRow() != null) {
 			return false;
-		if (getFirstPlayerRangeRow() != null ? !getFirstPlayerRangeRow().equals(round.getFirstPlayerRangeRow()) : round.getFirstPlayerRangeRow() != null)
+		}
+		if (getFirstPlayerRangeRow() != null ? !getFirstPlayerRangeRow().equals(round.getFirstPlayerRangeRow()) : round.getFirstPlayerRangeRow() != null) {
 			return false;
-		if (getSecondPlayerMeleeRow() != null ? !getSecondPlayerMeleeRow().equals(round.getSecondPlayerMeleeRow()) : round.getSecondPlayerMeleeRow() != null)
+		}
+		if (getSecondPlayerMeleeRow() != null ? !getSecondPlayerMeleeRow().equals(round.getSecondPlayerMeleeRow()) : round.getSecondPlayerMeleeRow() != null) {
 			return false;
+		}
 		return getSecondPlayerRangeRow() != null ? getSecondPlayerRangeRow().equals(round.getSecondPlayerRangeRow()) : round.getSecondPlayerRangeRow() == null;
 	}
 

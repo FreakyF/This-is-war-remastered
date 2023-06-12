@@ -11,8 +11,8 @@ public class PlayerRepository extends DbContext<Player> implements IPlayerReposi
 
 	@Override
 	public boolean isNicknameTaken(@NotNull final String nickname) {
-		String jpql = "SELECT COUNT(p) FROM Player p WHERE p.name = :nickname";
-		Long count = entityManager.createQuery(jpql, Long.class)
+		final String jpql = "SELECT COUNT(p) FROM Player p WHERE p.name = :nickname";
+		final Long count = entityManager.createQuery(jpql, Long.class)
 				.setParameter("nickname", nickname)
 				.getSingleResult();
 		return count > 0;
@@ -20,7 +20,7 @@ public class PlayerRepository extends DbContext<Player> implements IPlayerReposi
 
 	@Override
 	public Player getPlayerByNickname(@NotNull final String nickname) {
-		String jpql = "SELECT p FROM Player p WHERE p.name = :nickname";
+		final String jpql = "SELECT p FROM Player p WHERE p.name = :nickname";
 		return entityManager.createQuery(jpql, Player.class)
 				.setParameter("nickname", nickname)
 				.getSingleResult();

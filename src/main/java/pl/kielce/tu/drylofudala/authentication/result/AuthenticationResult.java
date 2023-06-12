@@ -1,13 +1,12 @@
 package pl.kielce.tu.drylofudala.authentication.result;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public record AuthenticationResult(@NotNull boolean authorized, @Nullable String message, @Nullable Long playerId) {
+public record AuthenticationResult(boolean authorized, @Nullable String message, @Nullable Long playerId) {
 	private static final String PLAYER_DOES_NOT_EXISTS_MESSAGE = "Player does not exists";
 	private static final String INVALID_PASSWORD_MESSAGE = "Invalid password";
 
-	public static AuthenticationResult getSuccessResult(Long playerId) {
+	public static AuthenticationResult getSuccessResult(final Long playerId) {
 		return new AuthenticationResult(true, null, playerId);
 	}
 

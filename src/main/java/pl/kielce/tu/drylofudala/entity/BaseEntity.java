@@ -17,10 +17,14 @@ public abstract class BaseEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		BaseEntity that = (BaseEntity) o;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final BaseEntity that = (BaseEntity) o;
 		return getId() == that.getId();
 	}
 

@@ -37,11 +37,11 @@ class AuthenticationServiceTest {
 	@Test
 	void testRegisterWithTakenNickname_ReturnsResultWithNicknameAlreadyTaken() {
 		// given
-		String nickname = "ExistingNickname";
+		final String nickname = "ExistingNickname";
 		when(playerRepository.isNicknameTaken(nickname)).thenReturn(true);
 
 		// when
-		RegistrationResult result = authenticationService.register(nickname, "");
+		final RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
 		assertThat(result.success()).isFalse();
@@ -52,11 +52,11 @@ class AuthenticationServiceTest {
 	@Test
 	void testRegisterWithNewNickname_ReturnsSuccessfulResult() {
 		// given
-		String nickname = "NewNickname";
+		final String nickname = "NewNickname";
 		when(playerRepository.isNicknameTaken(nickname)).thenReturn(false);
 
 		// when
-		RegistrationResult result = authenticationService.register(nickname, "");
+		final RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
 		assertThat(result.success()).isTrue();
@@ -66,9 +66,9 @@ class AuthenticationServiceTest {
 
 	@ParameterizedTest
 	@MethodSource("providePasswordsAndExpectedMessages")
-	void testPasswordValidityWithInvalidPasswords_ReturnsExpectedValidationMessages(String password, List<String> expectedMessages) {
+	void testPasswordValidityWithInvalidPasswords_ReturnsExpectedValidationMessages(final String password, final List<String> expectedMessages) {
 		// when
-		ValidationResult result = authenticationService.isPasswordValid(password);
+		final ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
 		assertThat(result.valid()).isFalse();
@@ -83,7 +83,7 @@ class AuthenticationServiceTest {
 		final String password = "Password123@";
 
 		// when
-		ValidationResult result = authenticationService.isPasswordValid(password);
+		final ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
 		assertThat(result.valid()).isTrue();
@@ -93,10 +93,10 @@ class AuthenticationServiceTest {
 	@Test
 	void testNicknameValidityWithShortNickname_ReturnsResultWithTooShortMessage() {
 		// given
-		String nickname = "ab";
+		final String nickname = "ab";
 
 		// when
-		ValidationResult result = authenticationService.isNicknameValid(nickname);
+		final ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
 		assertThat(result.valid()).isFalse();
@@ -109,10 +109,10 @@ class AuthenticationServiceTest {
 	@Test
 	void testNicknameValidityWithLongNickname_ReturnsSuccessfulResult() {
 		// given
-		String nickname = "ValidNick";
+		final String nickname = "ValidNick";
 
 		// when
-		ValidationResult result = authenticationService.isNicknameValid(nickname);
+		final ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
 		assertThat(result.valid()).isTrue();

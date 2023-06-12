@@ -15,74 +15,74 @@ public abstract class DbContext<T extends BaseEntity> implements IDbContext<T> {
 	protected final EntityManager entityManager;
 	protected final Class<T> entityClass;
 
-	protected DbContext(Class<T> entityClass) {
+	protected DbContext(final Class<T> entityClass) {
 		entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		entityManager = entityManagerFactory.createEntityManager();
 		this.entityClass = entityClass;
 	}
 
 	@Override
-	public T find(long id) {
+	public T find(final long id) {
 		return entityManager.find(entityClass, id);
 	}
 
 	@Override
 	public @NotNull List<T> findAll() {
-		var criteriaBuilder = entityManager.getCriteriaBuilder();
-		var criteriaQuery = criteriaBuilder.createQuery(entityClass);
-		var root = criteriaQuery.from(entityClass);
+		final var criteriaBuilder = entityManager.getCriteriaBuilder();
+		final var criteriaQuery = criteriaBuilder.createQuery(entityClass);
+		final var root = criteriaQuery.from(entityClass);
 		criteriaQuery.select(root);
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 	@Override
-	public void save(@NotNull T entity) {
+	public void save(@NotNull final T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.persist(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void saveRange(@NotNull List<T> entities) {
+	public void saveRange(@NotNull final List<T> entities) {
 		entityManager.getTransaction().begin();
 		persistEntitiesInBatches(entities);
 		entityManager.getTransaction().commit();
 	}
 
-	private void persistEntitiesInBatches(List<T> entities) {
+	private void persistEntitiesInBatches(final List<T> entities) {
 		processEntitiesInBatches(entities, entityManager::persist);
 	}
 
 	@Override
-	public void update(@NotNull T entity) {
+	public void update(@NotNull final T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.merge(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void delete(@NotNull T entity) {
+	public void delete(@NotNull final T entity) {
 		entityManager.getTransaction().begin();
 		entityManager.remove(entity);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void deleteRange(@NotNull List<T> entities) {
+	public void deleteRange(@NotNull final List<T> entities) {
 		entityManager.getTransaction().begin();
 		removeEntitiesInBatches(entities);
 		entityManager.getTransaction().commit();
 	}
 
-	private void removeEntitiesInBatches(List<T> entities) {
+	private void removeEntitiesInBatches(final List<T> entities) {
 		processEntitiesInBatches(entities, entityManager::remove);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		var criteriaBuilder = entityManager.getCriteriaBuilder();
-		var criteriaQuery = criteriaBuilder.createQuery(entityClass);
-		var root = criteriaQuery.from(entityClass);
+		final var criteriaBuilder = entityManager.getCriteriaBuilder();
+		final var criteriaQuery = criteriaBuilder.createQuery(entityClass);
+		final var root = criteriaQuery.from(entityClass);
 		criteriaQuery.select(root);
 		return entityManager.createQuery(criteriaQuery).getResultList().isEmpty();
 	}
@@ -93,9 +93,9 @@ public abstract class DbContext<T extends BaseEntity> implements IDbContext<T> {
 		entityManagerFactory.close();
 	}
 
-	private void processEntitiesInBatches(List<T> entities, Consumer<T> action) {
+	private void processEntitiesInBatches(final List<T> entities, final Consumer<T> action) {
 		int i = 0;
-		for (T entity : entities) {
+		for (final T entity : entities) {
 			if (i > 0 && i % BATCH_SIZE == 0) {
 				entityManager.flush();
 				entityManager.clear();

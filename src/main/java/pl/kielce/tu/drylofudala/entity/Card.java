@@ -18,7 +18,7 @@ public class Card extends BaseEntity {
 	protected Card() {
 	}
 
-	public Card(String name, PositionType type, int points, String imageFileName) {
+	public Card(final String name, final PositionType type, final int points, final String imageFileName) {
 		this.name = name;
 		this.type = type;
 		this.points = points;
@@ -42,16 +42,28 @@ public class Card extends BaseEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 
-		Card card = (Card) o;
+		final Card card = (Card) o;
 
-		if (getPoints() != card.getPoints()) return false;
-		if (getName() != null ? !getName().equals(card.getName()) : card.getName() != null) return false;
-		if (getType() != card.getType()) return false;
+		if (getPoints() != card.getPoints()) {
+			return false;
+		}
+		if (getName() != null ? !getName().equals(card.getName()) : card.getName() != null) {
+			return false;
+		}
+		if (getType() != card.getType()) {
+			return false;
+		}
 		return getImageFileName() != null ? getImageFileName().equals(card.getImageFileName()) : card.getImageFileName() == null;
 	}
 

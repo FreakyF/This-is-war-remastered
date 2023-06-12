@@ -2,9 +2,10 @@ package pl.kielce.tu.drylofudala.persistance.resource;
 
 import java.awt.Image;
 import java.net.URL;
+import org.jetbrains.annotations.NotNull;
 
 public interface IResourceRepository {
-	URL getResourceFromPath(final String pathToResource);
+	URL getResourceFromPath(@NotNull String pathToResource);
 
-	Image getImageFromPath(final String pathToResource);
+	Image getImageFromPath(@NotNull String pathToResource);
 }

@@ -17,7 +17,7 @@ public class Player extends BaseEntity {
 	protected Player() {
 	}
 
-	public Player(String name, String hashedPassword, byte[] passwordSalt) {
+	public Player(final String name, final String hashedPassword, final byte[] passwordSalt) {
 		this.name = name;
 		this.hashedPassword = hashedPassword;
 		this.passwordSalt = passwordSalt;
@@ -36,15 +36,25 @@ public class Player extends BaseEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 
-		Player player = (Player) o;
+		final Player player = (Player) o;
 
-		if (!getName().equals(player.getName())) return false;
-		if (!getHashedPassword().equals(player.getHashedPassword())) return false;
+		if (!getName().equals(player.getName())) {
+			return false;
+		}
+		if (!getHashedPassword().equals(player.getHashedPassword())) {
+			return false;
+		}
 		return Arrays.equals(getPasswordSalt(), player.getPasswordSalt());
 	}
 

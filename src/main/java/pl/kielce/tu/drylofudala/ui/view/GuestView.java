@@ -23,39 +23,39 @@ public class GuestView implements IView {
 	private MainWindow parentWindow;
 
 	@Override
-	public JPanel createView(MainWindow parentWindow, IViewNavigationHandler viewNavigationHandler, IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
-		this.navigationHandler = viewNavigationHandler;
-		this.uiComponentCreator = new UiComponentCreator(resourceRepository);
+		navigationHandler = viewNavigationHandler;
+		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
-		JPanel contentPanel = createContentPanel();
+		final JPanel contentPanel = createContentPanel();
 		backgroundPanel.add(contentPanel);
 
 		return view;
 	}
 
 	private JPanel createContentPanel() {
-		JPanel contentPanel = new JPanel(new GridBagLayout());
+		final JPanel contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setOpaque(false);
 
-		GridBagConstraints gbc = new GridBagConstraints();
+		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JPanel headerPanel = createHeaderPanel();
+		final JPanel headerPanel = createHeaderPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		contentPanel.add(headerPanel, gbc);
 
-		JPanel inputPanel = createInputPanel();
+		final JPanel inputPanel = createInputPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		contentPanel.add(inputPanel, gbc);
@@ -64,20 +64,20 @@ public class GuestView implements IView {
 	}
 
 	private JPanel createInputPanel() {
-		JPanel inputPanel = new JPanel(new GridBagLayout());
+		final JPanel inputPanel = new JPanel(new GridBagLayout());
 		inputPanel.setOpaque(false);
 
-		GridBagConstraints gbc = new GridBagConstraints();
+		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
+		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
 		loginButton.addActionListener(navigationHandler.navigateToLoginView(parentWindow));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(loginButton, gbc);
 
-		JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
+		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
 		registerButton.addActionListener(navigationHandler.navigateToRegisterView(parentWindow));
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -87,14 +87,14 @@ public class GuestView implements IView {
 	}
 
 	private JPanel createHeaderPanel() {
-		JPanel headerPanel = new JPanel(new GridBagLayout());
+		final JPanel headerPanel = new JPanel(new GridBagLayout());
 		headerPanel.setOpaque(false);
 
-		GridBagConstraints gbc = new GridBagConstraints();
+		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
+		final JLabel titleLabel = uiComponentCreator.createLabel(UiResource.GAME_TITLE, UiConfig.TITLE_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		headerPanel.add(titleLabel, gbc);

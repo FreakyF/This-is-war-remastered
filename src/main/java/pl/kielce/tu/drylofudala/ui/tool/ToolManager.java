@@ -8,7 +8,7 @@ public class ToolManager {
 	private ToolManager() {
 	}
 
-	public static void addBorderToJPanel(JPanel panel) {
+	public static void addBorderToJPanel(final JPanel panel) {
 		panel.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
 	}
 }

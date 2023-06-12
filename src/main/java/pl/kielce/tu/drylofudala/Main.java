@@ -14,7 +14,7 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
 
-public class Main {
+public final class Main {
 	private static final Logger logger = LogManager.getLogger(Main.class);
 	private static final IResourceRepository resourceRepository = new ResourceRepository();
 	private static final IViewFactory viewFactory = new ViewFactory();
@@ -22,7 +22,7 @@ public class Main {
 	private static final IHasher hasher = new Hasher();
 	private static final IAuthenticationService authenticationService = new AuthenticationService(playerRepository, hasher);
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		logger.info("Application started");
 		new MainWindow(authenticationService, viewFactory, resourceRepository);
 	}

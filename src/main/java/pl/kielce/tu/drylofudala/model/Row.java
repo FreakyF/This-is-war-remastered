@@ -8,7 +8,7 @@ public class Row {
 	private final PositionType type;
 	private final List<Card> cards = new ArrayList<>();
 
-	public Row(PositionType type) {
+	public Row(final PositionType type) {
 		this.type = type;
 	}
 
@@ -24,7 +24,7 @@ public class Row {
 		cards.add(card);
 	}
 
-	public void addCards(List<Card> cards) {
+	public void addCards(final List<Card> cards) {
 		this.cards.addAll(cards);
 	}
 }

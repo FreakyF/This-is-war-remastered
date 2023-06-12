@@ -15,27 +15,27 @@ import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 public class UiComponentCreator {
 	private final IResourceRepository resourceRepository;
 
-	public UiComponentCreator(IResourceRepository resourceRepository) {
+	public UiComponentCreator(final IResourceRepository resourceRepository) {
 		this.resourceRepository = resourceRepository;
 	}
 
 	public ImagePanel createBackgroundPanel() {
-		var bgImage = resourceRepository.getImageFromPath(UiResource.VIEW_BACKGROUND_IMAGE_PATH);
+		final var bgImage = resourceRepository.getImageFromPath(UiResource.VIEW_BACKGROUND_IMAGE_PATH);
 		return new ImagePanel(bgImage);
 	}
 
 	public ImagePanel createBoardBackgroundPanel() {
-		var bgImage = resourceRepository.getImageFromPath(UiResource.BOARD_BACKGROUND_IMAGE_PATH);
+		final var bgImage = resourceRepository.getImageFromPath(UiResource.BOARD_BACKGROUND_IMAGE_PATH);
 		return new ImagePanel(bgImage);
 	}
 
-	public JButton createButton(String text, int width, int height) {
+	public JButton createButton(final String text, final int width, final int height) {
 		final JButton button = new JButton(text);
 
 		button.setPreferredSize(new Dimension(width, height));
 		button.setFont(UiConfig.BUTTON_FONT);
 
-		ImageIcon buttonBackground = new ImageIcon(UiResource.BUTTON_BACKGROUND_IMAGE_PATH);
+		final ImageIcon buttonBackground = new ImageIcon(UiResource.BUTTON_BACKGROUND_IMAGE_PATH);
 		button.setIcon(buttonBackground);
 
 		button.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -44,7 +44,7 @@ public class UiComponentCreator {
 		return button;
 	}
 
-	public JLabel createLabel(String text, Font fontStyle) {
+	public JLabel createLabel(final String text, final Font fontStyle) {
 		final JLabel label = new JLabel(text);
 
 		label.setHorizontalAlignment(SwingConstants.CENTER);

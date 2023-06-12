@@ -32,10 +32,10 @@ public class Game extends BaseEntity {
 	protected Game() {
 	}
 
-	public Game(Player firstPlayer,
-	            Player secondPlayer,
-	            List<Round> rounds,
-	            Result result) {
+	public Game(final Player firstPlayer,
+	            final Player secondPlayer,
+	            final List<Round> rounds,
+	            final Result result) {
 		this.firstPlayer = firstPlayer;
 		this.secondPlayer = secondPlayer;
 		this.rounds = rounds;
@@ -59,18 +59,28 @@ public class Game extends BaseEntity {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
-
-		Game game = (Game) o;
-
-		if (getFirstPlayer() != null ? !getFirstPlayer().equals(game.getFirstPlayer()) : game.getFirstPlayer() != null)
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
 			return false;
-		if (getSecondPlayer() != null ? !getSecondPlayer().equals(game.getSecondPlayer()) : game.getSecondPlayer() != null)
+		}
+		if (!super.equals(o)) {
 			return false;
-		if (getRounds() != null ? !getRounds().equals(game.getRounds()) : game.getRounds() != null) return false;
+		}
+
+		final Game game = (Game) o;
+
+		if (getFirstPlayer() != null ? !getFirstPlayer().equals(game.getFirstPlayer()) : game.getFirstPlayer() != null) {
+			return false;
+		}
+		if (getSecondPlayer() != null ? !getSecondPlayer().equals(game.getSecondPlayer()) : game.getSecondPlayer() != null) {
+			return false;
+		}
+		if (getRounds() != null ? !getRounds().equals(game.getRounds()) : game.getRounds() != null) {
+			return false;
+		}
 		return getResult() == game.getResult();
 	}
 

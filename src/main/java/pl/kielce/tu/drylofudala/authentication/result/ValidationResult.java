@@ -18,10 +18,10 @@ public record ValidationResult(boolean valid, @Nullable List<String> messages) {
 	public static final String NICKNAME_TOO_LONG;
 
 	static {
-		Properties properties = new Properties();
-		try (InputStream inputStream = ValidationResult.class.getResourceAsStream("/validationMessages.properties")) {
+		final Properties properties = new Properties();
+		try (final InputStream inputStream = ValidationResult.class.getResourceAsStream("/validationMessages.properties")) {
 			properties.load(inputStream);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 

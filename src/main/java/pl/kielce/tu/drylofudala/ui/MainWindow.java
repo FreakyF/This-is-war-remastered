@@ -14,10 +14,10 @@ public class MainWindow extends JFrame {
 	private final transient IViewNavigationHandler viewNavigationHandler;
 	private long loggedInUserId;
 
-	public MainWindow(IAuthenticationService authenticationService, IViewFactory viewFactory, IResourceRepository resourceRepository) {
+	public MainWindow(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
 		this.resourceRepository = resourceRepository;
 		this.viewFactory = viewFactory;
-		this.viewNavigationHandler = new ViewNavigationHandler(authenticationService, viewFactory, resourceRepository);
+		viewNavigationHandler = new ViewNavigationHandler(authenticationService, viewFactory, resourceRepository);
 		initializeWindow();
 	}
 
@@ -30,14 +30,14 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
 		setDefaultLookAndFeelDecorated(true);
 
-		var guestView = viewFactory.getGuestViewFactory().createView(this, viewNavigationHandler, resourceRepository);
+		final var guestView = viewFactory.getGuestViewFactory().createView(this, viewNavigationHandler, resourceRepository);
 		add(guestView);
 
 		setVisible(true);
 	}
 
-	public void setLoggedInUserId(Long playerId) {
-		this.loggedInUserId = playerId;
+	public void setLoggedInUserId(final Long playerId) {
+		loggedInUserId = playerId;
 	}
 
 	public long getLoggedInUserId() {

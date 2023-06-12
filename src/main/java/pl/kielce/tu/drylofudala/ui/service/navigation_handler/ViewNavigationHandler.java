@@ -15,18 +15,18 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	private final IViewFactory viewFactory;
 	private final IAuthenticationService authenticationService;
 
-	public ViewNavigationHandler(IAuthenticationService authenticationService, IViewFactory viewFactory, IResourceRepository resourceRepository) {
+	public ViewNavigationHandler(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
 		this.authenticationService = authenticationService;
 		this.resourceRepository = resourceRepository;
 		this.viewFactory = viewFactory;
 	}
 
 	@Override
-	public ActionListener navigateToLoginView(MainWindow parentWindow) {
+	public ActionListener navigateToLoginView(final MainWindow parentWindow) {
 		return e -> {
-			JPanel loginView = viewFactory.getLoginViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
+			final JPanel loginView = viewFactory.getLoginViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
 
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 			if (frame != null) {
 				frame.setTitle("This is war - Login");
 				frame.setContentPane(loginView);
@@ -37,11 +37,11 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	}
 
 	@Override
-	public ActionListener navigateToRegisterView(MainWindow parentWindow) {
+	public ActionListener navigateToRegisterView(final MainWindow parentWindow) {
 		return e -> {
-			JPanel registerView = viewFactory.getRegisterViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
+			final JPanel registerView = viewFactory.getRegisterViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
 
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 			if (frame != null) {
 				frame.setTitle("This is war - Register");
 				frame.setContentPane(registerView);
@@ -52,11 +52,11 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	}
 
 	@Override
-	public ActionListener navigateToUserView(MainWindow parentWindow) {
+	public ActionListener navigateToUserView(final MainWindow parentWindow) {
 		return e -> {
-			JPanel registerView = viewFactory.getUserViewFactory().createView(parentWindow, this, resourceRepository);
+			final JPanel registerView = viewFactory.getUserViewFactory().createView(parentWindow, this, resourceRepository);
 
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 			if (frame != null) {
 				frame.setTitle("This is war - Menu");
 				frame.setContentPane(registerView);
@@ -67,11 +67,11 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	}
 
 	@Override
-	public ActionListener navigateToGameView(MainWindow parentWindow) {
+	public ActionListener navigateToGameView(final MainWindow parentWindow) {
 		return e -> {
-			JPanel registerView = viewFactory.getGameViewFactory().createView(parentWindow, this, resourceRepository);
+			final JPanel registerView = viewFactory.getGameViewFactory().createView(parentWindow, this, resourceRepository);
 
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 			if (frame != null) {
 				frame.setTitle("This is war - Game");
 				frame.setContentPane(registerView);
