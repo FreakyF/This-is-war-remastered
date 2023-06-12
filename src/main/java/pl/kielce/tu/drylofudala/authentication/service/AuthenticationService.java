@@ -14,6 +14,18 @@ import pl.kielce.tu.drylofudala.entity.Player;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 
 public class AuthenticationService implements IAuthenticationService {
+	private static final Map<Predicate<String>, String> PASSWORD_RULES = Map.of(
+			s -> s.length() >= AuthenticationConfig.MIN_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_SHORT,
+			s -> s.length() <= AuthenticationConfig.MAX_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_LONG,
+			s -> s.matches(".*[a-z].*"), ValidationResult.PASSWORD_WITHOUT_LOWERCASE,
+			s -> s.matches(".*[A-Z].*"), ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
+			s -> s.matches(".*[^a-zA-Z0-9].*"), ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
+			s -> s.matches(".*\\d.*"), ValidationResult.PASSWORD_WITHOUT_NUMBER
+	);
+	private static final Map<Predicate<String>, String> NICKNAME_RULES = Map.of(
+			s -> s.length() >= AuthenticationConfig.MIN_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_SHORT,
+			s -> s.length() <= AuthenticationConfig.MAX_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_LONG
+	);
 	private final IPlayerRepository playerRepository;
 	private final IHasher hasher;
 
@@ -52,15 +64,6 @@ public class AuthenticationService implements IAuthenticationService {
 		return AuthenticationResult.getSuccessResult(existingPlayer.getId());
 	}
 
-	private static final Map<Predicate<String>, String> PASSWORD_RULES = Map.of(
-			s -> s.length() >= AuthenticationConfig.MIN_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_SHORT,
-			s -> s.length() <= AuthenticationConfig.MAX_PASSWORD_LENGTH, ValidationResult.PASSWORD_TOO_LONG,
-			s -> s.matches(".*[a-z].*"), ValidationResult.PASSWORD_WITHOUT_LOWERCASE,
-			s -> s.matches(".*[A-Z].*"), ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
-			s -> s.matches(".*[^a-zA-Z0-9].*"), ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
-			s -> s.matches(".*\\d.*"), ValidationResult.PASSWORD_WITHOUT_NUMBER
-	);
-
 	@Override
 	public ValidationResult isPasswordValid(@NotNull final String password) {
 		final List<String> validationMessages = PASSWORD_RULES.entrySet().stream()
@@ -72,11 +75,6 @@ public class AuthenticationService implements IAuthenticationService {
 				? new ValidationResult(true, null)
 				: new ValidationResult(false, validationMessages);
 	}
-
-	private static final Map<Predicate<String>, String> NICKNAME_RULES = Map.of(
-			s -> s.length() >= AuthenticationConfig.MIN_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_SHORT,
-			s -> s.length() <= AuthenticationConfig.MAX_NICKNAME_LENGTH, ValidationResult.NICKNAME_TOO_LONG
-	);
 
 	@Override
 	public ValidationResult isNicknameValid(@NotNull final String nickname) {

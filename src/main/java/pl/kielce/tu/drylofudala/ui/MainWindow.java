@@ -36,11 +36,11 @@ public class MainWindow extends JFrame {
 		setVisible(true);
 	}
 
-	public void setLoggedInUserId(final Long playerId) {
-		loggedInUserId = playerId;
-	}
-
 	public long getLoggedInUserId() {
 		return loggedInUserId;
+	}
+
+	public void setLoggedInUserId(final Long playerId) {
+		loggedInUserId = playerId;
 	}
 }

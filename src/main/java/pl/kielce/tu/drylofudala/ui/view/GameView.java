@@ -1,5 +1,16 @@
 package pl.kielce.tu.drylofudala.ui.view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -8,18 +19,6 @@ import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
 
 public class GameView implements IView {
 	private UiComponentCreator uiComponentCreator;
