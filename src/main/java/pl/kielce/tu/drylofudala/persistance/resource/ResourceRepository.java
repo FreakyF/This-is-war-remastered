@@ -5,13 +5,17 @@ import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class ResourceRepository implements IResourceRepository {
-	public URL getResourceFromPath(final @NotNull String pathToResource) {
+
+	@Override
+	public @Nullable URL getResourceFromPath(final @NotNull String pathToResource) {
 		return ResourceRepository.class.getClassLoader().getResource(pathToResource);
 	}
 
-	public Image getImageFromPath(final @NotNull String pathToResource) {
+	@Override
+	public @Nullable Image getImageFromPath(final @NotNull String pathToResource) {
 		try {
 			final URL resource = getResourceFromPath(pathToResource);
 			if (resource == null) {
