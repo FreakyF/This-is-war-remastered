@@ -53,7 +53,6 @@ public class UserView implements IView {
 		final JPanel contentPanel = new JPanel(new GridBagLayout());
 		contentPanel.setOpaque(false);
 
-
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
@@ -67,7 +66,6 @@ public class UserView implements IView {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		contentPanel.add(inputPanel, gbc);
-
 
 		return contentPanel;
 	}
@@ -96,13 +94,11 @@ public class UserView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		// IP
 		final JLabel ipLabel = uiComponentCreator.createLabel(UiResource.IP_ADDRESS_TEXT, UiConfig.COPYRIGHT_FONT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(ipLabel, gbc);
 
-		// textIP
 		final JTextField ipField = createIpField();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -114,13 +110,13 @@ public class UserView implements IView {
 		gbc.gridy = 2;
 		inputPanel.add(portLabel, gbc);
 
-		// textPort
 		final JTextField portField = createPortField();
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		inputPanel.add(portField, gbc);
 
 		final JButton connectButton = uiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT, 300, 100);
+		// TODO: Implement check if the server on the IP and PORT provided by user exists.
 		connectButton.addActionListener(navigationHandler.navigateToGameView(parentWindow));
 		gbc.gridx = 0;
 		gbc.gridy = 4;

@@ -28,7 +28,6 @@ public class LoginView implements IAuthView {
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
 	private IAuthenticationService authenticationService;
-
 	private JPanel view;
 	private MainWindow parentWindow;
 	private JTextField nicknameTextField;
@@ -193,7 +192,6 @@ public class LoginView implements IAuthView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
-
 
 		final JPanel headerPanel = createHeaderPanel();
 		gbc.gridx = 0;

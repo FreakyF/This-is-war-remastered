@@ -80,4 +80,20 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 			}
 		};
 	}
+
+	@Override
+	public ActionListener exitToUserView(final MainWindow parentWindow) {
+		return e -> {
+			final JPanel registerView = viewFactory.getUserViewFactory().createView(parentWindow, this, resourceRepository);
+
+			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+			if (frame != null) {
+				frame.setTitle("This is war - Menu");
+				frame.setContentPane(registerView);
+				frame.revalidate();
+				frame.repaint();
+			}
+			// TODO: reset all necessary variables associated with leaving the game.
+		};
+	}
 }
