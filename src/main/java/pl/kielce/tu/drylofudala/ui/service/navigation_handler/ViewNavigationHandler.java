@@ -1,13 +1,15 @@
 package pl.kielce.tu.drylofudala.ui.service.navigation_handler;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
+import pl.kielce.tu.drylofudala.ui.extension.JButtonExtension;
+import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 
 public class ViewNavigationHandler implements IViewNavigationHandler {
@@ -22,78 +24,72 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	}
 
 	@Override
-	public ActionListener navigateToLoginView(final MainWindow parentWindow) {
+	public ActionListener navigateToLoginView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final JPanel loginView = viewFactory.getLoginViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
-
-			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-			if (frame != null) {
-				frame.setTitle("This is war - Login");
-				frame.setContentPane(loginView);
-				frame.revalidate();
-				frame.repaint();
-			}
+			final IAuthView loginViewFactory = viewFactory.getLoginViewFactory();
+			final var onReturnButtonClicked = navigateToGuestView(parentWindow);
+			navigateToAuthView(parentWindow, loginViewFactory, onReturnButtonClicked);
 		};
 	}
 
 	@Override
-	public ActionListener navigateToRegisterView(final MainWindow parentWindow) {
+	public ActionListener navigateToRegisterView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final JPanel registerView = viewFactory.getRegisterViewFactory().createView(parentWindow, authenticationService, this, resourceRepository);
-
-			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-			if (frame != null) {
-				frame.setTitle("This is war - Register");
-				frame.setContentPane(registerView);
-				frame.revalidate();
-				frame.repaint();
-			}
+			final IAuthView registerViewFactory = viewFactory.getRegisterViewFactory();
+			final var onReturnButtonClicked = navigateToGuestView(parentWindow);
+			navigateToAuthView(parentWindow, registerViewFactory, onReturnButtonClicked);
 		};
 	}
 
 	@Override
-	public ActionListener navigateToUserView(final MainWindow parentWindow) {
+	public ActionListener navigateToUserView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final JPanel registerView = viewFactory.getUserViewFactory().createView(parentWindow, this, resourceRepository);
-
-			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-			if (frame != null) {
-				frame.setTitle("This is war - Menu");
-				frame.setContentPane(registerView);
-				frame.revalidate();
-				frame.repaint();
-			}
+			final IView userViewFactory = viewFactory.getUserViewFactory();
+			navigateToView(parentWindow, userViewFactory);
 		};
 	}
 
 	@Override
-	public ActionListener navigateToGameView(final MainWindow parentWindow) {
+	public ActionListener navigateToGameView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final JPanel registerView = viewFactory.getGameViewFactory().createView(parentWindow, this, resourceRepository);
-
-			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-			if (frame != null) {
-				frame.setTitle("This is war - Game");
-				frame.setContentPane(registerView);
-				frame.revalidate();
-				frame.repaint();
-			}
+			final IView gameViewFactory = viewFactory.getGameViewFactory();
+			navigateToView(parentWindow, gameViewFactory);
 		};
 	}
 
 	@Override
-	public ActionListener exitToUserView(final MainWindow parentWindow) {
+	public ActionListener navigateToGuestView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final JPanel registerView = viewFactory.getUserViewFactory().createView(parentWindow, this, resourceRepository);
-
-			final JFrame frame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-			if (frame != null) {
-				frame.setTitle("This is war - Menu");
-				frame.setContentPane(registerView);
-				frame.revalidate();
-				frame.repaint();
-			}
-			// TODO: reset all necessary variables associated with leaving the game.
+			final IView guestViewFactory = viewFactory.getGuestViewFactory();
+			navigateToView(parentWindow, guestViewFactory);
 		};
+	}
+
+	private void navigateToView(@NotNull final MainWindow parentWindow, final IView viewFactory) {
+		final JPanel view = viewFactory.createView(parentWindow, this, resourceRepository);
+		parentWindow.setContentPane(view);
+		navigateTo(parentWindow, viewFactory.getViewName(), null);
+	}
+
+	private void navigateToAuthView(@NotNull final MainWindow parentWindow, final IAuthView viewFactory, @Nullable final ActionListener onReturnButtonClicked) {
+		final JPanel view = viewFactory.createView(parentWindow, authenticationService, this, resourceRepository);
+		parentWindow.setContentPane(view);
+		navigateTo(parentWindow, viewFactory.getViewName(), onReturnButtonClicked);
+	}
+
+	private void navigateTo(@NotNull final MainWindow parentWindow, final String viewName, @Nullable final ActionListener onReturnButtonClicked) {
+		final var returnButton = parentWindow.getReturnButton();
+		JButtonExtension.removeAllListeners(returnButton);
+		final var showReturnButton = onReturnButtonClicked != null;
+		if (showReturnButton) {
+			parentWindow.showReturnButton();
+			returnButton.addActionListener(onReturnButtonClicked);
+		} else {
+			parentWindow.hideReturnButton();
+		}
+
+		parentWindow.setTitle("This is war - " + viewName);
+		parentWindow.revalidate();
+		parentWindow.repaint();
 	}
 }

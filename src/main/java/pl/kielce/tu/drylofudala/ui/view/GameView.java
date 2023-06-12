@@ -16,15 +16,21 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class GameView implements IView {
+	private static final String NAME = "Game";
 	private UiComponentCreator uiComponentCreator;
 	private MainWindow parentWindow;
 	private IViewNavigationHandler navigationHandler;
 	private JPanel view;
+
+	@Override
+	public String getViewName() {
+		return NAME;
+	}
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
@@ -225,7 +231,7 @@ public class GameView implements IView {
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.insets = new Insets(10, 0, 10, 0);
 
-		final JButton passTurnButton = uiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT, 300, 100);
+		final JButton passTurnButton = uiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weighty = 0;
@@ -233,7 +239,7 @@ public class GameView implements IView {
 		// implement pass the turn
 		passTurnButton.addActionListener(onPassTurnButtonClicked());
 
-		final JButton surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT, 300, 100);
+		final JButton surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weighty = 0;
@@ -241,13 +247,13 @@ public class GameView implements IView {
 		// implement surrender
 		surrenderButton.addActionListener(onSurrenderButtonCLicked());
 
-		final JButton exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT, 300, 100);
+		final JButton exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weighty = 1;
 		menuPanel.add(exitButton, gbc);
 		// TODO: Implement auto-disconnect for the second player if one of them exits the game using the exitButton.
-		exitButton.addActionListener(navigationHandler.exitToUserView(parentWindow));
+		exitButton.addActionListener(navigationHandler.navigateToUserView(parentWindow));
 
 		return menuPanel;
 	}

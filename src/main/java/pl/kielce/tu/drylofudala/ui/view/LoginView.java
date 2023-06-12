@@ -20,11 +20,12 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
 
 public class LoginView implements IAuthView {
+	private static final String NAME = "Login";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
 	private IAuthenticationService authenticationService;
@@ -32,6 +33,11 @@ public class LoginView implements IAuthView {
 	private MainWindow parentWindow;
 	private JTextField nicknameTextField;
 	private JPasswordField passwordTextField;
+
+	@Override
+	public String getViewName() {
+		return NAME;
+	}
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
@@ -89,7 +95,7 @@ public class LoginView implements IAuthView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
+		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
 		loginButton.addActionListener(onLoginButtonClicked());
 		gbc.gridx = 0;
 		gbc.gridy = 0;

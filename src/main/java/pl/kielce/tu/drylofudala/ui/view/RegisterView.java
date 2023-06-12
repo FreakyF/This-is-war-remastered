@@ -20,11 +20,12 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
 
 public class RegisterView implements IAuthView {
+	private static final String NAME = "Register";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
 	private IAuthenticationService authenticationService;
@@ -34,6 +35,11 @@ public class RegisterView implements IAuthView {
 	private JPasswordField passwordTextField;
 	private JPasswordField repeatedPasswordTextField;
 	private MainWindow parentWindow;
+
+	@Override
+	public String getViewName() {
+		return NAME;
+	}
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
@@ -117,7 +123,7 @@ public class RegisterView implements IAuthView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
+		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT);
 		registerButton.addActionListener(onRegisterButtonClicked());
 		gbc.gridx = 0;
 		gbc.gridy = 0;

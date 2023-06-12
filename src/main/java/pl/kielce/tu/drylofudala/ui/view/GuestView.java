@@ -12,21 +12,27 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class GuestView implements IView {
+	private static final String NAME = "Guest";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
-
 	private MainWindow parentWindow;
+
+	@Override
+	public String getViewName() {
+		return NAME;
+	}
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
 		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
+		parentWindow.getGlassPane().setVisible(false);
 		return initializeView();
 	}
 
@@ -71,13 +77,13 @@ public class GuestView implements IView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT, 300, 100);
+		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
 		loginButton.addActionListener(navigationHandler.navigateToLoginView(parentWindow));
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(loginButton, gbc);
 
-		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT, 300, 100);
+		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT);
 		registerButton.addActionListener(navigationHandler.navigateToRegisterView(parentWindow));
 		gbc.gridx = 0;
 		gbc.gridy = 1;

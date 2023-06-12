@@ -19,14 +19,20 @@ import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
-import pl.kielce.tu.drylofudala.ui.service.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class UserView implements IView {
+	private static final String NAME = "Menu";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
 	private MainWindow parentWindow;
+
+	@Override
+	public String getViewName() {
+		return NAME;
+	}
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
@@ -114,7 +120,7 @@ public class UserView implements IView {
 		gbc.gridy = 3;
 		inputPanel.add(portField, gbc);
 
-		final JButton connectButton = uiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT, 300, 100);
+		final JButton connectButton = uiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT);
 		// TODO: Implement check if the server on the IP and PORT provided by user exists.
 		connectButton.addActionListener(navigationHandler.navigateToGameView(parentWindow));
 		gbc.gridx = 0;

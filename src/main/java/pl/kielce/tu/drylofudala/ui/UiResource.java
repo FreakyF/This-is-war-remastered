@@ -14,6 +14,7 @@ public final class UiResource {
 	public static final String BUTTON_PASS_TURN_TEXT = "Pass turn";
 	public static final String BUTTON_SURRENDER_TEXT = "Surrender";
 	public static final String BUTTON_EXIT_TEXT = "Exit";
+	public static final String BUTTON_RETURN_SYMBOL = "<-";
 	public static final String INPUT_LABEL_NICKNAME = "Nickname";
 	public static final String INPUT_LABEL_PASSWORD = "Password";
 	private static final String GRAPHICS_FOLDER = "graphics";

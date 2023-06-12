@@ -1,23 +1,31 @@
 package pl.kielce.tu.drylofudala.ui;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.ViewNavigationHandler;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 
 public class MainWindow extends JFrame {
 	private final transient IResourceRepository resourceRepository;
 	private final transient IViewFactory viewFactory;
 	private final transient IViewNavigationHandler viewNavigationHandler;
+	private final transient IUiComponentCreator componentCreator;
 	private long loggedInUserId;
+	private JButton returnButton;
 
 	public MainWindow(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
 		this.resourceRepository = resourceRepository;
 		this.viewFactory = viewFactory;
 		viewNavigationHandler = new ViewNavigationHandler(authenticationService, viewFactory, resourceRepository);
+		componentCreator = new UiComponentCreator(resourceRepository);
 		initializeWindow();
 	}
 
@@ -31,9 +39,36 @@ public class MainWindow extends JFrame {
 		setDefaultLookAndFeelDecorated(true);
 
 		final var guestView = viewFactory.getGuestViewFactory().createView(this, viewNavigationHandler, resourceRepository);
-		add(guestView);
+		initializeReturnButton();
+		hideReturnButton();
 
+		add(guestView);
 		setVisible(true);
+	}
+
+	private void initializeReturnButton() {
+		returnButton = componentCreator.createReturnButton();
+
+		final var glass = (JPanel) getGlassPane();
+		glass.setVisible(true);
+		glass.setLayout(new FlowLayout(FlowLayout.LEFT));
+		glass.add(returnButton);
+	}
+
+	public JButton getReturnButton() {
+		return returnButton;
+	}
+
+	public void hideReturnButton() {
+		setReturnButtonState(false);
+	}
+
+	public void showReturnButton() {
+		setReturnButtonState(true);
+	}
+
+	private void setReturnButtonState(final boolean value) {
+		getGlassPane().setVisible(value);
 	}
 
 	public long getLoggedInUserId() {
