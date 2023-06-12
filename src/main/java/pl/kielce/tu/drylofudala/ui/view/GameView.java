@@ -12,26 +12,31 @@ import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 public class GameView implements IView {
 	private UiComponentCreator uiComponentCreator;
-	private MainWindow mainWindow;
+	private MainWindow parentWindow;
+	private IViewNavigationHandler navigationHandler;
+	private JPanel view;
 
 	@Override
 	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
-		mainWindow = parentWindow;
+		this.parentWindow = parentWindow;
+		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
-		final JPanel view = new JPanel(new BorderLayout());
+		view = new JPanel(new BorderLayout());
 
 		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
@@ -226,18 +231,24 @@ public class GameView implements IView {
 		gbc.gridy = 0;
 		gbc.weighty = 0;
 		menuPanel.add(passTurnButton, gbc);
+		// implement pass the turn
+		passTurnButton.addActionListener(onPassTurnButtonClicked());
 
 		final JButton surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weighty = 0;
 		menuPanel.add(surrenderButton, gbc);
+		// implement surrender
+		surrenderButton.addActionListener(onSurrenderButtonCLicked());
 
 		final JButton exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT, 300, 100);
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weighty = 1;
 		menuPanel.add(exitButton, gbc);
+		// TODO: Implement auto-disconnect for the second player if one of them exits the game using the exitButton.
+		exitButton.addActionListener(navigationHandler.exitToUserView(parentWindow));
 
 		return menuPanel;
 	}
@@ -413,5 +424,19 @@ public class GameView implements IView {
 		playerMeleePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 
 		return playerMeleePanel;
+	}
+
+	private ActionListener onPassTurnButtonClicked() {
+		return e -> {
+			// TODO: Implement passing the turn in gameplay.
+		};
+	}
+
+	private ActionListener onSurrenderButtonCLicked() {
+		return e -> {
+			// TODO: Implement surrendering in gameplay.
+			// TODO: Print which player surrendered.
+			JOptionPane.showMessageDialog(view, "PLAYER surrendered!");
+		};
 	}
 }
