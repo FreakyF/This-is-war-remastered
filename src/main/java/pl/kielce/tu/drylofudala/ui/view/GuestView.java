@@ -23,9 +23,9 @@ public class GuestView implements IView {
 	private MainWindow parentWindow;
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
-		navigationHandler = viewNavigationHandler;
+		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}

@@ -2,7 +2,7 @@ package pl.kielce.tu.drylofudala.ui;
 
 import java.awt.Font;
 
-public class UiConfig {
+public final class UiConfig {
 	public static final String FONT_FAMILY = "Comic Sans MS";
 	public static final Font COPYRIGHT_FONT = new Font(FONT_FAMILY, Font.PLAIN, 24);
 

@@ -4,7 +4,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class ToolManager {
+public final class ToolManager {
 	private ToolManager() {
 	}
 

@@ -30,9 +30,9 @@ public class UserView implements IView {
 	private MainWindow parentWindow;
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
-		navigationHandler = viewNavigationHandler;
+		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
@@ -163,10 +163,10 @@ public class UserView implements IView {
 		private static final int MAX_LENGTH = 15;
 
 		@Override
-		public void insertString(final FilterBypass fb, final int offset, final String text, final AttributeSet attr) throws BadLocationException {
-			final StringBuilder builder = new StringBuilder(text.length());
-			for (int i = 0; i < text.length(); i++) {
-				final char c = text.charAt(i);
+		public void insertString(final FilterBypass fb, final int offset, final String string, final AttributeSet attr) throws BadLocationException {
+			final StringBuilder builder = new StringBuilder(string.length());
+			for (int i = 0; i < string.length(); i++) {
+				final char c = string.charAt(i);
 				if (Character.isDigit(c) && fb.getDocument().getLength() < MAX_LENGTH) {
 					builder.append(c);
 				}
@@ -195,9 +195,9 @@ public class UserView implements IView {
 		private static final int MAX_LENGTH = 5;
 
 		@Override
-		public void insertString(final FilterBypass fb, final int offset, final String text, final AttributeSet attr) throws BadLocationException {
-			final StringBuilder builder = new StringBuilder(text.length());
-			for (final char c : text.toCharArray()) {
+		public void insertString(final FilterBypass fb, final int offset, final String string, final AttributeSet attr) throws BadLocationException {
+			final StringBuilder builder = new StringBuilder(string.length());
+			for (final char c : string.toCharArray()) {
 				if (Character.isDigit(c) && fb.getDocument().getLength() < MAX_LENGTH) {
 					builder.append(c);
 				}

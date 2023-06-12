@@ -37,10 +37,10 @@ public class RegisterView implements IAuthView {
 
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
 		this.authenticationService = authenticationService;
-		navigationHandler = viewNavigationHandler;
+		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
@@ -244,7 +244,7 @@ public class RegisterView implements IAuthView {
 			}
 
 			if (!passwordValidationResult.valid()) {
-				if (validationMessages.length() > 0) {
+				if (!validationMessages.isEmpty()) {
 					validationMessages.append("\n");
 				}
 				validationMessages.append(passwordValidationResult.getMessagesAsString());

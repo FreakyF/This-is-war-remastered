@@ -2,7 +2,7 @@ package pl.kielce.tu.drylofudala.ui;
 
 import java.nio.file.Path;
 
-public class UiResource {
+public final class UiResource {
 	private static final String GRAPHICS_FOLDER = "graphics";
 	private static final String UI_FOLDER = "UI";
 	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();

@@ -35,10 +35,10 @@ public class LoginView implements IAuthView {
 	private JPasswordField passwordTextField;
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
 		this.authenticationService = authenticationService;
-		navigationHandler = viewNavigationHandler;
+		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}

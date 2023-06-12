@@ -23,7 +23,7 @@ public class GameView implements IView {
 	private MainWindow mainWindow;
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler viewNavigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		mainWindow = parentWindow;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
