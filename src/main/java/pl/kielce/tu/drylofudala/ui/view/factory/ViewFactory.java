@@ -19,7 +19,7 @@ public class ViewFactory implements IViewFactory {
 		return new RegisterView();
 	}
 
-	public IView getUserViewFactory() {
+	public IAuthView getUserViewFactory() {
 		return new UserView();
 	}
 

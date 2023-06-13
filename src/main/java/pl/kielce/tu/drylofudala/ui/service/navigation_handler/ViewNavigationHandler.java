@@ -44,8 +44,10 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	@Override
 	public ActionListener navigateToUserView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final IView userViewFactory = viewFactory.getUserViewFactory();
-			navigateToView(parentWindow, userViewFactory);
+			final IAuthView userViewFactory = viewFactory.getUserViewFactory();
+			// TODO: Modify so that the user will be logged out.
+			final var onReturnButtonClicked = navigateToLoginView(parentWindow);
+			navigateToAuthView(parentWindow, userViewFactory, onReturnButtonClicked);
 		};
 	}
 

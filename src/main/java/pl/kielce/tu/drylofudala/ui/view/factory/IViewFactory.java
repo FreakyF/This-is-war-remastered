@@ -7,7 +7,7 @@ public interface IViewFactory {
 
 	IAuthView getRegisterViewFactory();
 
-	IView getUserViewFactory();
+	IAuthView getUserViewFactory();
 
 	IView getGameViewFactory();
 }

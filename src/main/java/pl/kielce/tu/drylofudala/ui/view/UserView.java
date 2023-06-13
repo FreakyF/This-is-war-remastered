@@ -14,6 +14,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -21,9 +22,9 @@ import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
+import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
 
-public class UserView implements IView {
+public class UserView implements IAuthView {
 	private static final String NAME = "Menu";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
@@ -35,7 +36,7 @@ public class UserView implements IView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
 		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);
@@ -164,9 +165,9 @@ public class UserView implements IView {
 		private static final int MAX_LENGTH = 15;
 
 		@Override
-		public void insertString(final FilterBypass fb, final int offset, final String text, final AttributeSet attr) throws BadLocationException {
-			final StringBuilder builder = new StringBuilder(text.length());
-			for (final char c : text.toCharArray()) {
+		public void insertString(final FilterBypass fb, final int offset, final String string, final AttributeSet attr) throws BadLocationException {
+			final StringBuilder builder = new StringBuilder(string.length());
+			for (final char c : string.toCharArray()) {
 				if (Character.isDigit(c) && fb.getDocument().getLength() < MAX_LENGTH) {
 					builder.append(c);
 				}
@@ -212,8 +213,7 @@ public class UserView implements IView {
 				return;
 			}
 			final StringBuilder builder = new StringBuilder(text.length());
-			for (int i = 0; i < text.length(); i++) {
-				final char c = text.charAt(i);
+			for (final char c : text.toCharArray()) {
 				if (Character.isDigit(c) && fb.getDocument().getLength() - length + builder.length() < MAX_LENGTH) {
 					builder.append(c);
 				}
