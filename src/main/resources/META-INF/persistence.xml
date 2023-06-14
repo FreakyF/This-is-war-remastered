@@ -12,7 +12,8 @@
         <!-- Add additional class declarations for your entities -->
 
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/this_is_war?useSSL=false"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/this_is_war?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
             <property name="javax.persistence.jdbc.user" value="tiw_admin"/>
             <property name="javax.persistence.jdbc.password" value="123Qwerty"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

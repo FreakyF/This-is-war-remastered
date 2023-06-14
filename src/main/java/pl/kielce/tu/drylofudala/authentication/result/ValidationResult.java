@@ -18,10 +18,10 @@ public record ValidationResult(boolean valid, @Nullable List<String> messages) {
 	public static final String NICKNAME_TOO_LONG;
 
 	static {
-		Properties properties = new Properties();
-		try (InputStream inputStream = ValidationResult.class.getResourceAsStream("/validationMessages.properties")) {
+		final Properties properties = new Properties();
+		try (final InputStream inputStream = ValidationResult.class.getResourceAsStream("/validationMessages.properties")) {
 			properties.load(inputStream);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
@@ -33,5 +33,13 @@ public record ValidationResult(boolean valid, @Nullable List<String> messages) {
 		PASSWORD_WITHOUT_NUMBER = properties.getProperty("PASSWORD_WITHOUT_NUMBER");
 		NICKNAME_TOO_SHORT = String.format(properties.getProperty("NICKNAME_TOO_SHORT"), AuthenticationConfig.MIN_NICKNAME_LENGTH);
 		NICKNAME_TOO_LONG = String.format(properties.getProperty("NICKNAME_TOO_LONG"), AuthenticationConfig.MAX_NICKNAME_LENGTH);
+	}
+
+	public String getMessagesAsString() {
+		if (messages == null) {
+			return "";
+		}
+
+		return String.join("\n", messages);
 	}
 }

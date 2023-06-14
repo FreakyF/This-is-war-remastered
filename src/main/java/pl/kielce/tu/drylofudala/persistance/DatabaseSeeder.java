@@ -12,7 +12,7 @@ public class DatabaseSeeder {
 	private static final Logger logger = LogManager.getLogger(DatabaseSeeder.class);
 	private final IDbContext<Card> cardRepository;
 
-	public DatabaseSeeder(IDbContext<Card> cardRepository) {
+	public DatabaseSeeder(final IDbContext<Card> cardRepository) {
 		this.cardRepository = cardRepository;
 	}
 

@@ -11,33 +11,33 @@ public class Hasher implements IHasher {
 
 	@Override
 	public byte[] generateSalt() {
-		byte[] salt = new byte[AuthenticationConfig.SALT_LENGTH];
-		SecureRandom secureRandom = new SecureRandom();
+		final byte[] salt = new byte[AuthenticationConfig.SALT_LENGTH];
+		final SecureRandom secureRandom = new SecureRandom();
 		secureRandom.nextBytes(salt);
 
 		return salt;
 	}
 
 	@Override
-	public String hashPassword(@NotNull String password, byte @NotNull [] salt) {
-		Argon2Parameters parameters = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
+	public String hashPassword(@NotNull final String password, final byte @NotNull [] salt) {
+		final Argon2Parameters parameters = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
 				.withSalt(salt)
 				.withIterations(AuthenticationConfig.ITERATIONS)
 				.withMemoryAsKB(AuthenticationConfig.MEMORY)
 				.build();
 
-		Argon2BytesGenerator generator = new Argon2BytesGenerator();
+		final Argon2BytesGenerator generator = new Argon2BytesGenerator();
 		generator.init(parameters);
 
-		byte[] hashedPassword = new byte[AuthenticationConfig.HASHED_PASSWORD_LENGTH];
+		final byte[] hashedPassword = new byte[AuthenticationConfig.HASHED_PASSWORD_LENGTH];
 		generator.generateBytes(password.getBytes(), hashedPassword);
 
 		return Base64.getEncoder().encodeToString(hashedPassword);
 	}
 
 	@Override
-	public boolean verifyPassword(@NotNull String password, @NotNull String hashedPassword, byte @NotNull [] salt) {
-		String userTypedHashedPassword = hashPassword(password, salt);
+	public boolean verifyPassword(@NotNull final String password, @NotNull final String hashedPassword, final byte @NotNull [] salt) {
+		final String userTypedHashedPassword = hashPassword(password, salt);
 		return userTypedHashedPassword.equals(hashedPassword);
 	}
 }

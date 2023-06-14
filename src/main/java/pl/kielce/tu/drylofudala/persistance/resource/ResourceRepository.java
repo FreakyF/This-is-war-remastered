@@ -4,28 +4,30 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class ResourceRepository implements IResourceRepository {
-	@NotNull
-	public URL getResourceFromPath(@NotNull final String pathToResource) {
-		final URL resource = ResourceRepository.class.getClassLoader().getResource(pathToResource);
-		if (resource == null) {
-			throw new IllegalArgumentException(String.format("File %s is null!", pathToResource));
+
+	@Override
+	public @Nullable URL getResourceFromPath(final @NotNull String pathToResource) {
+		return ResourceRepository.class.getClassLoader().getResource(pathToResource);
+	}
+
+	@Override
+	public @Nullable Image getImageFromPath(final @NotNull String pathToResource) {
+		try {
+			final URL resource = getResourceFromPath(pathToResource);
+			if (resource == null) {
+				throw new IllegalArgumentException(String.format("File %s is null!", pathToResource));
+			}
+
+			return ImageIO
+					.read(resource)
+					.getScaledInstance(-1, -1, Image.SCALE_SMOOTH);
+		} catch (final IOException e) {
+			e.printStackTrace();
+			return null;
 		}
-		return resource;
-	}
-
-	@NotNull
-	public ImageIcon getImageIconForPath(@NotNull final String pathToResource) {
-		return new ImageIcon(getResourceFromPath(pathToResource));
-	}
-
-	@NotNull
-	public Image getImageForPath(@NotNull final String pathToResource) throws IOException {
-		return ImageIO
-				.read(getResourceFromPath(pathToResource))
-				.getScaledInstance(100, -1, Image.SCALE_SMOOTH);
 	}
 }
