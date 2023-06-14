@@ -17,16 +17,21 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	private final IViewFactory viewFactory;
 	private final IAuthenticationService authenticationService;
 
-	public ViewNavigationHandler(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
+	private final MainWindow mainWindow;
+
+	public ViewNavigationHandler(final MainWindow mainWindow, final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
 		this.authenticationService = authenticationService;
 		this.resourceRepository = resourceRepository;
 		this.viewFactory = viewFactory;
+		this.mainWindow = mainWindow;
 	}
 
 	@Override
 	public ActionListener navigateToLoginView(@NotNull final MainWindow parentWindow) {
 		return e -> {
 			final IAuthView loginViewFactory = viewFactory.getLoginViewFactory();
+			// TODO: move this method call from this method.
+			mainWindow.setLoggedInUserId(null);
 			final var onReturnButtonClicked = navigateToGuestView(parentWindow);
 			navigateToAuthView(parentWindow, loginViewFactory, onReturnButtonClicked);
 		};
@@ -62,9 +67,15 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	@Override
 	public ActionListener navigateToGuestView(@NotNull final MainWindow parentWindow) {
 		return e -> {
-			final IView guestViewFactory = viewFactory.getGuestViewFactory();
-			navigateToView(parentWindow, guestViewFactory);
+			final IAuthView guestViewFactory = viewFactory.getGuestViewFactory();
+			final var onReturnButtonClicked = exitGame(parentWindow);
+			navigateToAuthView(parentWindow, guestViewFactory, onReturnButtonClicked);
+
 		};
+	}
+
+	public ActionListener exitGame(final @NotNull MainWindow parentWindow) {
+		return e -> System.exit(0);
 	}
 
 	private void navigateToView(@NotNull final MainWindow parentWindow, final IView viewFactory) {

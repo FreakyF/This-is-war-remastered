@@ -7,7 +7,7 @@ import pl.kielce.tu.drylofudala.ui.view.RegisterView;
 import pl.kielce.tu.drylofudala.ui.view.UserView;
 
 public class ViewFactory implements IViewFactory {
-	public IView getGuestViewFactory() {
+	public IAuthView getGuestViewFactory() {
 		return new GuestView();
 	}
 

@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -14,9 +15,9 @@ import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IView;
+import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
 
-public class GuestView implements IView {
+public class GuestView implements IAuthView {
 	private static final String NAME = "Guest";
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
@@ -28,7 +29,7 @@ public class GuestView implements IView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
+	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
 		this.parentWindow = parentWindow;
 		this.navigationHandler = navigationHandler;
 		uiComponentCreator = new UiComponentCreator(resourceRepository);

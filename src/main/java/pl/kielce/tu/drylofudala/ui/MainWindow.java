@@ -2,6 +2,7 @@ package pl.kielce.tu.drylofudala.ui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreat
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 
 public class MainWindow extends JFrame {
+	private final transient IAuthenticationService authenticationService;
 	private final transient IResourceRepository resourceRepository;
 	private final transient IViewFactory viewFactory;
 	private final transient IViewNavigationHandler viewNavigationHandler;
@@ -24,9 +26,10 @@ public class MainWindow extends JFrame {
 	public MainWindow(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
 		this.resourceRepository = resourceRepository;
 		this.viewFactory = viewFactory;
-		viewNavigationHandler = new ViewNavigationHandler(authenticationService, viewFactory, resourceRepository);
+		viewNavigationHandler = new ViewNavigationHandler(this, authenticationService, viewFactory, resourceRepository);
 		componentCreator = new UiComponentCreator(resourceRepository);
 		initializeWindow();
+		this.authenticationService = authenticationService;
 	}
 
 	private void initializeWindow() {
@@ -38,9 +41,8 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
 		setDefaultLookAndFeelDecorated(true);
 
-		final var guestView = viewFactory.getGuestViewFactory().createView(this, viewNavigationHandler, resourceRepository);
+		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
 		initializeReturnButton();
-		hideReturnButton();
 
 		add(guestView);
 		setVisible(true);
@@ -48,6 +50,7 @@ public class MainWindow extends JFrame {
 
 	private void initializeReturnButton() {
 		returnButton = componentCreator.createReturnButton();
+		returnButton.addActionListener(viewNavigationHandler.exitGame(this));
 
 		final var glass = (JPanel) getGlassPane();
 		glass.setVisible(true);
@@ -76,6 +79,6 @@ public class MainWindow extends JFrame {
 	}
 
 	public void setLoggedInUserId(final Long playerId) {
-		loggedInUserId = playerId;
+		loggedInUserId = Optional.ofNullable(playerId).orElse(0L);
 	}
 }

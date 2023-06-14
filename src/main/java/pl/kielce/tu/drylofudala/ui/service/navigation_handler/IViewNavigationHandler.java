@@ -14,4 +14,6 @@ public interface IViewNavigationHandler {
 	ActionListener navigateToGameView(@NotNull MainWindow parentWindow);
 
 	ActionListener navigateToGuestView(@NotNull MainWindow parentWindow);
+
+	ActionListener exitGame(@NotNull final MainWindow parentWindow);
 }
