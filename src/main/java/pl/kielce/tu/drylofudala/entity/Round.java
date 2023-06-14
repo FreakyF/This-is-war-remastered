@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -57,38 +58,22 @@ public class Round extends BaseEntity {
 		if (!super.equals(o)) {
 			return false;
 		}
-
 		final Round round = (Round) o;
-
-		if (getFirstPlayerMeleeRow() != null ? !getFirstPlayerMeleeRow().equals(round.getFirstPlayerMeleeRow()) : round.getFirstPlayerMeleeRow() != null) {
-			return false;
-		}
-		if (getFirstPlayerRangeRow() != null ? !getFirstPlayerRangeRow().equals(round.getFirstPlayerRangeRow()) : round.getFirstPlayerRangeRow() != null) {
-			return false;
-		}
-		if (getSecondPlayerMeleeRow() != null ? !getSecondPlayerMeleeRow().equals(round.getSecondPlayerMeleeRow()) : round.getSecondPlayerMeleeRow() != null) {
-			return false;
-		}
-		return getSecondPlayerRangeRow() != null ? getSecondPlayerRangeRow().equals(round.getSecondPlayerRangeRow()) : round.getSecondPlayerRangeRow() == null;
+		return Objects.equals(firstPlayerMeleeRow, round.firstPlayerMeleeRow) && Objects.equals(firstPlayerRangeRow, round.firstPlayerRangeRow) && Objects.equals(secondPlayerMeleeRow, round.secondPlayerMeleeRow) && Objects.equals(secondPlayerRangeRow, round.secondPlayerRangeRow);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + (getFirstPlayerMeleeRow() != null ? getFirstPlayerMeleeRow().hashCode() : 0);
-		result = 31 * result + (getFirstPlayerRangeRow() != null ? getFirstPlayerRangeRow().hashCode() : 0);
-		result = 31 * result + (getSecondPlayerMeleeRow() != null ? getSecondPlayerMeleeRow().hashCode() : 0);
-		result = 31 * result + (getSecondPlayerRangeRow() != null ? getSecondPlayerRangeRow().hashCode() : 0);
-		return result;
+		return Objects.hash(super.hashCode(), firstPlayerMeleeRow, firstPlayerRangeRow, secondPlayerMeleeRow, secondPlayerRangeRow);
 	}
 
 	@Override
 	public String toString() {
 		return "Round{" +
-				"firstPlayerMeeleRow=" + firstPlayerMeleeRow +
+				"firstPlayerMeleeRow=" + firstPlayerMeleeRow +
 				", firstPlayerRangeRow=" + firstPlayerRangeRow +
-				", secondPlayerMeeleRow=" + secondPlayerMeleeRow +
+				", secondPlayerMeleeRow=" + secondPlayerMeleeRow +
 				", secondPlayerRangeRow=" + secondPlayerRangeRow +
-				"} " + super.toString();
+				'}';
 	}
 }

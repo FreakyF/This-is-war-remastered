@@ -5,6 +5,7 @@ import jakarta.persistence.AccessType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -46,24 +47,14 @@ public class Player extends BaseEntity {
 		if (!super.equals(o)) {
 			return false;
 		}
-
 		final Player player = (Player) o;
-
-		if (!getName().equals(player.getName())) {
-			return false;
-		}
-		if (!getHashedPassword().equals(player.getHashedPassword())) {
-			return false;
-		}
-		return Arrays.equals(getPasswordSalt(), player.getPasswordSalt());
+		return Objects.equals(name, player.name) && Objects.equals(hashedPassword, player.hashedPassword) && Arrays.equals(passwordSalt, player.passwordSalt);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = super.hashCode();
-		result = 31 * result + getName().hashCode();
-		result = 31 * result + getHashedPassword().hashCode();
-		result = 31 * result + Arrays.hashCode(getPasswordSalt());
+		int result = Objects.hash(super.hashCode(), name, hashedPassword);
+		result = 31 * result + Arrays.hashCode(passwordSalt);
 		return result;
 	}
 
@@ -73,6 +64,6 @@ public class Player extends BaseEntity {
 				"name='" + name + '\'' +
 				", hashedPassword='" + hashedPassword + '\'' +
 				", passwordSalt=" + Arrays.toString(passwordSalt) +
-				"} " + super.toString();
+				'}';
 	}
 }

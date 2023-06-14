@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 import pl.kielce.tu.drylofudala.model.Result;
 
 @Entity
@@ -69,29 +70,13 @@ public class Game extends BaseEntity {
 		if (!super.equals(o)) {
 			return false;
 		}
-
 		final Game game = (Game) o;
-
-		if (getFirstPlayer() != null ? !getFirstPlayer().equals(game.getFirstPlayer()) : game.getFirstPlayer() != null) {
-			return false;
-		}
-		if (getSecondPlayer() != null ? !getSecondPlayer().equals(game.getSecondPlayer()) : game.getSecondPlayer() != null) {
-			return false;
-		}
-		if (getRounds() != null ? !getRounds().equals(game.getRounds()) : game.getRounds() != null) {
-			return false;
-		}
-		return getResult() == game.getResult();
+		return Objects.equals(firstPlayer, game.firstPlayer) && Objects.equals(secondPlayer, game.secondPlayer) && Objects.equals(rounds, game.rounds) && result == game.result;
 	}
 
 	@Override
 	public int hashCode() {
-		int result1 = super.hashCode();
-		result1 = 31 * result1 + (getFirstPlayer() != null ? getFirstPlayer().hashCode() : 0);
-		result1 = 31 * result1 + (getSecondPlayer() != null ? getSecondPlayer().hashCode() : 0);
-		result1 = 31 * result1 + (getRounds() != null ? getRounds().hashCode() : 0);
-		result1 = 31 * result1 + (getResult() != null ? getResult().hashCode() : 0);
-		return result1;
+		return Objects.hash(super.hashCode(), firstPlayer, secondPlayer, rounds, result);
 	}
 
 	@Override
@@ -101,6 +86,6 @@ public class Game extends BaseEntity {
 				", secondPlayer=" + secondPlayer +
 				", rounds=" + rounds +
 				", result=" + result +
-				"} " + super.toString();
+				'}';
 	}
 }

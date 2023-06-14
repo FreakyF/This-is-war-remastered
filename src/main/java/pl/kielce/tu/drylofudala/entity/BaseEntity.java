@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
 import java.util.Objects;
 
 @MappedSuperclass
@@ -25,18 +26,11 @@ public abstract class BaseEntity {
 			return false;
 		}
 		final BaseEntity that = (BaseEntity) o;
-		return getId() == that.getId();
+		return id == that.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId());
-	}
-
-	@Override
-	public String toString() {
-		return "BaseEntity{" +
-				"id=" + id +
-				'}';
+		return Objects.hash(id);
 	}
 }
