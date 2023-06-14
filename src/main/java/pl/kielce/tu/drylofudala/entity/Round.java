@@ -52,19 +52,18 @@ public class Round extends BaseEntity {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (!(o instanceof final Round round)) {
 			return false;
 		}
 		if (!super.equals(o)) {
 			return false;
 		}
-		final Round round = (Round) o;
-		return Objects.equals(firstPlayerMeleeRow, round.firstPlayerMeleeRow) && Objects.equals(firstPlayerRangeRow, round.firstPlayerRangeRow) && Objects.equals(secondPlayerMeleeRow, round.secondPlayerMeleeRow) && Objects.equals(secondPlayerRangeRow, round.secondPlayerRangeRow);
+		return Objects.equals(getFirstPlayerMeleeRow(), round.getFirstPlayerMeleeRow()) && Objects.equals(getFirstPlayerRangeRow(), round.getFirstPlayerRangeRow()) && Objects.equals(getSecondPlayerMeleeRow(), round.getSecondPlayerMeleeRow()) && Objects.equals(getSecondPlayerRangeRow(), round.getSecondPlayerRangeRow());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), firstPlayerMeleeRow, firstPlayerRangeRow, secondPlayerMeleeRow, secondPlayerRangeRow);
+		return Objects.hash(super.hashCode(), getFirstPlayerMeleeRow(), getFirstPlayerRangeRow(), getSecondPlayerMeleeRow(), getSecondPlayerRangeRow());
 	}
 
 	@Override
