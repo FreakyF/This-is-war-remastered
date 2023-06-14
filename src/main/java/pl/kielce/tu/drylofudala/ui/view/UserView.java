@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -29,6 +31,9 @@ public class UserView implements IAuthView {
 	private IViewNavigationHandler navigationHandler;
 	private UiComponentCreator uiComponentCreator;
 	private MainWindow parentWindow;
+	private JPanel view;
+	private JTextField ipTextField;
+	private JTextField portTextField;
 
 	@Override
 	public String getViewName() {
@@ -44,7 +49,7 @@ public class UserView implements IAuthView {
 	}
 
 	private JPanel initializeView() {
-		final JPanel view = new JPanel(new BorderLayout());
+		view = new JPanel(new BorderLayout());
 
 		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
@@ -123,7 +128,7 @@ public class UserView implements IAuthView {
 
 		final JButton connectButton = uiComponentCreator.createButton(UiResource.BUTTON_CONNECT_TEXT);
 		// TODO: Implement check if the server on the IP and PORT provided by user exists.
-		connectButton.addActionListener(navigationHandler.navigateToGameView(parentWindow));
+		connectButton.addActionListener(onLoginButtonClicked());
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		inputPanel.add(connectButton, gbc);
@@ -138,6 +143,7 @@ public class UserView implements IAuthView {
 		textField.setPreferredSize(new Dimension(300, 100));
 		textField.setFont(UiConfig.COPYRIGHT_FONT);
 		textField.setBorder(null);
+		portTextField = textField;
 
 		((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
@@ -153,12 +159,42 @@ public class UserView implements IAuthView {
 		textField.setPreferredSize(new Dimension(300, 100));
 		textField.setFont(UiConfig.COPYRIGHT_FONT);
 		textField.setBorder(null);
+		ipTextField = textField;
 
 		((AbstractDocument) textField.getDocument()).setDocumentFilter(new NumberAndDotOnlyFilter());
 
 		textField.setText("127.0.0.1");
 
 		return textField;
+	}
+
+	private ActionListener onLoginButtonClicked() {
+		return e -> {
+			final String enteredIP = ipTextField.getText();
+			final String enteredPort = portTextField.getText();
+			// TODO: Create a ServerConfig class with SERVER_IP and SERVER_PORT fields;
+			final String serverIP = "127.0.0.1";
+			final int serverPort = 8000;
+
+			final boolean ipMatch = serverIP.equals(enteredIP);
+			final boolean portMatch = Integer.toString(serverPort).equals(enteredPort);
+
+			if (ipMatch && portMatch) {
+				navigationHandler.navigateToGameView(parentWindow).actionPerformed(e);
+				return;
+			}
+
+			final String errorMessage;
+			if (!ipMatch && !portMatch) {
+				errorMessage = "Incorrect IP address and port!";
+			} else if (!ipMatch) {
+				errorMessage = "Incorrect IP address";
+			} else {
+				errorMessage = "Incorrect port!";
+			}
+
+			JOptionPane.showMessageDialog(view, errorMessage);
+		};
 	}
 
 	private static class NumberAndDotOnlyFilter extends DocumentFilter {
