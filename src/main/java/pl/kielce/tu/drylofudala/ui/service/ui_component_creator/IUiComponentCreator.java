@@ -2,6 +2,7 @@ package pl.kielce.tu.drylofudala.ui.service.ui_component_creator;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 
@@ -10,9 +11,9 @@ public interface IUiComponentCreator {
 
 	JButton createReturnButton();
 
-	ImagePanel createBackgroundPanel();
+	ImagePanel createBackgroundPanel(JFrame parentWindow);
 
-	ImagePanel createBoardBackgroundPanel();
+	ImagePanel createBoardBackgroundPanel(JFrame parentWindow);
 
 	JButton createButton(final String text, final int width, final int height);
 

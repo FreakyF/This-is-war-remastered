@@ -53,7 +53,7 @@ public class RegisterView implements IAuthView {
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -231,12 +231,18 @@ public class RegisterView implements IAuthView {
 				return;
 			}
 
-			final var password = Arrays.toString(passwordTextField.getPassword());
-			final var nicknameValidationResult = authenticationService.isNicknameValid(nicknameTextField.getText());
+			final StringBuilder passwordBuilder = new StringBuilder(passwordTextField.getPassword().length);
+			for (final char c : passwordTextField.getPassword()) {
+				passwordBuilder.append(c);
+			}
+			final var password = passwordBuilder.toString();
+
+			final var nickname = nicknameTextField.getText();
+			final var nicknameValidationResult = authenticationService.isNicknameValid(nickname);
 			final var passwordValidationResult = authenticationService.isPasswordValid(password);
 
 			if (nicknameValidationResult.valid() && passwordValidationResult.valid()) {
-				authenticationService.register(nicknameTextField.getText(), password);
+				authenticationService.register(nickname, password);
 				navigationHandler.navigateToLoginView(parentWindow).actionPerformed(e);
 				return;
 			}

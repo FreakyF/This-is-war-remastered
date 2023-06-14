@@ -40,7 +40,7 @@ public class GuestView implements IAuthView {
 	JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();

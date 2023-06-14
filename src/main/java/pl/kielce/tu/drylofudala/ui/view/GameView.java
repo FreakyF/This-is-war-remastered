@@ -43,7 +43,7 @@ public class GameView implements IView {
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -318,7 +318,7 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		// TODO: Change the cardPanels background for the correct one.
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		enemyMeleePanel.add(background, gbc);
@@ -335,7 +335,7 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		enemyRangedPanel.add(background, gbc);
@@ -386,7 +386,7 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerDeckPanel.add(background, gbc);
@@ -403,7 +403,7 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerRangedPanel.add(background, gbc);
@@ -420,7 +420,7 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		playerMeleePanel.add(background, gbc);

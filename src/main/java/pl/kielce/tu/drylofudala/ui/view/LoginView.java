@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,7 +50,7 @@ public class LoginView implements IAuthView {
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -215,7 +214,13 @@ public class LoginView implements IAuthView {
 	private ActionListener onLoginButtonClicked() {
 		return e -> {
 			final var nickname = nicknameTextField.getText();
-			final var password = Arrays.toString(passwordTextField.getPassword());
+
+			final StringBuilder passwordBuilder = new StringBuilder(passwordTextField.getPassword().length);
+			for (final char c : passwordTextField.getPassword()) {
+				passwordBuilder.append(c);
+			}
+			final var password = passwordBuilder.toString();
+
 			final var authResult = authenticationService.login(nickname, password);
 			if (authResult.authorized()) {
 				parentWindow.setLoggedInUserId(authResult.playerId());

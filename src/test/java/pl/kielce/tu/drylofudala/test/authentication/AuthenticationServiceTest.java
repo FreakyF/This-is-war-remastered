@@ -27,6 +27,33 @@ class AuthenticationServiceTest {
 	private IAuthenticationService authenticationService;
 	private IHasher hasher;
 
+	static Stream<Arguments> providePasswordsAndExpectedMessages() {
+		return Stream.of(
+				Arguments.of(
+						"short",
+						List.of(ValidationResult.PASSWORD_TOO_SHORT,
+								ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
+								ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
+								ValidationResult.PASSWORD_WITHOUT_NUMBER)
+				),
+				Arguments.of("Password123",
+						List.of(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
+				),
+				Arguments.of("Password@@@@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_NUMBER)
+				),
+				Arguments.of("password123@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
+				),
+				Arguments.of("PASSWORD123@",
+						List.of(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
+				),
+				Arguments.of(new String(new char[33]).replace("\0", "A") + "a123@",
+						List.of(ValidationResult.PASSWORD_TOO_LONG)
+				)
+		);
+	}
+
 	@BeforeEach
 	public void beforeEach() {
 		playerRepository = Mockito.mock(IPlayerRepository.class);
@@ -117,32 +144,5 @@ class AuthenticationServiceTest {
 		// then
 		assertThat(result.valid()).isTrue();
 		assertThat(result.messages()).isNull();
-	}
-
-	static Stream<Arguments> providePasswordsAndExpectedMessages() {
-		return Stream.of(
-				Arguments.of(
-						"short",
-						List.of(ValidationResult.PASSWORD_TOO_SHORT,
-								ValidationResult.PASSWORD_WITHOUT_UPPERCASE,
-								ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER,
-								ValidationResult.PASSWORD_WITHOUT_NUMBER)
-				),
-				Arguments.of("Password123",
-						List.of(ValidationResult.PASSWORD_WITHOUT_SPECIAL_CHARACTER)
-				),
-				Arguments.of("Password@@@@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_NUMBER)
-				),
-				Arguments.of("password123@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_UPPERCASE)
-				),
-				Arguments.of("PASSWORD123@",
-						List.of(ValidationResult.PASSWORD_WITHOUT_LOWERCASE)
-				),
-				Arguments.of(new String(new char[33]).replace("\0", "A") + "a123@",
-						List.of(ValidationResult.PASSWORD_TOO_LONG)
-				)
-		);
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
@@ -20,14 +21,14 @@ public class UiComponentCreator implements IUiComponentCreator {
 		this.resourceRepository = resourceRepository;
 	}
 
-	public ImagePanel createBackgroundPanel() {
+	public ImagePanel createBackgroundPanel(final JFrame parentWindow) {
 		final var bgImage = resourceRepository.getImageFromPath(UiResource.VIEW_BACKGROUND_IMAGE_PATH);
-		return new ImagePanel(bgImage);
+		return new ImagePanel(bgImage, parentWindow);
 	}
 
-	public ImagePanel createBoardBackgroundPanel() {
+	public ImagePanel createBoardBackgroundPanel(final JFrame parentWindow) {
 		final var bgImage = resourceRepository.getImageFromPath(UiResource.BOARD_BACKGROUND_IMAGE_PATH);
-		return new ImagePanel(bgImage);
+		return new ImagePanel(bgImage, parentWindow);
 	}
 
 	public JButton createButton(final String text, final int width, final int height) {
