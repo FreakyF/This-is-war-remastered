@@ -28,20 +28,20 @@ class AuthenticationServiceTest {
 	private IHasher hasher;
 
 	@BeforeEach
-	public void setUp() {
+	public void beforeEach() {
 		playerRepository = Mockito.mock(IPlayerRepository.class);
 		hasher = Mockito.mock(IHasher.class);
 		authenticationService = new AuthenticationService(playerRepository, hasher);
 	}
 
 	@Test
-	void register_when_nicknameIsAlreadyTaken_then_returnsRegistrationResult_with_NICKNAME_ALREADY_TAKEN_type() {
+	void testRegisterWithTakenNickname_ReturnsResultWithNicknameAlreadyTaken() {
 		// given
-		String nickname = "ExistingNickname";
+		final String nickname = "ExistingNickname";
 		when(playerRepository.isNicknameTaken(nickname)).thenReturn(true);
 
 		// when
-		RegistrationResult result = authenticationService.register(nickname, "");
+		final RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
 		assertThat(result.success()).isFalse();
@@ -50,13 +50,13 @@ class AuthenticationServiceTest {
 	}
 
 	@Test
-	void register_when_playerWithGivenNicknameDoesNotExists_then_returnsRegistrationResult_with_SUCCESS_type() {
+	void testRegisterWithNewNickname_ReturnsSuccessfulResult() {
 		// given
-		String nickname = "NewNickname";
+		final String nickname = "NewNickname";
 		when(playerRepository.isNicknameTaken(nickname)).thenReturn(false);
 
 		// when
-		RegistrationResult result = authenticationService.register(nickname, "");
+		final RegistrationResult result = authenticationService.register(nickname, "");
 
 		// then
 		assertThat(result.success()).isTrue();
@@ -66,9 +66,9 @@ class AuthenticationServiceTest {
 
 	@ParameterizedTest
 	@MethodSource("providePasswordsAndExpectedMessages")
-	void isPasswordValid_when_InvalidPasswordGiven_Returns_validValidationResult(String password, List<String> expectedMessages) {
+	void testPasswordValidityWithInvalidPasswords_ReturnsExpectedValidationMessages(final String password, final List<String> expectedMessages) {
 		// when
-		ValidationResult result = authenticationService.isPasswordValid(password);
+		final ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
 		assertThat(result.valid()).isFalse();
@@ -78,12 +78,12 @@ class AuthenticationServiceTest {
 	}
 
 	@Test
-	void isPasswordValid_whenValidPasswordGiven_Returns_ValidationResult_with_emptyMessages() {
+	void testPasswordValidityWithValidPassword_ReturnsValidationResultWithEmptyMessages() {
 		// given
 		final String password = "Password123@";
 
 		// when
-		ValidationResult result = authenticationService.isPasswordValid(password);
+		final ValidationResult result = authenticationService.isPasswordValid(password);
 
 		// then
 		assertThat(result.valid()).isTrue();
@@ -91,12 +91,12 @@ class AuthenticationServiceTest {
 	}
 
 	@Test
-	void isNicknameValid_when_tooShortNicknameGiven_returns_ValidationResult_with_NICKNAME_TOO_SHORT_message() {
+	void testNicknameValidityWithShortNickname_ReturnsResultWithTooShortMessage() {
 		// given
-		String nickname = "ab";
+		final String nickname = "ab";
 
 		// when
-		ValidationResult result = authenticationService.isNicknameValid(nickname);
+		final ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
 		assertThat(result.valid()).isFalse();
@@ -107,12 +107,12 @@ class AuthenticationServiceTest {
 	}
 
 	@Test
-	void isNicknameValid_when_TooLongNicknameGiven_Returns_ValidationResult_with_NICKNAME_TOO_LONG_message() {
+	void testNicknameValidityWithLongNickname_ReturnsSuccessfulResult() {
 		// given
-		String nickname = "ValidNick";
+		final String nickname = "ValidNick";
 
 		// when
-		ValidationResult result = authenticationService.isNicknameValid(nickname);
+		final ValidationResult result = authenticationService.isNicknameValid(nickname);
 
 		// then
 		assertThat(result.valid()).isTrue();

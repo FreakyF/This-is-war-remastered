@@ -1,6 +1,6 @@
 package pl.kielce.tu.drylofudala.authentication;
 
-public class AuthenticationConfig {
+public final class AuthenticationConfig {
 	public static final int ITERATIONS = 10;
 	public static final int MEMORY = 65536;
 	public static final int HASHED_PASSWORD_LENGTH = 64;
