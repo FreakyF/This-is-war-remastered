@@ -5,9 +5,7 @@ import java.awt.Font;
 public final class UiConfig {
 	public static final String FONT_FAMILY = "Comic Sans MS";
 	public static final Font COPYRIGHT_FONT = new Font(FONT_FAMILY, Font.PLAIN, 24);
-
 	public static final Font TITLE_FONT = new Font(FONT_FAMILY, Font.PLAIN, 72);
-
 	public static final Font BUTTON_FONT = new Font(FONT_FAMILY, Font.PLAIN, 56);
 	public static final Font BUTTON_RETURN_FONT = new Font(FONT_FAMILY, Font.PLAIN, 20);
 	public static final int WINDOW_MIN_WIDTH = 1920;
