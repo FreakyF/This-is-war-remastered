@@ -18,7 +18,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
-import pl.kielce.tu.drylofudala.system.GameServer;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
@@ -174,7 +173,7 @@ public class UserView implements IAuthView {
 			final String enteredIP = ipTextField.getText();
 			final String enteredPort = portTextField.getText();
 			final String serverIP = "127.0.0.1";
-			final int serverPort = GameServer.DEFAULT_PORT;
+			final int serverPort = 8000;
 
 			final boolean ipMatch = serverIP.equals(enteredIP);
 			final boolean portMatch = Integer.toString(serverPort).equals(enteredPort);
