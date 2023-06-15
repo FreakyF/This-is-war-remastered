@@ -6,8 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 
 public class Server extends Thread {
+	private static final Logger logger = LogManager.getLogger(Server.class);
 	private final int port;
 	private ServerSocket socket;
 	private Socket firstPlayerSocket;
@@ -19,6 +23,10 @@ public class Server extends Thread {
 
 	public Server(final int port) {
 		this.port = port;
+	}
+
+	public int getPort() {
+		return port;
 	}
 
 	@Override
@@ -38,6 +46,31 @@ public class Server extends Thread {
 
 			while (true) {
 				// TODO: Implement gameplay
+				if (firstPlayerTurn) {
+					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);
+					logger.debug("{}", Prompt.YOUR_TURN);
+
+					sendMessage(secondPlayerWriter, Prompt.OPPONENT_TURN);
+					logger.debug("{}", Prompt.OPPONENT_TURN);
+				} else {
+					sendMessage(secondPlayerWriter, Prompt.YOUR_TURN);
+					logger.debug("{}", Prompt.YOUR_TURN);
+
+					sendMessage(firstPlayerWriter, Prompt.OPPONENT_TURN);
+					logger.debug("{}", Prompt.OPPONENT_TURN);
+				}
+
+				final String message = firstPlayerTurn ? receiveMessage(firstPlayerReader) : receiveMessage(secondPlayerReader);
+				logger.debug("message: {}", message);
+
+				if (firstPlayerTurn) {
+					sendMessage(firstPlayerWriter, Prompt.SEND_OPPONENT_MOVE);
+					sendMessage(secondPlayerWriter, message);
+				} else {
+					sendMessage(firstPlayerWriter, message);
+					sendMessage(secondPlayerWriter, Prompt.SEND_OPPONENT_MOVE);
+				}
+
 				firstPlayerTurn = !firstPlayerTurn;
 			}
 
