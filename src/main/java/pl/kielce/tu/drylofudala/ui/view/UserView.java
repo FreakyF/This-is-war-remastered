@@ -183,6 +183,8 @@ public class UserView implements IAuthView {
 				return;
 			}
 
+			// TODO: Create new client and start it.
+
 			final String errorMessage;
 			if (!ipMatch && !portMatch) {
 				errorMessage = "Incorrect IP address and port!";
