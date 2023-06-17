@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.CardLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
@@ -29,7 +30,7 @@ public class GameView implements IView {
 		this.uiComponentCreator = uiComponentCreator;
 	}
 
-	private void addCardLabels(final List<JLabel> cardLabels, final ImagePanel background) {
+	private void addCardLabels(final List<CardLabel> cardLabels, final ImagePanel background) {
 		final GridBagConstraints cardLabelConstraints = new GridBagConstraints();
 		cardLabelConstraints.fill = GridBagConstraints.NONE;
 		cardLabelConstraints.weightx = 1;

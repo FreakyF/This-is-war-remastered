@@ -12,13 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import pl.kielce.tu.drylofudala.entity.Card;
 import pl.kielce.tu.drylofudala.persistance.repository.card.ICardRepository;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.CardLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 
 public class UiComponentCreator implements IUiComponentCreator {
@@ -36,17 +36,9 @@ public class UiComponentCreator implements IUiComponentCreator {
 		this.mainWindow = mainWindow;
 	}
 
-	@NotNull
-	private static JLabel createLabelForCard(final Card card, final Image cardImg) {
-		final ImageIcon cardIcon = new ImageIcon(cardImg);
-		final JLabel cardLabel = new JLabel(cardIcon);
-		cardLabel.setToolTipText(card.getName() + " - " + card.getPoints() + " points");
-		return cardLabel;
-	}
-
-	public List<JLabel> createCardLabels() {
+	public List<CardLabel> createCardLabels() {
 		final var cardsList = cardRepository.findAll().stream().toList();
-		final List<JLabel> cardLabels = new ArrayList<>();
+		final List<CardLabel> cardLabels = new ArrayList<>();
 		for (final Card card : cardsList) {
 			final var pathToCardImg = card.getImageFileName();
 			final Image cardImg = resourceRepository.getImageFromPath(pathToCardImg);
@@ -54,7 +46,7 @@ public class UiComponentCreator implements IUiComponentCreator {
 				logger.debug("Card {} not found", pathToCardImg);
 				continue;
 			}
-			final var cardLabel = createLabelForCard(card, cardImg);
+			final var cardLabel = new CardLabel(card, cardImg, mainWindow);
 			cardLabels.add(cardLabel);
 		}
 		return cardLabels;

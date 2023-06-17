@@ -4,10 +4,11 @@ import java.awt.Font;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import pl.kielce.tu.drylofudala.ui.model.CardLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 
 public interface IUiComponentCreator {
-	List<JLabel> createCardLabels();
+	List<CardLabel> createCardLabels();
 
 	JButton createButton(final String text);
 
