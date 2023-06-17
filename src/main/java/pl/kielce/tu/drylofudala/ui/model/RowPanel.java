@@ -1,4 +1,4 @@
-package pl.kielce.tu.drylofudala.ui.view.game;
+package pl.kielce.tu.drylofudala.ui.model;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import pl.kielce.tu.drylofudala.entity.Card;
 import pl.kielce.tu.drylofudala.persistance.repository.card.ICardRepository;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
-import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 
 public class RowPanel extends JPanel {
 	private static final Logger logger = LogManager.getLogger(RowPanel.class);
