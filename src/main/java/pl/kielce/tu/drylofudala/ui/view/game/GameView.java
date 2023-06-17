@@ -6,12 +6,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
@@ -23,11 +23,24 @@ public class GameView implements IView {
 	private static final String NAME = "Game";
 	private final IUiComponentCreator uiComponentCreator;
 	private IViewNavigationHandler navigationHandler;
-	private MainWindow parentWindow;
 	private JPanel view;
 
 	public GameView(final IUiComponentCreator uiComponentCreator) {
 		this.uiComponentCreator = uiComponentCreator;
+	}
+
+	private void addCardLabels(final List<JLabel> cardLabels, final ImagePanel background) {
+		final GridBagConstraints cardLabelConstraints = new GridBagConstraints();
+		cardLabelConstraints.fill = GridBagConstraints.NONE;
+		cardLabelConstraints.weightx = 1;
+		cardLabelConstraints.weighty = 1;
+		int cardIndex = 0;
+		for (final JLabel cardLabel : cardLabels) {
+			cardLabelConstraints.gridx = cardIndex;
+			cardLabelConstraints.gridy = 0;
+			background.add(cardLabel, cardLabelConstraints);
+			cardIndex++;
+		}
 	}
 
 	@Override
@@ -37,7 +50,6 @@ public class GameView implements IView {
 
 	@Override
 	public JPanel createView(final IViewNavigationHandler navigationHandler) {
-		parentWindow = parentWindow;
 		this.navigationHandler = navigationHandler;
 		return initializeView();
 	}
@@ -320,10 +332,12 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		// TODO: Change the cardPanels background for the correct one.
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final var cardLabels = uiComponentCreator.createCardLabels();
+		final var bgPanel = uiComponentCreator.createBoardBackgroundPanel();
+		addCardLabels(cardLabels, bgPanel);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		enemyMeleePanel.add(background, gbc);
+		enemyMeleePanel.add(bgPanel, gbc);
 
 		enemyMeleePanel.setOpaque(false);
 		enemyMeleePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
@@ -337,10 +351,12 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final var cardLabels = uiComponentCreator.createCardLabels();
+		final var bgPanel = uiComponentCreator.createBoardBackgroundPanel();
+		addCardLabels(cardLabels, bgPanel);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		enemyRangedPanel.add(background, gbc);
+		enemyRangedPanel.add(bgPanel, gbc);
 
 		enemyRangedPanel.setOpaque(false);
 		enemyRangedPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
@@ -388,10 +404,14 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final var cardLabels = uiComponentCreator.createCardLabels();
+		final var bgPanel = uiComponentCreator.createBoardBackgroundPanel();
+		addCardLabels(cardLabels, bgPanel);
+
 		gbc.weightx = 1;
-		gbc.weighty = 1;
-		playerDeckPanel.add(background, gbc);
+		gbc.weighty = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		playerDeckPanel.add(bgPanel, gbc);
 
 		playerDeckPanel.setOpaque(false);
 		playerDeckPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
@@ -405,10 +425,13 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final var cardLabels = uiComponentCreator.createCardLabels();
+		final var bgPanel = uiComponentCreator.createBoardBackgroundPanel();
+		addCardLabels(cardLabels, bgPanel);
+
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		playerRangedPanel.add(background, gbc);
+		playerRangedPanel.add(bgPanel, gbc);
 
 		playerRangedPanel.setOpaque(false);
 		playerRangedPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
@@ -422,10 +445,12 @@ public class GameView implements IView {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 
-		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		final var cardLabels = uiComponentCreator.createCardLabels();
+		final var bgPanel = uiComponentCreator.createBoardBackgroundPanel();
+		addCardLabels(cardLabels, bgPanel);
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		playerMeleePanel.add(background, gbc);
+		playerMeleePanel.add(bgPanel, gbc);
 
 		playerMeleePanel.setOpaque(false);
 		playerMeleePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
