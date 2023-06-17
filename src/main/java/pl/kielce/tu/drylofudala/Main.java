@@ -20,11 +20,11 @@ import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
 public final class Main {
 	private static final Logger logger = LogManager.getLogger(Main.class);
 	private static final IResourceRepository resourceRepository = new ResourceRepository();
-	private static final IViewFactory viewFactory = new ViewFactory();
 	private static final IPlayerRepository playerRepository = new PlayerRepository();
 	private static final IHasher hasher = new Hasher();
 	private static final IAuthenticationService authenticationService = new AuthenticationService(playerRepository, hasher);
 	private static final ICardRepository cardRepository = new CardRepository();
+	private static final IViewFactory viewFactory = new ViewFactory(cardRepository);
 
 	public static void main(final String[] args) {
 		new DatabaseSeeder(cardRepository).seedCards();
