@@ -9,8 +9,7 @@ public record CardResource(String imageFilePath, int points, PositionType positi
 	}
 
 	private String getCardName(final String cardResourceName) {
-		final var cardNameWithFileExtension = cardResourceName.replace("grafika\\\\card_", "");
-		return cardNameWithFileExtension.substring(0, cardNameWithFileExtension.lastIndexOf('.'));
+		return cardResourceName.split("_")[1];
 	}
 
 	@Override
