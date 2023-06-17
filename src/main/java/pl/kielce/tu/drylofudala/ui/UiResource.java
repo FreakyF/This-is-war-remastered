@@ -17,7 +17,8 @@ public final class UiResource {
 	public static final String BUTTON_RETURN_SYMBOL = "<-";
 	public static final String INPUT_LABEL_NICKNAME = "Nickname";
 	public static final String INPUT_LABEL_PASSWORD = "Password";
-	private static final String GRAPHICS_FOLDER = "graphics";
+	public static final String GRAPHICS_FOLDER = "graphics";
+	public static final String CARDS_FOLDER = "cards";
 	private static final String UI_FOLDER = "UI";
 	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();
 	public static final String BOARD_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();

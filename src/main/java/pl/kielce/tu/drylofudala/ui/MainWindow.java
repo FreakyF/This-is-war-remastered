@@ -41,10 +41,14 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
 		setDefaultLookAndFeelDecorated(true);
 
-		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
+//		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
+		// TODO: Revert to guest view
+		final var gameView = viewFactory.getGameViewFactory().createView(this, viewNavigationHandler, resourceRepository);
 		initializeReturnButton();
 
-		add(guestView);
+		hideReturnButton();
+
+		add(gameView);
 		setVisible(true);
 	}
 
