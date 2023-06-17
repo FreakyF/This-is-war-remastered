@@ -298,15 +298,15 @@ public class GameView implements IView {
 		enemyBoardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 
 		final GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		final JPanel enemyRangedPanel = createRowPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 0.5;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(0, 200, 10, 200);
 		enemyBoardPanel.add(enemyRangedPanel, gbc);
 
 		final JPanel enemyMeleePanel = createRowPanel();
@@ -314,7 +314,8 @@ public class GameView implements IView {
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 0.5;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(0, 200, 10, 200);
 		enemyBoardPanel.add(enemyMeleePanel, gbc);
 
 		return enemyBoardPanel;
@@ -327,15 +328,15 @@ public class GameView implements IView {
 		playerBoardPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
 
 		final GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		final JPanel playerMeleePanel = createRowPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(10, 200, 0, 200);
 		playerBoardPanel.add(playerMeleePanel, gbc);
 
 		final JPanel playerRangedPanel = createRowPanel();
@@ -343,7 +344,9 @@ public class GameView implements IView {
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.ipady = -130;
+		gbc.insets = new Insets(10, 200, 0, 200);
 		playerBoardPanel.add(playerRangedPanel, gbc);
 
 		final JPanel playerDeckPanel = createRowPanel();
@@ -351,7 +354,9 @@ public class GameView implements IView {
 		gbc.gridy = 2;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.ipady = -130;
+		gbc.insets = new Insets(50, 250, 0, 250);
 		playerBoardPanel.add(playerDeckPanel, gbc);
 
 		return playerBoardPanel;

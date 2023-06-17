@@ -23,6 +23,7 @@ public final class UiResource {
 	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();
 	public static final String BOARD_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
 	public static final String BUTTON_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
+	public static final String ROW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
 
 	private UiResource() {
 	}
