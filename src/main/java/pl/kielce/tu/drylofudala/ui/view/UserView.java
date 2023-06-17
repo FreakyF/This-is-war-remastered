@@ -16,24 +16,26 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
-import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
-import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-public class UserView implements IAuthView {
+public class UserView implements IView {
 	private static final String NAME = "Menu";
-	private IViewNavigationHandler navigationHandler;
-	private UiComponentCreator uiComponentCreator;
+	private final IUiComponentCreator uiComponentCreator;
 	private MainWindow parentWindow;
 	private JPanel view;
 	private JTextField ipTextField;
 	private JTextField portTextField;
+	private IViewNavigationHandler navigationHandler;
+
+	public UserView(final IUiComponentCreator uiComponentCreator) {
+		this.uiComponentCreator = uiComponentCreator;
+	}
 
 	@Override
 	public String getViewName() {
@@ -41,17 +43,15 @@ public class UserView implements IAuthView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
-		this.parentWindow = parentWindow;
+	public JPanel createView(final IViewNavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -179,7 +179,7 @@ public class UserView implements IAuthView {
 			final boolean portMatch = Integer.toString(serverPort).equals(enteredPort);
 
 			if (ipMatch && portMatch) {
-				navigationHandler.navigateToGameView(parentWindow).actionPerformed(e);
+				navigationHandler.navigateToGameView().actionPerformed(e);
 				return;
 			}
 

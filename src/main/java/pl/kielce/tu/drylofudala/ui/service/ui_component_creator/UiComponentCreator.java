@@ -4,31 +4,46 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import pl.kielce.tu.drylofudala.entity.Card;
+import pl.kielce.tu.drylofudala.persistance.repository.card.ICardRepository;
 import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 
 public class UiComponentCreator implements IUiComponentCreator {
 	private final IResourceRepository resourceRepository;
+	private final ICardRepository cardRepository;
+	private final MainWindow mainWindow;
 
-	public UiComponentCreator(final IResourceRepository resourceRepository) {
+	public UiComponentCreator(final IResourceRepository resourceRepository,
+	                          final ICardRepository cardRepository,
+	                          final MainWindow mainWindow) {
 		this.resourceRepository = resourceRepository;
+		this.cardRepository = cardRepository;
+		this.mainWindow = mainWindow;
 	}
 
-	public ImagePanel createBackgroundPanel(final JFrame parentWindow) {
+	public List<JLabel> createCardLabels(final List<Card> cards) {
+		final var cardsList = cardRepository.findAll().stream().toList();
+		// TODO: Implement
+		return null;
+	}
+
+	public ImagePanel createBackgroundPanel() {
 		final var bgImage = resourceRepository.getImageFromPath(UiResource.VIEW_BACKGROUND_IMAGE_PATH);
-		return new ImagePanel(bgImage, parentWindow);
+		return new ImagePanel(bgImage, mainWindow);
 	}
 
-	public ImagePanel createBoardBackgroundPanel(final JFrame parentWindow) {
+	public ImagePanel createBoardBackgroundPanel() {
 		final var bgImage = resourceRepository.getImageFromPath(UiResource.BOARD_BACKGROUND_IMAGE_PATH);
-		return new ImagePanel(bgImage, parentWindow);
+		return new ImagePanel(bgImage, mainWindow);
 	}
 
 	public JButton createButton(final String text, final int width, final int height) {

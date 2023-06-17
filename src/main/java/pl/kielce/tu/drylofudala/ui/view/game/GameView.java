@@ -11,25 +11,24 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import pl.kielce.tu.drylofudala.persistance.repository.card.CardRepository;
-import pl.kielce.tu.drylofudala.persistance.repository.card.ICardRepository;
-import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
 import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class GameView implements IView {
 	private static final String NAME = "Game";
-	private UiComponentCreator uiComponentCreator;
-	private MainWindow parentWindow;
+	private final IUiComponentCreator uiComponentCreator;
 	private IViewNavigationHandler navigationHandler;
+	private MainWindow parentWindow;
 	private JPanel view;
-	private IResourceRepository resourceRepository;
-	private ICardRepository cardRepository;
+
+	public GameView(final IUiComponentCreator uiComponentCreator) {
+		this.uiComponentCreator = uiComponentCreator;
+	}
 
 	@Override
 	public String getViewName() {
@@ -37,19 +36,16 @@ public class GameView implements IView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
-		this.resourceRepository = resourceRepository;
-		cardRepository = new CardRepository();
-		this.parentWindow = parentWindow;
+	public JPanel createView(final IViewNavigationHandler navigationHandler) {
+		parentWindow = parentWindow;
 		this.navigationHandler = navigationHandler;
-		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -259,7 +255,7 @@ public class GameView implements IView {
 		gbc.weighty = 1;
 		menuPanel.add(exitButton, gbc);
 		// TODO: Implement auto-disconnect for the second player if one of them exits the game using the exitButton.
-		exitButton.addActionListener(navigationHandler.navigateToUserView(parentWindow));
+		exitButton.addActionListener(navigationHandler.navigateToUserView());
 
 		return menuPanel;
 	}
@@ -298,27 +294,58 @@ public class GameView implements IView {
 		enemyBoardPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 
 		final GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(10, 10, 10, 10);
 
-		final JPanel enemyRangedPanel = createRowPanel();
+		final JPanel enemyRangedPanel = createEnemyRangedPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 0.5;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(0, 200, 10, 200);
 		enemyBoardPanel.add(enemyRangedPanel, gbc);
 
-		final JPanel enemyMeleePanel = createRowPanel();
+		final JPanel enemyMeleePanel = createEnemyMeleePanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 0.5;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(0, 200, 10, 200);
 		enemyBoardPanel.add(enemyMeleePanel, gbc);
 
 		return enemyBoardPanel;
+	}
+
+	private JPanel createEnemyMeleePanel() {
+		final JPanel enemyMeleePanel = new JPanel(new GridBagLayout());
+
+		final GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		// TODO: Change the cardPanels background for the correct one.
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		enemyMeleePanel.add(background, gbc);
+
+		enemyMeleePanel.setOpaque(false);
+		enemyMeleePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+		return enemyMeleePanel;
+	}
+
+	private JPanel createEnemyRangedPanel() {
+		final JPanel enemyRangedPanel = new JPanel(new GridBagLayout());
+
+		final GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		enemyRangedPanel.add(background, gbc);
+
+		enemyRangedPanel.setOpaque(false);
+		enemyRangedPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+		return enemyRangedPanel;
 	}
 
 	private JPanel createPlayerBoardPanel() {
@@ -328,43 +355,82 @@ public class GameView implements IView {
 		playerBoardPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
 
 		final GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(10, 10, 10, 10);
 
-		final JPanel playerMeleePanel = createRowPanel();
+		final JPanel playerMeleePanel = createPlayerMeleePanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.insets = new Insets(10, 200, 0, 200);
 		playerBoardPanel.add(playerMeleePanel, gbc);
 
-		final JPanel playerRangedPanel = createRowPanel();
+		final JPanel playerRangedPanel = createPlayerRangedPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.ipady = -130;
-		gbc.insets = new Insets(10, 200, 0, 200);
 		playerBoardPanel.add(playerRangedPanel, gbc);
 
-		final JPanel playerDeckPanel = createRowPanel();
+		final JPanel playerDeckPanel = createPlayerDeckPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weightx = 1;
 		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.ipady = -130;
-		gbc.insets = new Insets(50, 250, 0, 250);
 		playerBoardPanel.add(playerDeckPanel, gbc);
 
 		return playerBoardPanel;
 	}
 
-	private JPanel createRowPanel() {
-		final var bgImage = uiComponentCreator.createBoardBackgroundPanel(parentWindow);
-		return new RowPanel(cardRepository, resourceRepository, bgImage);
+	private JPanel createPlayerDeckPanel() {
+		final JPanel playerDeckPanel = new JPanel(new GridBagLayout());
+
+		final GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		playerDeckPanel.add(background, gbc);
+
+		playerDeckPanel.setOpaque(false);
+		playerDeckPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+		return playerDeckPanel;
+	}
+
+	private JPanel createPlayerRangedPanel() {
+		final JPanel playerRangedPanel = new JPanel(new GridBagLayout());
+
+		final GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		playerRangedPanel.add(background, gbc);
+
+		playerRangedPanel.setOpaque(false);
+		playerRangedPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+		return playerRangedPanel;
+	}
+
+	private JPanel createPlayerMeleePanel() {
+		final JPanel playerMeleePanel = new JPanel(new GridBagLayout());
+
+		final GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
+		final ImagePanel background = uiComponentCreator.createBoardBackgroundPanel();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		playerMeleePanel.add(background, gbc);
+
+		playerMeleePanel.setOpaque(false);
+		playerMeleePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
+		return playerMeleePanel;
 	}
 
 	private ActionListener onPassTurnButtonClicked() {

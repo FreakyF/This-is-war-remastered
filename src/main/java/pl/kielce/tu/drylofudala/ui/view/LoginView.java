@@ -14,24 +14,27 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
-import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
-import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-public class LoginView implements IAuthView {
+public class LoginView implements IView {
 	private static final String NAME = "Login";
+	private final IUiComponentCreator uiComponentCreator;
+	private final IAuthenticationService authenticationService;
 	private IViewNavigationHandler navigationHandler;
-	private UiComponentCreator uiComponentCreator;
-	private IAuthenticationService authenticationService;
 	private JPanel view;
-	private MainWindow parentWindow;
 	private JTextField nicknameTextField;
 	private JPasswordField passwordTextField;
+
+	public LoginView(final IUiComponentCreator uiComponentCreator,
+	                 final IAuthenticationService authenticationService) {
+		this.uiComponentCreator = uiComponentCreator;
+		this.authenticationService = authenticationService;
+	}
 
 	@Override
 	public String getViewName() {
@@ -39,18 +42,15 @@ public class LoginView implements IAuthView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
-		this.parentWindow = parentWindow;
-		this.authenticationService = authenticationService;
+	public JPanel createView(final IViewNavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-		uiComponentCreator = new UiComponentCreator(resourceRepository);
 		return initializeView();
 	}
 
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -223,8 +223,8 @@ public class LoginView implements IAuthView {
 
 			final var authResult = authenticationService.login(nickname, password);
 			if (authResult.authorized()) {
-				parentWindow.setLoggedInUserId(authResult.playerId());
-				navigationHandler.navigateToUserView(parentWindow).actionPerformed(e);
+				navigationHandler.getMainWindow().setLoggedInUserId(authResult.playerId());
+				navigationHandler.navigateToUserView().actionPerformed(e);
 				return;
 			}
 

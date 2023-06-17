@@ -6,30 +6,31 @@ import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
-import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
+import pl.kielce.tu.drylofudala.persistance.repository.card.CardRepository;
+import pl.kielce.tu.drylofudala.persistance.repository.card.ICardRepository;
+import pl.kielce.tu.drylofudala.persistance.resource.ResourceRepository;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.ViewNavigationHandler;
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
+import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
 
 public class MainWindow extends JFrame {
-	private final transient IAuthenticationService authenticationService;
-	private final transient IResourceRepository resourceRepository;
-	private final transient IViewFactory viewFactory;
 	private final transient IViewNavigationHandler viewNavigationHandler;
-	private final transient IUiComponentCreator componentCreator;
+	private final transient IViewFactory viewFactory;
+	private final transient IUiComponentCreator uiComponentCreator;
+	private final transient ICardRepository cardRepository;
+
 	private long loggedInUserId;
 	private JButton returnButton;
 
-	public MainWindow(final IAuthenticationService authenticationService, final IViewFactory viewFactory, final IResourceRepository resourceRepository) {
-		this.resourceRepository = resourceRepository;
-		this.viewFactory = viewFactory;
-		viewNavigationHandler = new ViewNavigationHandler(this, authenticationService, viewFactory, resourceRepository);
-		componentCreator = new UiComponentCreator(resourceRepository);
+	public MainWindow() {
+		cardRepository = new CardRepository();
+		uiComponentCreator = new UiComponentCreator(new ResourceRepository(), cardRepository, this);
+		viewFactory = new ViewFactory(uiComponentCreator);
+		viewNavigationHandler = new ViewNavigationHandler(this, viewFactory);
 		initializeWindow();
-		this.authenticationService = authenticationService;
 	}
 
 	private void initializeWindow() {
@@ -43,7 +44,7 @@ public class MainWindow extends JFrame {
 
 //		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
 		// TODO: Revert to guest view
-		final var gameView = viewFactory.getGameViewFactory().createView(this, viewNavigationHandler, resourceRepository);
+		final var gameView = viewFactory.getGameViewFactory().createView(viewNavigationHandler);
 		initializeReturnButton();
 
 		hideReturnButton();
@@ -53,8 +54,8 @@ public class MainWindow extends JFrame {
 	}
 
 	private void initializeReturnButton() {
-		returnButton = componentCreator.createReturnButton();
-		returnButton.addActionListener(viewNavigationHandler.exitGame(this));
+		returnButton = uiComponentCreator.createReturnButton();
+		returnButton.addActionListener(viewNavigationHandler.exitGame());
 
 		final var glass = (JPanel) getGlassPane();
 		glass.setVisible(true);

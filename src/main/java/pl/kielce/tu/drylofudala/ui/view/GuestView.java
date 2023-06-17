@@ -7,21 +7,21 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import pl.kielce.tu.drylofudala.authentication.service.IAuthenticationService;
-import pl.kielce.tu.drylofudala.persistance.resource.IResourceRepository;
-import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
-import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
-import pl.kielce.tu.drylofudala.ui.view.factory.IAuthView;
+import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCreator;
+import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
-public class GuestView implements IAuthView {
+public class GuestView implements IView {
 	private static final String NAME = "Guest";
-	private IViewNavigationHandler navigationHandler;
-	private UiComponentCreator uiComponentCreator;
-	private MainWindow parentWindow;
+	private final IUiComponentCreator uiComponentCreator;
+	private IViewNavigationHandler viewNavigationHandler;
+
+	public GuestView(final IUiComponentCreator uiComponentCreator) {
+		this.uiComponentCreator = uiComponentCreator;
+	}
 
 	@Override
 	public String getViewName() {
@@ -29,18 +29,16 @@ public class GuestView implements IAuthView {
 	}
 
 	@Override
-	public JPanel createView(final MainWindow parentWindow, final IAuthenticationService authenticationService, final IViewNavigationHandler navigationHandler, final IResourceRepository resourceRepository) {
-		this.parentWindow = parentWindow;
-		this.navigationHandler = navigationHandler;
-		uiComponentCreator = new UiComponentCreator(resourceRepository);
-		parentWindow.getGlassPane().setVisible(false);
+	public JPanel createView(final IViewNavigationHandler viewNavigationHandler) {
+		this.viewNavigationHandler = viewNavigationHandler;
+		viewNavigationHandler.getMainWindow().hideReturnButton();
 		return initializeView();
 	}
 
 	JPanel initializeView() {
 		final JPanel view = new JPanel(new BorderLayout());
 
-		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel(parentWindow);
+		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		view.add(backgroundPanel);
 
 		final JPanel contentPanel = createContentPanel();
@@ -79,13 +77,13 @@ public class GuestView implements IAuthView {
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		final JButton loginButton = uiComponentCreator.createButton(UiResource.BUTTON_LOGIN_TEXT);
-		loginButton.addActionListener(navigationHandler.navigateToLoginView(parentWindow));
+		loginButton.addActionListener(viewNavigationHandler.navigateToLoginView());
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		inputPanel.add(loginButton, gbc);
 
 		final JButton registerButton = uiComponentCreator.createButton(UiResource.BUTTON_REGISTER_TEXT);
-		registerButton.addActionListener(navigationHandler.navigateToRegisterView(parentWindow));
+		registerButton.addActionListener(viewNavigationHandler.navigateToRegisterView());
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		inputPanel.add(registerButton, gbc);

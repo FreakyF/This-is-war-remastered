@@ -29,7 +29,8 @@ public class AuthenticationService implements IAuthenticationService {
 	private final IPlayerRepository playerRepository;
 	private final IHasher hasher;
 
-	public AuthenticationService(final IPlayerRepository playerRepository, final IHasher hasher) {
+	public AuthenticationService(final IPlayerRepository playerRepository,
+	                             final IHasher hasher) {
 		this.playerRepository = playerRepository;
 		this.hasher = hasher;
 	}
