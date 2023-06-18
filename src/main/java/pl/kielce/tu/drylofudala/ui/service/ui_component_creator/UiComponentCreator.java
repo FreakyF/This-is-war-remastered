@@ -52,13 +52,23 @@ public class UiComponentCreator implements IUiComponentCreator {
 		return cardLabels;
 	}
 
+	@Override
+	public Image createPlayerRowBackgroundImage() {
+		return resourceRepository.getImageFromPath(UiResource.PLAYER_ROW_BACKGROUND_IMAGE_PATH);
+	}
+
+	@Override
+	public Image createEnemyRowBackgroundImage() {
+		return resourceRepository.getImageFromPath(UiResource.ENEMY_ROW_BACKGROUND_IMAGE_PATH);
+	}
+
 	public ImagePanel createBackgroundPanel() {
 		final var bgImage = resourceRepository.getImageFromPath(UiResource.VIEW_BACKGROUND_IMAGE_PATH);
 		return new ImagePanel(bgImage, mainWindow);
 	}
 
-	public ImagePanel createBoardBackgroundPanel() {
-		final var bgImage = resourceRepository.getImageFromPath(UiResource.BOARD_BACKGROUND_IMAGE_PATH);
+	public ImagePanel createRowBackgroundPanel() {
+		final var bgImage = resourceRepository.getImageFromPath(UiResource.PLAYER_ROW_BACKGROUND_IMAGE_PATH);
 		return new ImagePanel(bgImage, mainWindow);
 	}
 

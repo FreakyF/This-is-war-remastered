@@ -21,9 +21,9 @@ public final class UiResource {
 	public static final String CARDS_FOLDER = "cards";
 	private static final String UI_FOLDER = "UI";
 	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();
-	public static final String BOARD_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
-	public static final String BUTTON_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
-	public static final String ROW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "HandPanel.png").toString();
+	public static final String PLAYER_ROW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "playerRowPanelBackground.png").toString();
+	public static final String ENEMY_ROW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "enemyRowPanelBackground.png").toString();
+	public static final String BUTTON_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "buttonBackground.png").toString();
 
 	private UiResource() {
 	}
