@@ -27,6 +27,14 @@ public class RowPanel extends JPanel {
 
 	public void addCard(final CardLabel card) {
 		add(card);
+		revalidate();
+		repaint();
+	}
+
+	public void removeCard(final CardLabel card) {
+		remove(card);
+		revalidate();
+		repaint();
 	}
 
 	@Override

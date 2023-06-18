@@ -30,7 +30,7 @@ public class Card extends BaseEntity {
 		return name;
 	}
 
-	public PositionType getType() {
+	public PositionType getPositionType() {
 		return type;
 	}
 

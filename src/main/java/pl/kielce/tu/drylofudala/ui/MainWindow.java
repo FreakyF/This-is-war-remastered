@@ -15,6 +15,7 @@ import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCrea
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
+import pl.kielce.tu.drylofudala.ui.view.game.GameView;
 
 public class MainWindow extends JFrame {
 	private final transient IViewNavigationHandler viewNavigationHandler;
@@ -44,8 +45,10 @@ public class MainWindow extends JFrame {
 
 //		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
 		// TODO: Revert to guest view
-		final var gameView = viewFactory.getGameViewFactory().createView(viewNavigationHandler);
+		final var gameViewFactory = viewFactory.getGameViewFactory();
 		initializeReturnButton();
+		((GameView) gameViewFactory).initializeGame("Kamil", "Karol", false, null, null, null);
+		final var gameView = gameViewFactory.createView(viewNavigationHandler);
 
 		hideReturnButton();
 

@@ -1,6 +1,7 @@
 package pl.kielce.tu.drylofudala.ui.view.game;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
+import pl.kielce.tu.drylofudala.ui.model.CardLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.model.RowPanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
@@ -19,6 +21,7 @@ public class GameView implements IView {
 	private static final String STRING_FORMAT_PATTERN_STRING_NUMBER = "%s %d";
 	private static final String STRING_FORMAT_PATTERN_STRING_STRING = "%s %s";
 	private final IUiComponentCreator uiComponentCreator;
+	private final JPanel view;
 	private IViewNavigationHandler navigationHandler;
 	private JLabel turnLabel;
 	private JLabel playerLivesLabel;
@@ -29,7 +32,6 @@ public class GameView implements IView {
 	private JLabel enemyPointsLabel;
 	private JLabel enemyNicknameLabel;
 	private String enemyTurnText;
-	private JPanel view;
 	private ActionListener onPassButtonClicked;
 	private ActionListener onSurrenderButtonClicked;
 	private ActionListener onExitButtonClicked;
@@ -41,6 +43,7 @@ public class GameView implements IView {
 
 	public GameView(final IUiComponentCreator uiComponentCreator) {
 		this.uiComponentCreator = uiComponentCreator;
+		view = initializeView();
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class GameView implements IView {
 	@Override
 	public JPanel createView(final IViewNavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-		return initializeView();
+		return view;
 	}
 
 	public void initializeGame(final String playerNickname,
@@ -68,6 +71,8 @@ public class GameView implements IView {
 		this.onPassButtonClicked = onPassButtonClicked;
 		this.onSurrenderButtonClicked = onSurrenderButtonClicked;
 		this.onExitButtonClicked = onExitButtonClicked;
+		updatePlayerLives(3);
+		updateEnemyLives(3);
 	}
 
 	public void updatePlayerPoints(final int points) {
@@ -91,7 +96,7 @@ public class GameView implements IView {
 	}
 
 	private JPanel initializeView() {
-		view = new JPanel(new BorderLayout());
+		final var gameView = new JPanel(new BorderLayout());
 
 		final ImagePanel backgroundPanel = uiComponentCreator.createBackgroundPanel();
 		backgroundPanel.setLayout(null);
@@ -101,11 +106,29 @@ public class GameView implements IView {
 		addStatsPanel(backgroundPanel);
 
 		final var cards = uiComponentCreator.createCardLabels();
+		for (final var card : cards) {
+			card.addOnClickAction(createActionListenerForCardLabel(card));
+		}
 		playerDeckRow.addCards(cards);
 
-		view.add(backgroundPanel);
-		view.setVisible(true);
-		return view;
+		gameView.add(backgroundPanel);
+		gameView.setVisible(true);
+
+		return gameView;
+	}
+
+	private ActionListener createActionListenerForCardLabel(final CardLabel cardLabel) {
+		final var positionType = cardLabel.getPositionType();
+		return switch (positionType) {
+			case MELEE -> e -> {
+				playerDeckRow.removeCard(cardLabel);
+				playerMeleeRow.addCard(cardLabel);
+			};
+			case RANGED -> e -> {
+				playerDeckRow.removeCard(cardLabel);
+				playerRangedRow.addCard(cardLabel);
+			};
+		};
 	}
 
 	private void addStatsPanel(final ImagePanel backgroundPanel) {
@@ -209,20 +232,25 @@ public class GameView implements IView {
 
 	private void addMenuPanel(final ImagePanel backgroundPanel) {
 		final int BUTTON_PADDING = 10;
+		final int buttonWidth = 275;
+		final Font buttonFont = new Font(UiConfig.BUTTON_FONT.getFontName(), Font.PLAIN, 35);
 		int buttonPaddingCounter = 1;
 
 		final var passButton = uiComponentCreator.createButton(UiResource.BUTTON_PASS_TURN_TEXT);
-		passButton.setBounds(10, BUTTON_PADDING * buttonPaddingCounter++, UiConfig.BUTTON_DEFAULT_WIDTH, UiConfig.BUTTON_DEFAULT_HEIGHT);
+		passButton.setFont(buttonFont);
+		passButton.setBounds(10, BUTTON_PADDING * buttonPaddingCounter++, buttonWidth, UiConfig.BUTTON_DEFAULT_HEIGHT);
 		passButton.addActionListener(onPassTurnButtonClicked());
 		backgroundPanel.add(passButton);
 
 		final var surrenderButton = uiComponentCreator.createButton(UiResource.BUTTON_SURRENDER_TEXT);
+		surrenderButton.setFont(buttonFont);
 		surrenderButton.addActionListener(onSurrenderButtonClicked());
-		surrenderButton.setBounds(10, UiConfig.BUTTON_DEFAULT_HEIGHT + BUTTON_PADDING * buttonPaddingCounter++, UiConfig.BUTTON_DEFAULT_WIDTH, UiConfig.BUTTON_DEFAULT_HEIGHT);
+		surrenderButton.setBounds(10, UiConfig.BUTTON_DEFAULT_HEIGHT + BUTTON_PADDING * buttonPaddingCounter++, buttonWidth, UiConfig.BUTTON_DEFAULT_HEIGHT);
 		backgroundPanel.add(surrenderButton);
 
 		final var exitButton = uiComponentCreator.createButton(UiResource.BUTTON_EXIT_TEXT);
-		exitButton.setBounds(10, 2 * UiConfig.BUTTON_DEFAULT_HEIGHT + BUTTON_PADDING * buttonPaddingCounter, UiConfig.BUTTON_DEFAULT_WIDTH, UiConfig.BUTTON_DEFAULT_HEIGHT);
+		exitButton.setFont(buttonFont);
+		exitButton.setBounds(10, 2 * UiConfig.BUTTON_DEFAULT_HEIGHT + BUTTON_PADDING * buttonPaddingCounter, buttonWidth, UiConfig.BUTTON_DEFAULT_HEIGHT);
 		exitButton.addActionListener(onExitButtonClicked());
 		backgroundPanel.add(exitButton);
 	}
