@@ -3,32 +3,45 @@ package pl.kielce.tu.drylofudala.ui.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class RowPanel extends JPanel {
+	private static final int WIDTH = 1300;
+	private static final int HEIGHT = 160;
 	private final transient Image backgroundImage;
-	private final int width = 1250;
-	private final int height = 160;
 
 	public RowPanel(final Image bgImage) {
 		backgroundImage = bgImage;
 		setOpaque(false);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-		setSize(width, height);
+		setSize(WIDTH, HEIGHT);
 	}
 
+	public void addCards(final List<CardLabel> cards) {
+		for (final var card : cards) {
+			add(card);
+		}
+	}
+
+	public void addCard(final CardLabel card) {
+		add(card);
+	}
+
+	@Override
 	public int getWidth() {
-		return width;
+		return WIDTH;
 	}
 
+	@Override
 	public int getHeight() {
-		return height;
+		return HEIGHT;
 	}
 
 	public void setPosition(final int x, final int y) {
-		final var horizontalPos = x - width / 2;
-		final var verticalPos = y - height / 2;
+		final var horizontalPos = x - WIDTH / 2;
+		final var verticalPos = y - HEIGHT / 2;
 		setLocation(horizontalPos, verticalPos);
 	}
 

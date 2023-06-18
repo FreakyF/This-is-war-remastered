@@ -9,9 +9,9 @@ import pl.kielce.tu.drylofudala.ui.UiResource;
 public final class CardConfiguration {
 	public static final List<CardResource> CARD_RESOURCES = List.of(
 			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_Andrzej_15.png").toString(), 15, PositionType.MELEE),
-			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_infantry_1.png").toString(), 1, PositionType.MELEE),
-			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_infantry_2.png").toString(), 2, PositionType.MELEE),
-			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_infantry_3.png").toString(), 3, PositionType.MELEE),
+			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_Infantry_1.png").toString(), 1, PositionType.MELEE),
+			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_Infantry_2.png").toString(), 2, PositionType.MELEE),
+			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_Infantry_3.png").toString(), 3, PositionType.MELEE),
 
 			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_JacekChrzan_15.png").toString(), 15, PositionType.MELEE),
 			new CardResource(Path.of(UiResource.GRAPHICS_FOLDER, UiResource.CARDS_FOLDER, "card_JanKnot_15.png").toString(), 15, PositionType.MELEE),

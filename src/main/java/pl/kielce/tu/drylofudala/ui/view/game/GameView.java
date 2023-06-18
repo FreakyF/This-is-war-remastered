@@ -1,16 +1,13 @@
 package pl.kielce.tu.drylofudala.ui.view.game;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
-import pl.kielce.tu.drylofudala.ui.model.CardLabel;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
 import pl.kielce.tu.drylofudala.ui.model.RowPanel;
 import pl.kielce.tu.drylofudala.ui.service.navigation_handler.IViewNavigationHandler;
@@ -36,6 +33,11 @@ public class GameView implements IView {
 	private ActionListener onPassButtonClicked;
 	private ActionListener onSurrenderButtonClicked;
 	private ActionListener onExitButtonClicked;
+	private RowPanel playerDeckRow;
+	private RowPanel playerMeleeRow;
+	private RowPanel playerRangedRow;
+	private RowPanel enemyMeleeRow;
+	private RowPanel enemyRangedRow;
 
 	public GameView(final IUiComponentCreator uiComponentCreator) {
 		this.uiComponentCreator = uiComponentCreator;
@@ -88,20 +90,6 @@ public class GameView implements IView {
 		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
 	}
 
-	private void addCardLabels(final List<CardLabel> cardLabels, final ImagePanel background) {
-		final GridBagConstraints cardLabelConstraints = new GridBagConstraints();
-		cardLabelConstraints.fill = GridBagConstraints.NONE;
-		cardLabelConstraints.weightx = 1;
-		cardLabelConstraints.weighty = 1;
-		int cardIndex = 0;
-		for (final JLabel cardLabel : cardLabels) {
-			cardLabelConstraints.gridx = cardIndex;
-			cardLabelConstraints.gridy = 0;
-			background.add(cardLabel, cardLabelConstraints);
-			cardIndex++;
-		}
-	}
-
 	private JPanel initializeView() {
 		view = new JPanel(new BorderLayout());
 
@@ -112,13 +100,16 @@ public class GameView implements IView {
 		addRowsPanels(backgroundPanel);
 		addStatsPanel(backgroundPanel);
 
+		final var cards = uiComponentCreator.createCardLabels();
+		playerDeckRow.addCards(cards);
+
 		view.add(backgroundPanel);
 		view.setVisible(true);
 		return view;
 	}
 
 	private void addStatsPanel(final ImagePanel backgroundPanel) {
-		final int horizontalPosition = UiConfig.WINDOW_MIN_WIDTH - 320;
+		final int horizontalPosition = UiConfig.WINDOW_MIN_WIDTH - 300;
 		final int width = 300;
 		final int height = 50;
 
@@ -178,40 +169,39 @@ public class GameView implements IView {
 	}
 
 	private void addRowsPanels(final ImagePanel backgroundPanel) {
-		final var playerRowBgImage = uiComponentCreator.createPlayerRowBackgroundImage();
+		final int centerX = UiConfig.WINDOW_MIN_WIDTH / 2;
 
 		final int spaceBetweenGroupOfRows = 10;
 		final int spaceBelowPlayerDeckRow = 10;
 		final int spaceBetweenEnemyAndPlayerRows = 85;
 		final int spaceBetweenPlayerDeckAndRows = 65;
 
+		final var playerRowBgImage = uiComponentCreator.createPlayerRowBackgroundImage();
 		int spaceFromBottom = 0;
 
-		final int centerX = UiConfig.WINDOW_MIN_WIDTH / 2;
-		final var playerDeckRow = new RowPanel(playerRowBgImage);
+		playerDeckRow = new RowPanel(playerRowBgImage);
 		spaceFromBottom += UiConfig.WINDOW_MIN_HEIGHT - playerDeckRow.getHeight() - spaceBelowPlayerDeckRow;
 		playerDeckRow.setPosition(centerX, spaceFromBottom);
 		backgroundPanel.add(playerDeckRow);
 
-		final var playerRangedRow = new RowPanel(playerRowBgImage);
+		playerRangedRow = new RowPanel(playerRowBgImage);
 		spaceFromBottom -= playerRangedRow.getHeight() + spaceBetweenPlayerDeckAndRows;
 		playerRangedRow.setPosition(centerX, spaceFromBottom);
 		backgroundPanel.add(playerRangedRow);
 
-		final var playerMeleeRow = new RowPanel(playerRowBgImage);
+		playerMeleeRow = new RowPanel(playerRowBgImage);
 		spaceFromBottom -= playerMeleeRow.getHeight() + spaceBetweenGroupOfRows;
 		playerMeleeRow.setPosition(centerX, spaceFromBottom);
 		backgroundPanel.add(playerMeleeRow);
 
 		final var enemyRowBgImage = uiComponentCreator.createEnemyRowBackgroundImage();
 
-		final var enemyMeleeRow = new RowPanel(enemyRowBgImage);
-
+		enemyMeleeRow = new RowPanel(enemyRowBgImage);
 		spaceFromBottom -= enemyMeleeRow.getHeight() + spaceBetweenEnemyAndPlayerRows;
 		enemyMeleeRow.setPosition(centerX, spaceFromBottom);
 		backgroundPanel.add(enemyMeleeRow);
 
-		final var enemyRangedRow = new RowPanel(enemyRowBgImage);
+		enemyRangedRow = new RowPanel(enemyRowBgImage);
 		spaceFromBottom -= enemyRangedRow.getHeight() + spaceBetweenGroupOfRows;
 		enemyRangedRow.setPosition(centerX, spaceFromBottom);
 		backgroundPanel.add(enemyRangedRow);
