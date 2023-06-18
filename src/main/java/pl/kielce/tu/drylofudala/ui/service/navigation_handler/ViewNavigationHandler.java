@@ -27,7 +27,6 @@ public class ViewNavigationHandler implements IViewNavigationHandler {
 	public ActionListener navigateToLoginView() {
 		return e -> {
 			final IView loginViewFactory = viewFactory.getLoginViewFactory();
-			// TODO: move this method call from this method.
 			mainWindow.setLoggedInUserId(null);
 			final var onReturnButtonClicked = navigateToGuestView();
 			navigateToAuthView(mainWindow, loginViewFactory, onReturnButtonClicked);

@@ -19,6 +19,9 @@ public final class UiResource {
 	public static final String INPUT_LABEL_PASSWORD = "Password";
 	public static final String GRAPHICS_FOLDER = "graphics";
 	public static final String CARDS_FOLDER = "cards";
+	public static final String LABEL_POINTS_TEXT = "POINTS:";
+	public static final String LABEL_LIVES_TEXT = "LIVES:";
+	public static final String LABEL_PLAYER_TURN_TEXT = "PLAYER TURN:";
 	private static final String UI_FOLDER = "UI";
 	public static final String VIEW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "background.png").toString();
 	public static final String PLAYER_ROW_BACKGROUND_IMAGE_PATH = Path.of(GRAPHICS_FOLDER, UI_FOLDER, "playerRowPanelBackground.png").toString();
