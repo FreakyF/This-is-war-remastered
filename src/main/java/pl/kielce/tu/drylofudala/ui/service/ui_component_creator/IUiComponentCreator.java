@@ -25,5 +25,7 @@ public interface IUiComponentCreator {
 
 	JLabel createLabel(final String text, final Font fontStyle);
 
+	JLabel createGameViewLabel(final String text, final Font fontStyle);
+
 	Image createEnemyRowBackgroundImage();
 }

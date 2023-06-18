@@ -109,4 +109,14 @@ public class UiComponentCreator implements IUiComponentCreator {
 
 		return label;
 	}
+
+	@Override
+	public JLabel createGameViewLabel(final String text, final Font fontStyle) {
+		final JLabel label = new JLabel(text);
+
+		label.setForeground(Color.ORANGE);
+		label.setFont(fontStyle);
+
+		return label;
+	}
 }
