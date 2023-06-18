@@ -3,14 +3,14 @@ package pl.kielce.tu.drylofudala.ui;
 import java.nio.file.Path;
 
 public final class UiResource {
-	public static final String GAME_TITLE = "This Is War";
+	public static final String GAME_TITLE = "THIS IS WAR";
 	public static final String IP_ADDRESS_TEXT = "IP address";
 	public static final String PORT_NUMBER_TEXT = "Port number";
-	public static final String SUBTITLE_LOGIN = "Login";
-	public static final String SUBTITLE_REGISTER = "Register";
-	public static final String BUTTON_LOGIN_TEXT = "Login";
-	public static final String BUTTON_CONNECT_TEXT = "Connect";
-	public static final String BUTTON_REGISTER_TEXT = "Register";
+	public static final String SUBTITLE_LOGIN = "LOGIN";
+	public static final String SUBTITLE_REGISTER = "REGISTER";
+	public static final String BUTTON_LOGIN_TEXT = "LOGIN";
+	public static final String BUTTON_CONNECT_TEXT = "CONNECT";
+	public static final String BUTTON_REGISTER_TEXT = "REGISTER";
 	public static final String BUTTON_PASS_TURN_TEXT = "PASS TURN";
 	public static final String BUTTON_SURRENDER_TEXT = "SURRENDER";
 	public static final String BUTTON_EXIT_TEXT = "EXIT";

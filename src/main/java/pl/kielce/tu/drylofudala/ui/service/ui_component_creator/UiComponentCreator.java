@@ -93,7 +93,7 @@ public class UiComponentCreator implements IUiComponentCreator {
 	}
 
 	public JButton createReturnButton() {
-		final var button = createButton(UiResource.BUTTON_RETURN_SYMBOL, 50, 50);
+		final var button = createButton(UiResource.BUTTON_RETURN_SYMBOL, 75, 75);
 		button.setFont(UiConfig.BUTTON_RETURN_FONT);
 		button.setLocation(10, 10);
 		return button;
