@@ -7,6 +7,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import pl.kielce.tu.drylofudala.Main;
+import pl.kielce.tu.drylofudala.entity.Player;
+import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
+import pl.kielce.tu.drylofudala.system.Client;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.CardLabel;
@@ -22,6 +26,8 @@ public class GameView implements IView {
 	private static final String STRING_FORMAT_PATTERN_STRING_STRING = "<html><body><b>%s</b> %s</body></html>";
 	private final IUiComponentCreator uiComponentCreator;
 	private final JPanel view;
+	private final Client client;
+	private final Player player;
 	private IViewNavigationHandler navigationHandler;
 	private JLabel turnLabel;
 	private JLabel playerLivesLabel;
@@ -41,9 +47,15 @@ public class GameView implements IView {
 	private RowPanel enemyMeleeRow;
 	private RowPanel enemyRangedRow;
 
-	public GameView(final IUiComponentCreator uiComponentCreator) {
+	public GameView(final IUiComponentCreator uiComponentCreator, final long playerId, final IPlayerRepository playerRepository) {
 		this.uiComponentCreator = uiComponentCreator;
+		player = playerRepository.find(playerId);
 		view = initializeView();
+		client = new Client(Main.SERVER_PORT, this);
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	@Override
@@ -54,6 +66,7 @@ public class GameView implements IView {
 	@Override
 	public JPanel createView(final IViewNavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
+		client.start();
 		return view;
 	}
 
@@ -262,6 +275,8 @@ public class GameView implements IView {
 			if (onPassButtonClicked != null) {
 				onPassButtonClicked.actionPerformed(e);
 			}
+
+			client.stopClient();
 			navigationHandler.navigateToUserView().actionPerformed(e);
 		};
 	}
@@ -272,6 +287,7 @@ public class GameView implements IView {
 			if (onSurrenderButtonClicked != null) {
 				onSurrenderButtonClicked.actionPerformed(e);
 			}
+			client.stopClient();
 			navigationHandler.navigateToUserView().actionPerformed(e);
 		};
 	}
@@ -281,6 +297,7 @@ public class GameView implements IView {
 			if (onExitButtonClicked != null) {
 				onExitButtonClicked.actionPerformed(e);
 			}
+			client.stopClient();
 			navigationHandler.navigateToUserView().actionPerformed(e);
 		};
 	}

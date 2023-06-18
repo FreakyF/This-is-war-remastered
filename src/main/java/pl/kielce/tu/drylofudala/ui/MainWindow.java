@@ -15,7 +15,6 @@ import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.IUiComponentCrea
 import pl.kielce.tu.drylofudala.ui.service.ui_component_creator.UiComponentCreator;
 import pl.kielce.tu.drylofudala.ui.view.factory.IViewFactory;
 import pl.kielce.tu.drylofudala.ui.view.factory.ViewFactory;
-import pl.kielce.tu.drylofudala.ui.view.game.GameView;
 
 public class MainWindow extends JFrame {
 	private final transient IViewNavigationHandler viewNavigationHandler;
@@ -29,7 +28,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		cardRepository = new CardRepository();
 		uiComponentCreator = new UiComponentCreator(new ResourceRepository(), cardRepository, this);
-		viewFactory = new ViewFactory(uiComponentCreator);
+		viewFactory = new ViewFactory(uiComponentCreator, this);
 		viewNavigationHandler = new ViewNavigationHandler(this, viewFactory);
 		initializeWindow();
 	}
@@ -43,16 +42,12 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null); // set to null because window has no parent. The window is itself a parent.
 		setDefaultLookAndFeelDecorated(true);
 
-//		final var guestView = viewFactory.getGuestViewFactory().createView(this, authenticationService, viewNavigationHandler, resourceRepository);
-		// TODO: Revert to guest view
-		final var gameViewFactory = viewFactory.getGameViewFactory();
+		final var guestView = viewFactory.getGuestViewFactory().createView(viewNavigationHandler);
 		initializeReturnButton();
-		((GameView) gameViewFactory).initializeGame("Kamil", "Karol", false, null, null, null);
-		final var gameView = gameViewFactory.createView(viewNavigationHandler);
 
 		hideReturnButton();
 
-		add(gameView);
+		add(guestView);
 		setVisible(true);
 	}
 

@@ -1,5 +1,6 @@
 package pl.kielce.tu.drylofudala.system;
 
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
 import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 
 public class Server extends Thread {
@@ -44,7 +46,17 @@ public class Server extends Thread {
 
 			boolean firstPlayerTurn = true;
 
+			final var gson = new Gson();
 			while (true) {
+				final var firstPlayerNickname = firstPlayerReader.readLine();
+				final var secondPlayerNickname = secondPlayerReader.readLine();
+
+				final var firstPlayerStartGameDTO = gson.toJson(new StartGameDTO(secondPlayerNickname, firstPlayerTurn), StartGameDTO.class);
+				final var secondPlayerStartGameDTO = gson.toJson(new StartGameDTO(firstPlayerNickname, !firstPlayerTurn), StartGameDTO.class);
+
+				firstPlayerWriter.println(firstPlayerStartGameDTO);
+				secondPlayerWriter.println(secondPlayerStartGameDTO);
+
 				// TODO: Implement gameplay
 				if (firstPlayerTurn) {
 					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);

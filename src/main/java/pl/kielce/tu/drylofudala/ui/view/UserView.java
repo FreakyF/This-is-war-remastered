@@ -16,7 +16,6 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
-import pl.kielce.tu.drylofudala.ui.MainWindow;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
 import pl.kielce.tu.drylofudala.ui.UiResource;
 import pl.kielce.tu.drylofudala.ui.model.ImagePanel;
@@ -27,7 +26,6 @@ import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 public class UserView implements IView {
 	private static final String NAME = "Menu";
 	private final IUiComponentCreator uiComponentCreator;
-	private MainWindow parentWindow;
 	private JPanel view;
 	private JTextField ipTextField;
 	private JTextField portTextField;
@@ -182,8 +180,6 @@ public class UserView implements IView {
 				navigationHandler.navigateToGameView().actionPerformed(e);
 				return;
 			}
-
-			// TODO: Create new client and start it.
 
 			final String errorMessage;
 			if (!ipMatch && !portMatch) {
