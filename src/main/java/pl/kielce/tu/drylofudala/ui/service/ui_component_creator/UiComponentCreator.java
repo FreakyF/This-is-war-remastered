@@ -46,7 +46,7 @@ public class UiComponentCreator implements IUiComponentCreator {
 				logger.debug("Card {} not found", pathToCardImg);
 				continue;
 			}
-			final var cardLabel = new CardLabel(card, cardImg, mainWindow);
+			final var cardLabel = new CardLabel(card, cardImg);
 			cardLabels.add(cardLabel);
 		}
 		return cardLabels;

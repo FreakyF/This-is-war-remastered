@@ -6,19 +6,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import pl.kielce.tu.drylofudala.entity.Card;
 import pl.kielce.tu.drylofudala.model.PositionType;
-import pl.kielce.tu.drylofudala.ui.MainWindow;
 
 public class CardLabel extends JLabel implements MouseListener {
 	private final transient Card card;
-	private final MainWindow mainWindow;
 	private transient ActionListener onCardClicked;
 
-	public CardLabel(final Card card, final Image cardImg, final MainWindow mainWindow) {
+	public CardLabel(final Card card, final Image cardImg) {
 		super(new ImageIcon(cardImg));
-		this.mainWindow = mainWindow;
 		this.card = card;
 		setToolTipText(card.getName() + " - " + card.getPoints() + " points");
 		addMouseListener(this);
@@ -37,7 +33,6 @@ public class CardLabel extends JLabel implements MouseListener {
 		if (onCardClicked != null) {
 			onCardClicked.actionPerformed(null);
 		}
-		JOptionPane.showMessageDialog(mainWindow, card.getName());
 	}
 
 	@Override
