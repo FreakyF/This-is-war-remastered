@@ -18,8 +18,8 @@ import pl.kielce.tu.drylofudala.ui.view.factory.IView;
 
 public class GameView implements IView {
 	private static final String NAME = "Game";
-	private static final String STRING_FORMAT_PATTERN_STRING_NUMBER = "%s %d";
-	private static final String STRING_FORMAT_PATTERN_STRING_STRING = "%s %s";
+	private static final String STRING_FORMAT_PATTERN_STRING_NUMBER = "<html><body><b>%s</b> %d</body></html>";
+	private static final String STRING_FORMAT_PATTERN_STRING_STRING = "<html><body><b>%s</b> %s</body></html>";
 	private final IUiComponentCreator uiComponentCreator;
 	private final JPanel view;
 	private IViewNavigationHandler navigationHandler;
@@ -63,10 +63,12 @@ public class GameView implements IView {
 	                           final ActionListener onPassButtonClicked,
 	                           final ActionListener onSurrenderButtonClicked,
 	                           final ActionListener onExitButtonClicked) {
-		playerNicknameLabel.setText(playerNickname);
-		enemyNicknameLabel.setText(enemyNickname);
-		playerTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, playerNickname);
-		enemyTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, enemyNickname);
+		final var styledPlayerNickname = "<html><body><b><i>" + playerNickname + "</i></b></body></html>";
+		final var styledEnemyNickname = "<html><body><b><i>" + enemyNickname + "</i></b></body></html>";
+		playerNicknameLabel.setText(styledPlayerNickname);
+		enemyNicknameLabel.setText(styledEnemyNickname);
+		playerTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, styledPlayerNickname);
+		enemyTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, styledEnemyNickname);
 		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
 		this.onPassButtonClicked = onPassButtonClicked;
 		this.onSurrenderButtonClicked = onSurrenderButtonClicked;
