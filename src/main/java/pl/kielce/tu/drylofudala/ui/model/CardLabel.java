@@ -11,6 +11,7 @@ import pl.kielce.tu.drylofudala.model.PositionType;
 
 public class CardLabel extends JLabel implements MouseListener {
 	private final transient Card card;
+	private boolean blocked;
 	private transient ActionListener onCardClicked;
 
 	public CardLabel(final Card card, final Image cardImg) {
@@ -18,6 +19,14 @@ public class CardLabel extends JLabel implements MouseListener {
 		this.card = card;
 		setToolTipText(card.getName() + " - " + card.getPoints() + " points");
 		addMouseListener(this);
+	}
+
+	public void blockCard() {
+		blocked = true;
+	}
+
+	public void unblockCard() {
+		blocked = false;
 	}
 
 	public void addOnClickAction(final ActionListener actionListener) {
@@ -28,8 +37,16 @@ public class CardLabel extends JLabel implements MouseListener {
 		return card.getPositionType();
 	}
 
+	public int getPoints() {
+		return card.getPoints();
+	}
+
 	@Override
 	public void mouseClicked(final MouseEvent e) {
+		if (blocked) {
+			return;
+		}
+
 		if (onCardClicked != null) {
 			onCardClicked.actionPerformed(null);
 		}

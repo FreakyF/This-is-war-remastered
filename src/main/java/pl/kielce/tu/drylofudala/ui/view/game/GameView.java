@@ -3,12 +3,15 @@ package pl.kielce.tu.drylofudala.ui.view.game;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.Main;
 import pl.kielce.tu.drylofudala.entity.Player;
+import pl.kielce.tu.drylofudala.model.PositionType;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 import pl.kielce.tu.drylofudala.system.Client;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -28,6 +31,9 @@ public class GameView implements IView {
 	private final JPanel view;
 	private final Client client;
 	private final Player player;
+	private final List<CardLabel> enemyCardLabels = new ArrayList<>();
+	private boolean playerChosenCard;
+	private CardLabel cardSelectedByPlayer;
 	private IViewNavigationHandler navigationHandler;
 	private JLabel turnLabel;
 	private JLabel playerLivesLabel;
@@ -46,6 +52,7 @@ public class GameView implements IView {
 	private RowPanel playerRangedRow;
 	private RowPanel enemyMeleeRow;
 	private RowPanel enemyRangedRow;
+	private List<CardLabel> playerCardLabels = new ArrayList<>();
 
 	public GameView(final IUiComponentCreator uiComponentCreator, final long playerId, final IPlayerRepository playerRepository) {
 		this.uiComponentCreator = uiComponentCreator;
@@ -70,6 +77,19 @@ public class GameView implements IView {
 		return view;
 	}
 
+	public boolean hasPlayerChosenCard() {
+		return playerChosenCard;
+	}
+
+	public CardLabel getCardSelectedByPlayer() {
+		return cardSelectedByPlayer;
+	}
+
+	public void resetCardSelectedByPlayer() {
+		playerChosenCard = false;
+		cardSelectedByPlayer = null;
+	}
+
 	public void initializeGame(final String playerNickname,
 	                           final String enemyNickname,
 	                           final boolean isPlayerTurn,
@@ -88,14 +108,22 @@ public class GameView implements IView {
 		this.onExitButtonClicked = onExitButtonClicked;
 		updatePlayerLives(3);
 		updateEnemyLives(3);
+		if (isPlayerTurn) {
+			unblockPlayerCards();
+			return;
+		}
+
+		blockPlayerCards();
 	}
 
-	public void updatePlayerPoints(final int points) {
+	public void updatePlayerPoints() {
+		final var points = playerCardLabels.stream().mapToInt(CardLabel::getPoints).sum();
 		playerPointsLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_POINTS_TEXT, points));
 	}
 
-	public void updateEnemyPoints(final int points) {
-		enemyPointsLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_POINTS_TEXT, points));
+	public void updateEnemyPoints() {
+		final var enemyPoints = enemyCardLabels.stream().mapToInt(CardLabel::getPoints).sum();
+		enemyPointsLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_POINTS_TEXT, enemyPoints));
 	}
 
 	public void updatePlayerLives(final int lives) {
@@ -108,6 +136,47 @@ public class GameView implements IView {
 
 	public void updatePlayerTurn(final boolean isPlayerTurn) {
 		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
+		if (isPlayerTurn) {
+			unblockPlayerCards();
+			return;
+		}
+		blockPlayerCards();
+	}
+
+	public void addEnemyCard(final CardLabel cardLabel) {
+		enemyCardLabels.add(cardLabel);
+		cardLabel.blockCard();
+		if (cardLabel.getPositionType().equals(PositionType.MELEE)) {
+			enemyMeleeRow.addCard(cardLabel);
+		}
+
+		if (cardLabel.getPositionType().equals(PositionType.RANGED)) {
+			enemyRangedRow.addCard(cardLabel);
+		}
+
+		updateEnemyPoints();
+	}
+
+	public void addPlayerCard(final CardLabel cardLabel) {
+		playerCardLabels.add(cardLabel);
+		cardLabel.blockCard();
+		if (cardLabel.getPositionType().equals(PositionType.MELEE)) {
+			enemyMeleeRow.addCard(cardLabel);
+		}
+
+		if (cardLabel.getPositionType().equals(PositionType.RANGED)) {
+			enemyRangedRow.addCard(cardLabel);
+		}
+
+		updatePlayerPoints();
+	}
+
+	private void blockPlayerCards() {
+		playerCardLabels.forEach(CardLabel::blockCard);
+	}
+
+	private void unblockPlayerCards() {
+		playerCardLabels.forEach(CardLabel::unblockCard);
 	}
 
 	private JPanel initializeView() {
@@ -124,6 +193,7 @@ public class GameView implements IView {
 		for (final var card : cards) {
 			card.addOnClickAction(createActionListenerForCardLabel(card));
 		}
+		playerCardLabels = cards;
 		playerDeckRow.addCards(cards);
 
 		gameView.add(backgroundPanel);
@@ -133,15 +203,17 @@ public class GameView implements IView {
 	}
 
 	private ActionListener createActionListenerForCardLabel(final CardLabel cardLabel) {
-		final var positionType = cardLabel.getPositionType();
+		playerChosenCard = true;
+		cardSelectedByPlayer = cardLabel;
+		final var positionType = cardSelectedByPlayer.getPositionType();
 		return switch (positionType) {
 			case MELEE -> e -> {
-				playerDeckRow.removeCard(cardLabel);
-				playerMeleeRow.addCard(cardLabel);
+				playerDeckRow.removeCard(cardSelectedByPlayer);
+				playerMeleeRow.addCard(cardSelectedByPlayer);
 			};
 			case RANGED -> e -> {
-				playerDeckRow.removeCard(cardLabel);
-				playerRangedRow.addCard(cardLabel);
+				playerDeckRow.removeCard(cardSelectedByPlayer);
+				playerRangedRow.addCard(cardSelectedByPlayer);
 			};
 		};
 	}
