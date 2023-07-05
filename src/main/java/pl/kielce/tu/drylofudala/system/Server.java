@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
+import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 
 public class Server extends Thread {
 	private static final Logger logger = LogManager.getLogger(Server.class);
@@ -48,12 +50,38 @@ public class Server extends Thread {
 
 			// inicjalizacja gry
 			// Pobieramy nick pierwszego gracza
+			final var firstPlayerNickname = firstPlayerReader.readLine();
+			logger.debug("First player: {}", firstPlayerNickname);
+
 			// Pobieramy nick drugiego gracza
+			final var secondPlayerNickname = secondPlayerReader.readLine();
+			logger.debug("Second player: {}", secondPlayerNickname);
+
 			// Wysyłamy nick pierwszego gracza, drugiemu i vice versa.
+			final var firstPlayerStartGameDTO = gson.toJson(new StartGameDTO(secondPlayerNickname, firstPlayerTurn), StartGameDTO.class);
+			final var secondPlayerStartGameDTO = gson.toJson(new StartGameDTO(firstPlayerNickname, !firstPlayerTurn), StartGameDTO.class);
+
+			sendMessage(firstPlayerWriter, firstPlayerStartGameDTO);
+			sendMessage(secondPlayerWriter, secondPlayerStartGameDTO);
 
 			while (true) {
 				// Sprawdzamy, który z graczy powinien wykonać ruch.
-				// Wysyłamy informację, dla graczy, czyja jest tura.
+				if (firstPlayerTurn) {
+					// Wysyłamy informację, dla graczy, czyja jest tura.
+					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);
+					logger.debug("{}", Prompt.YOUR_TURN);
+
+					sendMessage(secondPlayerWriter, Prompt.OPPONENT_TURN);
+					logger.debug("{}", Prompt.OPPONENT_TURN);
+				} else {
+					// Wysyłamy informację, dla graczy, czyja jest tura.
+					sendMessage(secondPlayerWriter, Prompt.YOUR_TURN);
+					logger.debug("{}", Prompt.YOUR_TURN);
+
+					sendMessage(firstPlayerWriter, Prompt.OPPONENT_TURN);
+					logger.debug("{}", Prompt.OPPONENT_TURN);
+				}
+
 				// Otrzymujemy informację, jaką kartę zagrał gracz.
 				// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
 

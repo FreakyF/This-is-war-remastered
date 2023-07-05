@@ -270,4 +270,8 @@ public class GameView implements IView {
 			navigationHandler.navigateToUserView().actionPerformed(e);
 		};
 	}
+
+	public void initializeGame(final String opponentNickname, final boolean playerTurn) {
+
+	}
 }

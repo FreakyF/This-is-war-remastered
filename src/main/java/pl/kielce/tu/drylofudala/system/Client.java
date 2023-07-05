@@ -9,6 +9,8 @@ import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kielce.tu.drylofudala.entity.Player;
+import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
+import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 import pl.kielce.tu.drylofudala.ui.view.game.GameView;
 
 public class Client extends Thread {
@@ -36,18 +38,30 @@ public class Client extends Thread {
 			final var gson = new Gson();
 			// inicjalizacja gry
 			// Wysyłamy nick gracza.
+			sendMessage(player.getName());
 			// Pobieramy nick przeciwnika.
+
+			final var startGameDTOJson = receiveMessage();
+			final var startGameDTO = gson.fromJson(startGameDTOJson, StartGameDTO.class);
+
 			// Zaincjalizuj grę.
+			gameView.initializeGame(startGameDTO.enemyNickname(), startGameDTO.playerTurn());
 
 			while (true) {
+				final String message = receiveMessage();
 				// Sprawdzamy, czy jest nasza tura.
-				// Jeśli nasza tura
-				// - Odblokowujemy karty graczowi.
-				// - Obsługujemy wykonanie ruchu.
-				// - Wysyłamy informację do serwera o karcie wybranej przez gracza.
-				// Jeśli tura przeciwnika
-				// - Obsługujemy blokowanie kart gdy jest tura przeciwnika.
-				// - Oczekujemy na informację z serwera o karcie wybranej przez przeciwnika.
+				if (message.equals(Prompt.YOUR_TURN)) {
+					// Jeśli nasza tura
+					// - Odblokowujemy karty graczowi.
+					// - Obsługujemy wykonanie ruchu.
+					// - Wysyłamy informację do serwera o karcie wybranej przez gracza.
+				}
+				if (message.equals(Prompt.OPPONENT_TURN)) {
+					// Jeśli tura przeciwnika
+					// - Obsługujemy blokowanie kart gdy jest tura przeciwnika.
+					// - Oczekujemy na informację z serwera o karcie wybranej przez przeciwnika.
+				}
+
 			}
 		} catch (final IOException e) {
 			e.printStackTrace();
