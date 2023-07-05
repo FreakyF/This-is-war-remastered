@@ -54,6 +54,11 @@ public class Client extends Thread {
 					// Jeśli nasza tura
 					// - Odblokowujemy karty graczowi.
 					// - Obsługujemy wykonanie ruchu.
+					while (true) {
+						if (gameView.hasPlayerChosenCard()) {
+							break;
+						}
+					}
 					// - Wysyłamy informację do serwera o karcie wybranej przez gracza.
 				}
 				if (message.equals(Prompt.OPPONENT_TURN)) {

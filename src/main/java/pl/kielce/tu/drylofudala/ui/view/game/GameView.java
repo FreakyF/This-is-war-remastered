@@ -279,4 +279,8 @@ public class GameView implements IView {
 		enemyTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, opponentNickname);
 		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
 	}
+
+	public boolean hasPlayerChosenCard() {
+		return playerChosenCard;
+	}
 }

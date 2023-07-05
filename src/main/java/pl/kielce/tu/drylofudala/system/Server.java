@@ -71,19 +71,25 @@ public class Server extends Thread {
 					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);
 					logger.debug("{}", Prompt.YOUR_TURN);
 
+					// Otrzymujemy informację, jaką kartę zagrał gracz.
+
+					// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
+
 					sendMessage(secondPlayerWriter, Prompt.OPPONENT_TURN);
 					logger.debug("{}", Prompt.OPPONENT_TURN);
+
 				} else {
 					// Wysyłamy informację, dla graczy, czyja jest tura.
 					sendMessage(secondPlayerWriter, Prompt.YOUR_TURN);
 					logger.debug("{}", Prompt.YOUR_TURN);
 
+					// Otrzymujemy informację, jaką kartę zagrał gracz.
+
 					sendMessage(firstPlayerWriter, Prompt.OPPONENT_TURN);
 					logger.debug("{}", Prompt.OPPONENT_TURN);
-				}
 
-				// Otrzymujemy informację, jaką kartę zagrał gracz.
-				// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
+					// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
+				}
 
 				firstPlayerTurn = !firstPlayerTurn;
 			}
