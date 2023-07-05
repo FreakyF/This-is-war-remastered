@@ -21,14 +21,6 @@ public class CardLabel extends JLabel implements MouseListener {
 		addMouseListener(this);
 	}
 
-	public void blockCard() {
-		blocked = true;
-	}
-
-	public void unblockCard() {
-		blocked = false;
-	}
-
 	public void addOnClickAction(final ActionListener actionListener) {
 		onCardClicked = actionListener;
 	}
@@ -37,19 +29,9 @@ public class CardLabel extends JLabel implements MouseListener {
 		return card.getPositionType();
 	}
 
-	public int getPoints() {
-		return card.getPoints();
-	}
-
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		if (blocked) {
-			return;
-		}
-
-		if (onCardClicked != null) {
-			onCardClicked.actionPerformed(null);
-		}
+		// TODO: Implement it. :)
 	}
 
 	@Override

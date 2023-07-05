@@ -9,9 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.kielce.tu.drylofudala.system.dto.PlayerMoveDTO;
-import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
-import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 
 public class Server extends Thread {
 	private static final Logger logger = LogManager.getLogger(Server.class);
@@ -48,42 +45,8 @@ public class Server extends Thread {
 			boolean firstPlayerTurn = true;
 
 			final var gson = new Gson();
+
 			while (true) {
-				final var firstPlayerNickname = firstPlayerReader.readLine();
-				logger.debug("First player nickname: {}", firstPlayerNickname);
-
-				final var secondPlayerNickname = secondPlayerReader.readLine();
-				logger.debug("Second player nickname: {}", secondPlayerNickname);
-
-				final var firstPlayerStartGameDTO = gson.toJson(new StartGameDTO(secondPlayerNickname, firstPlayerTurn), StartGameDTO.class);
-				final var secondPlayerStartGameDTO = gson.toJson(new StartGameDTO(firstPlayerNickname, !firstPlayerTurn), StartGameDTO.class);
-
-				sendMessage(firstPlayerWriter, firstPlayerStartGameDTO);
-				sendMessage(secondPlayerWriter, secondPlayerStartGameDTO);
-
-				// TODO: Implement gameplay
-				if (firstPlayerTurn) {
-					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);
-					logger.debug("{}", Prompt.YOUR_TURN);
-
-					sendMessage(secondPlayerWriter, Prompt.OPPONENT_TURN);
-					logger.debug("{}", Prompt.OPPONENT_TURN);
-
-					final var firstPlayerMove = receiveMessage(firstPlayerReader);
-					final var firstPlayerMoveDTO = gson.fromJson(firstPlayerMove, PlayerMoveDTO.class);
-					sendMessage(secondPlayerWriter, gson.toJson(firstPlayerMoveDTO, PlayerMoveDTO.class));
-				} else {
-					sendMessage(secondPlayerWriter, Prompt.YOUR_TURN);
-					logger.debug("{}", Prompt.YOUR_TURN);
-
-					sendMessage(firstPlayerWriter, Prompt.OPPONENT_TURN);
-					logger.debug("{}", Prompt.OPPONENT_TURN);
-
-					final var secondPlayerMove = receiveMessage(secondPlayerReader);
-					final var secondPlayerMoveDTO = gson.fromJson(secondPlayerMove, PlayerMoveDTO.class);
-					sendMessage(firstPlayerWriter, gson.toJson(secondPlayerMoveDTO, PlayerMoveDTO.class));
-				}
-
 				firstPlayerTurn = !firstPlayerTurn;
 			}
 

@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import pl.kielce.tu.drylofudala.Main;
 import pl.kielce.tu.drylofudala.entity.Player;
-import pl.kielce.tu.drylofudala.model.PositionType;
 import pl.kielce.tu.drylofudala.persistance.repository.player.IPlayerRepository;
 import pl.kielce.tu.drylofudala.system.Client;
 import pl.kielce.tu.drylofudala.ui.UiConfig;
@@ -75,108 +74,6 @@ public class GameView implements IView {
 		this.navigationHandler = navigationHandler;
 		client.start();
 		return view;
-	}
-
-	public boolean hasPlayerChosenCard() {
-		return playerChosenCard;
-	}
-
-	public CardLabel getCardSelectedByPlayer() {
-		return cardSelectedByPlayer;
-	}
-
-	public void resetCardSelectedByPlayer() {
-		playerChosenCard = false;
-		cardSelectedByPlayer = null;
-	}
-
-	public void initializeGame(final String playerNickname,
-	                           final String enemyNickname,
-	                           final boolean isPlayerTurn,
-	                           final ActionListener onPassButtonClicked,
-	                           final ActionListener onSurrenderButtonClicked,
-	                           final ActionListener onExitButtonClicked) {
-		final var styledPlayerNickname = "<html><body><b><i>" + playerNickname + "</i></b></body></html>";
-		final var styledEnemyNickname = "<html><body><b><i>" + enemyNickname + "</i></b></body></html>";
-		playerNicknameLabel.setText(styledPlayerNickname);
-		enemyNicknameLabel.setText(styledEnemyNickname);
-		playerTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, styledPlayerNickname);
-		enemyTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, styledEnemyNickname);
-		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
-		this.onPassButtonClicked = onPassButtonClicked;
-		this.onSurrenderButtonClicked = onSurrenderButtonClicked;
-		this.onExitButtonClicked = onExitButtonClicked;
-		updatePlayerLives(3);
-		updateEnemyLives(3);
-		if (isPlayerTurn) {
-			unblockPlayerCards();
-			return;
-		}
-
-		blockPlayerCards();
-	}
-
-	public void updatePlayerPoints() {
-		final var points = playerCardLabels.stream().mapToInt(CardLabel::getPoints).sum();
-		playerPointsLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_POINTS_TEXT, points));
-	}
-
-	public void updateEnemyPoints() {
-		final var enemyPoints = enemyCardLabels.stream().mapToInt(CardLabel::getPoints).sum();
-		enemyPointsLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_POINTS_TEXT, enemyPoints));
-	}
-
-	public void updatePlayerLives(final int lives) {
-		playerLivesLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_LIVES_TEXT, lives));
-	}
-
-	public void updateEnemyLives(final int lives) {
-		enemyLivesLabel.setText(String.format(STRING_FORMAT_PATTERN_STRING_NUMBER, UiResource.LABEL_LIVES_TEXT, lives));
-	}
-
-	public void updatePlayerTurn(final boolean isPlayerTurn) {
-		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
-		if (isPlayerTurn) {
-			unblockPlayerCards();
-			return;
-		}
-		blockPlayerCards();
-	}
-
-	public void addEnemyCard(final CardLabel cardLabel) {
-		enemyCardLabels.add(cardLabel);
-		cardLabel.blockCard();
-		if (cardLabel.getPositionType().equals(PositionType.MELEE)) {
-			enemyMeleeRow.addCard(cardLabel);
-		}
-
-		if (cardLabel.getPositionType().equals(PositionType.RANGED)) {
-			enemyRangedRow.addCard(cardLabel);
-		}
-
-		updateEnemyPoints();
-	}
-
-	public void addPlayerCard(final CardLabel cardLabel) {
-		playerCardLabels.add(cardLabel);
-		cardLabel.blockCard();
-		if (cardLabel.getPositionType().equals(PositionType.MELEE)) {
-			enemyMeleeRow.addCard(cardLabel);
-		}
-
-		if (cardLabel.getPositionType().equals(PositionType.RANGED)) {
-			enemyRangedRow.addCard(cardLabel);
-		}
-
-		updatePlayerPoints();
-	}
-
-	private void blockPlayerCards() {
-		playerCardLabels.forEach(CardLabel::blockCard);
-	}
-
-	private void unblockPlayerCards() {
-		playerCardLabels.forEach(CardLabel::unblockCard);
 	}
 
 	private JPanel initializeView() {
