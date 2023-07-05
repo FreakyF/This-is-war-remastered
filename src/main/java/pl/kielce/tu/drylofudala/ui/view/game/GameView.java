@@ -271,7 +271,12 @@ public class GameView implements IView {
 		};
 	}
 
-	public void initializeGame(final String opponentNickname, final boolean playerTurn) {
+	public void initializeGame(final String opponentNickname, final boolean isPlayerTurn) {
+		enemyNicknameLabel.setText(opponentNickname);
+		playerNicknameLabel.setText(player.getName());
 
+		playerTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, player.getName());
+		enemyTurnText = String.format(STRING_FORMAT_PATTERN_STRING_STRING, UiResource.LABEL_PLAYER_TURN_TEXT, opponentNickname);
+		turnLabel.setText(isPlayerTurn ? playerTurnText : enemyTurnText);
 	}
 }
