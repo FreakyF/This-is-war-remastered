@@ -34,9 +34,20 @@ public class Client extends Thread {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			final var gson = new Gson();
+			// inicjalizacja gry
+			// Wysyłamy nick gracza.
+			// Pobieramy nick przeciwnika.
+			// Zaincjalizuj grę.
 
 			while (true) {
-
+				// Sprawdzamy, czy jest nasza tura.
+				// Jeśli nasza tura
+				// - Odblokowujemy karty graczowi.
+				// - Obsługujemy wykonanie ruchu.
+				// - Wysyłamy informację do serwera o karcie wybranej przez gracza.
+				// Jeśli tura przeciwnika
+				// - Obsługujemy blokowanie kart gdy jest tura przeciwnika.
+				// - Oczekujemy na informację z serwera o karcie wybranej przez przeciwnika.
 			}
 		} catch (final IOException e) {
 			e.printStackTrace();

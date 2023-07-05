@@ -46,7 +46,17 @@ public class Server extends Thread {
 
 			final var gson = new Gson();
 
+			// inicjalizacja gry
+			// Pobieramy nick pierwszego gracza
+			// Pobieramy nick drugiego gracza
+			// Wysyłamy nick pierwszego gracza, drugiemu i vice versa.
+
 			while (true) {
+				// Sprawdzamy, który z graczy powinien wykonać ruch.
+				// Wysyłamy informację, dla graczy, czyja jest tura.
+				// Otrzymujemy informację, jaką kartę zagrał gracz.
+				// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
+
 				firstPlayerTurn = !firstPlayerTurn;
 			}
 
