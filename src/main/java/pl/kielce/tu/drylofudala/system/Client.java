@@ -13,6 +13,7 @@ import pl.kielce.tu.drylofudala.system.dto.PlayerMoveDTO;
 import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
 import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 import pl.kielce.tu.drylofudala.ui.model.CardLabel;
+import pl.kielce.tu.drylofudala.ui.view.game.GameController;
 import pl.kielce.tu.drylofudala.ui.view.game.GameView;
 
 public class Client extends Thread {
@@ -23,11 +24,13 @@ public class Client extends Thread {
 	private Socket socket;
 	private PrintWriter out;
 	private BufferedReader in;
+	private final GameController gameController;
 
 	public Client(final int serverPort, final GameView gameView) {
 		this.serverPort = serverPort;
 		this.gameView = gameView;
 		player = gameView.getPlayer();
+		gameController = new GameController(false, gameView);
 	}
 
 	@Override
@@ -53,26 +56,26 @@ public class Client extends Thread {
 				final String message = receiveMessage();
 
 				if (message.equals(Prompt.YOUR_TURN)) {
-					gameView.updatePlayerTurn(true);
+					gameController.updatePlayerTurn(true);
 					logger.debug("My turn! {}", player.getName());
 					logger.debug("Waiting for player to choose the card");
 					while (true) {
-						if (gameView.hasPlayerChosenCard()) {
+						if (gameController.hasPlayerChosenCard()) {
 							break;
 						}
 					}
-					final var cardSelectedByPlayer = gameView.getCardSelectedByPlayer();
+					final var cardSelectedByPlayer = gameController.getCardSelectedByPlayer();
 					final var playerMoveDTO = gson.toJson(new PlayerMoveDTO(cardSelectedByPlayer), PlayerMoveDTO.class);
-					gameView.addPlayerCard(cardSelectedByPlayer);
+					gameController.addPlayerCard(cardSelectedByPlayer);
 					sendMessage(playerMoveDTO);
-					gameView.resetCardSelectedByPlayer();
+					gameController.resetCardSelectedByPlayer();
 				}
 
 				if (message.equals(Prompt.OPPONENT_TURN)) {
 					logger.debug("It is not my turn! {}", player.getName());
-					gameView.updatePlayerTurn(false);
+					gameController.updatePlayerTurn(false);
 					final var enemyCard = gson.fromJson(receiveMessage(), CardLabel.class);
-					gameView.addEnemyCard(enemyCard);
+					gameController.addEnemyCard(enemyCard);
 				}
 			}
 		} catch (final IOException e) {
