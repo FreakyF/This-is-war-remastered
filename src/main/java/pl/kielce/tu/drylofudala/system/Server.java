@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.kielce.tu.drylofudala.system.dto.PlayerMoveDTO;
 import pl.kielce.tu.drylofudala.system.dto.StartGameDTO;
 import pl.kielce.tu.drylofudala.system.service.prompt.Prompt;
 
@@ -48,40 +47,48 @@ public class Server extends Thread {
 			boolean firstPlayerTurn = true;
 
 			final var gson = new Gson();
+
+			// inicjalizacja gry
+			// Pobieramy nick pierwszego gracza
+			final var firstPlayerNickname = firstPlayerReader.readLine();
+			logger.debug("First player: {}", firstPlayerNickname);
+
+			// Pobieramy nick drugiego gracza
+			final var secondPlayerNickname = secondPlayerReader.readLine();
+			logger.debug("Second player: {}", secondPlayerNickname);
+
+			// Wysyłamy nick pierwszego gracza, drugiemu i vice versa.
+			final var firstPlayerStartGameDTO = gson.toJson(new StartGameDTO(secondPlayerNickname, firstPlayerTurn), StartGameDTO.class);
+			final var secondPlayerStartGameDTO = gson.toJson(new StartGameDTO(firstPlayerNickname, !firstPlayerTurn), StartGameDTO.class);
+
+			sendMessage(firstPlayerWriter, firstPlayerStartGameDTO);
+			sendMessage(secondPlayerWriter, secondPlayerStartGameDTO);
+
 			while (true) {
-				final var firstPlayerNickname = firstPlayerReader.readLine();
-				logger.debug("First player nickname: {}", firstPlayerNickname);
-
-				final var secondPlayerNickname = secondPlayerReader.readLine();
-				logger.debug("Second player nickname: {}", secondPlayerNickname);
-
-				final var firstPlayerStartGameDTO = gson.toJson(new StartGameDTO(secondPlayerNickname, firstPlayerTurn), StartGameDTO.class);
-				final var secondPlayerStartGameDTO = gson.toJson(new StartGameDTO(firstPlayerNickname, !firstPlayerTurn), StartGameDTO.class);
-
-				sendMessage(firstPlayerWriter, firstPlayerStartGameDTO);
-				sendMessage(secondPlayerWriter, secondPlayerStartGameDTO);
-
-				// TODO: Implement gameplay
+				// Sprawdzamy, który z graczy powinien wykonać ruch.
 				if (firstPlayerTurn) {
+					// Wysyłamy informację, dla graczy, czyja jest tura.
 					sendMessage(firstPlayerWriter, Prompt.YOUR_TURN);
 					logger.debug("{}", Prompt.YOUR_TURN);
+
+					// Otrzymujemy informację, jaką kartę zagrał gracz.
+
+					// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
 
 					sendMessage(secondPlayerWriter, Prompt.OPPONENT_TURN);
 					logger.debug("{}", Prompt.OPPONENT_TURN);
 
-					final var firstPlayerMove = receiveMessage(firstPlayerReader);
-					final var firstPlayerMoveDTO = gson.fromJson(firstPlayerMove, PlayerMoveDTO.class);
-					sendMessage(secondPlayerWriter, gson.toJson(firstPlayerMoveDTO, PlayerMoveDTO.class));
 				} else {
+					// Wysyłamy informację, dla graczy, czyja jest tura.
 					sendMessage(secondPlayerWriter, Prompt.YOUR_TURN);
 					logger.debug("{}", Prompt.YOUR_TURN);
+
+					// Otrzymujemy informację, jaką kartę zagrał gracz.
 
 					sendMessage(firstPlayerWriter, Prompt.OPPONENT_TURN);
 					logger.debug("{}", Prompt.OPPONENT_TURN);
 
-					final var secondPlayerMove = receiveMessage(secondPlayerReader);
-					final var secondPlayerMoveDTO = gson.fromJson(secondPlayerMove, PlayerMoveDTO.class);
-					sendMessage(firstPlayerWriter, gson.toJson(secondPlayerMoveDTO, PlayerMoveDTO.class));
+					// Wysyłamy informację, jaką kartę zagrał gracz drugiemu graczowi.
 				}
 
 				firstPlayerTurn = !firstPlayerTurn;
