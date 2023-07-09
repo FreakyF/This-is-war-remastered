@@ -24,13 +24,14 @@ public class Client extends Thread {
 	private Socket socket;
 	private PrintWriter out;
 	private BufferedReader in;
+
 	private final GameController gameController;
 
 	public Client(final int serverPort, final GameView gameView) {
 		this.serverPort = serverPort;
+		gameController = new GameController(false, gameView);
 		this.gameView = gameView;
 		player = gameView.getPlayer();
-		gameController = new GameController(false, gameView);
 	}
 
 	@Override
